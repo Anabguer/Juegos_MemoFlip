@@ -5,9 +5,11 @@ let currentFilter = 'all';
 
 // Inicializar página de trofeos
 function initTrophiesPage() {
+    console.log('🏆 Inicializando página de trofeos...');
     updateTrophyStats();
     renderTrophies();
     attachTrophyEventListeners();
+    console.log('🏆 Página de trofeos inicializada');
 }
 
 // Actualizar estadísticas de trofeos
@@ -26,10 +28,15 @@ function updateTrophyStats() {
 // Renderizar lista de trofeos
 function renderTrophies(filter = 'all') {
     const container = document.getElementById('trophies-container');
-    if (!container) return;
+    if (!container) {
+        console.error('🏆 No se encontró el contenedor de trofeos');
+        return;
+    }
     
     const trophies = TrophySystem.getTrophiesForDisplay();
+    console.log('🏆 Trofeos obtenidos:', trophies);
     const filteredTrophies = filterTrophies(trophies, filter);
+    console.log('🏆 Trofeos filtrados:', filteredTrophies);
     
     if (filteredTrophies.length === 0) {
         container.innerHTML = `
