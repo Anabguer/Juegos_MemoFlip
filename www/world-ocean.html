@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>MemoFlip - Mundo Océano</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/world-selector.css">
+  <link rel="stylesheet" href="css/world-map.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="game-hud">
+      <div class="game-logo">
+        <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
+      </div>
+      
+      <div class="player-hud">
+        <div class="home-section">
+          <button id="backToWorlds" class="hud-btn-simple">
+            <img src="images/ui/home.png" alt="Home" class="home-icon">
+          </button>
+        </div>
+        <div class="stats-section">
+          <div class="hud-item stars">
+            <img src="images/ui/star.png" alt="Stars" class="hud-icon-img">
+            <span class="hud-value" id="oceanStarsEarned">0</span>
+            <span class="hud-max">/12</span>
+          </div>
+          <div class="hud-item progress">
+            <img src="images/ui/trofeo.png" alt="Trophy" class="hud-icon-img">
+            <span class="hud-value" id="oceanLevelsCompleted">0</span>
+            <span class="hud-max">/4</span>
+          </div>
+          <button id="showStats" class="hud-btn">
+            <img src="images/ui/ranking.png" alt="Stats" class="hud-btn-img">
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="world-map-container">
+      <!-- Fondo específico del océano -->
+      <div class="world-map-background ocean-map">
+        <div class="level-path ocean-path">
+          
+          <!-- Nivel 4 - Jefe (CIMA) -->
+          <div class="level-node boss-level" data-level="4" data-world="ocean">
+            <div class="node-content">
+              <span class="level-number">👑</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 3 -->
+          <div class="level-node" data-level="3" data-world="ocean">
+            <div class="node-content">
+              <span class="level-number">3</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 2 -->
+          <div class="level-node" data-level="2" data-world="ocean">
+            <div class="node-content">
+              <span class="level-number">2</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 1 (BASE) -->
+          <div class="level-node" data-level="1" data-world="ocean">
+            <div class="node-content">
+              <span class="level-number">1</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal de nivel -->
+    <div id="levelModal" class="modal">
+      <div class="dialog">
+        <h2 id="levelTitle">Nivel 1 - Océano</h2>
+        <div class="level-info">
+          <p id="levelDescription">¡Tu primera aventura submarina!</p>
+          <div class="level-stats">
+            <span class="stat">📏 <span id="levelSize">3×4</span></span>
+            <span class="stat">⏱️ <span id="levelBestTime">--:--</span></span>
+            <span class="stat">⭐ <span id="levelBestStars">-</span></span>
+          </div>
+        </div>
+        <div class="modal-buttons">
+          <button id="playLevel" class="btn">🎮 Jugar Nivel</button>
+          <button id="closeLevelModal" class="btn">❌ Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de estadísticas -->
+    <div id="statsModal" class="modal">
+      <div class="dialog">
+        <h2>📊 Estadísticas - Océano</h2>
+        <div id="statsContent" class="stats-content"></div>
+        <div style="display:flex;justify-content:center;margin-top:15px">
+          <button id="closeStats" class="btn">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/settings.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/world-map.js"></script>
+</body>
+</html>

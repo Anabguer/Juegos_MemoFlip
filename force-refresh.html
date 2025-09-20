@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force Refresh - MemoFlip</title>
+    
+    <!-- CSS Global con timestamp para forzar recarga -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/design-config.css?v=999">
+    <link rel="stylesheet" href="css/unified-layout.css?v=999">
+    
+    <style>
+        /* FORZAR CAMBIOS VISIBLES */
+        body {
+            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff) !important;
+        }
+        
+        .game-hud {
+            background: linear-gradient(45deg, #ffff00, #ff00ff) !important;
+            height: 200px !important;
+        }
+        
+        .logo-banner {
+            height: 150px !important;
+            filter: hue-rotate(180deg) !important;
+        }
+        
+        .home-floating-btn {
+            background: #ff0000 !important;
+            border: 5px solid #ffff00 !important;
+            width: 100px !important;
+            height: 100px !important;
+            top: 250px !important;
+        }
+        
+        .test-message {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+        
+        <!-- Test Content -->
+        <main class="main-content">
+            <div class="content-container">
+                <div class="test-message">
+                    <h1>🧪 TEST DE CAMBIOS FORZADOS</h1>
+                    <p>Si ves estos cambios, el CSS funciona:</p>
+                    <ul>
+                        <li>✅ Fondo multicolor (rojo-verde-azul)</li>
+                        <li>✅ Header amarillo-magenta</li>
+                        <li>✅ Banner muy grande (150px)</li>
+                        <li>✅ Botón home rojo con borde amarillo</li>
+                        <li>❓ Color primario rojo en elementos</li>
+                    </ul>
+                    
+                    <h2>Verificaciones:</h2>
+                    <p><strong>Header:</strong> Debería ser MUY ALTO (200px) y de colores amarillo-magenta</p>
+                    <p><strong>Banner:</strong> Debería ser MUY GRANDE (150px)</p>
+                    <p><strong>Botón Home:</strong> Debería estar en la esquina superior izquierda, rojo con borde amarillo</p>
+                    <p><strong>Color Primario:</strong> Debería ser ROJO en lugar de dorado</p>
+                </div>
+                
+                <div style="background: rgba(0,0,0,0.8); color: white; padding: 20px; margin: 20px; border-radius: 10px;">
+                    <h2>🔍 DEBUG INFO:</h2>
+                    <p>Timestamp: <span id="timestamp"></span></p>
+                    <p>CSS Loaded: <span id="css-status">Checking...</span></p>
+                    <p>Header Height: <span id="header-height">Checking...</span></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="components/header.js"></script>
+    <script>
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Force refresh page loaded');
+            
+            // Mostrar timestamp
+            document.getElementById('timestamp').textContent = new Date().toLocaleTimeString();
+            
+            // Verificar CSS
+            const testElement = document.createElement('div');
+            testElement.style.color = 'var(--color-primary)';
+            document.body.appendChild(testElement);
+            const computedStyle = window.getComputedStyle(testElement);
+            document.getElementById('css-status').textContent = 
+                computedStyle.color === 'rgb(255, 0, 0)' ? '✅ ROJO (funciona)' : '❌ No rojo (no funciona)';
+            document.body.removeChild(testElement);
+            
+            // Verificar header height
+            setTimeout(() => {
+                const header = document.querySelector('.game-hud');
+                if (header) {
+                    const height = window.getComputedStyle(header).height;
+                    document.getElementById('header-height').textContent = height;
+                }
+            }, 100);
+            
+            // Inicializar header
+            initHeader({
+                showHome: true,
+                showRanking: true,
+                homeUrl: 'world-selector.html',
+                title: 'FORCE REFRESH TEST'
+            });
+        });
+    </script>
+</body>
+</html>
+

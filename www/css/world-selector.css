@@ -1,0 +1,739 @@
+/* Selector de Mundos - MemoFlip */
+
+/* Usar toda la pantalla */
+.wrap {
+  padding: 8px !important;
+  gap: 0 !important;
+}
+
+/* HUD ESTILO GAMING */
+.game-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 12px;
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  border-radius: 0 0 25px 25px;
+  margin: -8px -8px 0 -8px;
+  flex-shrink: 0;
+  box-shadow: 
+    0 6px 25px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  border-bottom: 4px solid #ff6b35;
+  position: relative;
+  z-index: 10;
+  min-height: 60px;
+}
+
+.game-hud::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff6b35, #ffa500, #ff6b35, transparent);
+  animation: hud-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes hud-glow {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+.game-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.logo-banner {
+  height: clamp(45px, 15vw, 70px);
+  width: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  transition: all 0.3s ease;
+}
+
+.logo-banner:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
+}
+
+.player-hud {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  padding: 6px 10px;
+  border-radius: 15px;
+  box-shadow: 
+    0 3px 8px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.1);
+  min-width: 55px;
+  justify-content: center;
+}
+
+.hud-item.stars {
+  background: linear-gradient(145deg, #ff6b35, #f7931e);
+}
+
+.hud-item.progress {
+  background: linear-gradient(145deg, #ff6b35, #e55a4e);
+}
+
+.hud-icon {
+  font-size: 14px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+
+.hud-value {
+  font-size: clamp(12px, 3vw, 14px);
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.hud-max {
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: rgba(255,255,255,0.8);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.hud-btn {
+  background: linear-gradient(145deg, #ff6b35, #e55a4e);
+  border: none;
+  border-radius: 12px;
+  padding: 8px 10px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 
+    0 3px 8px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: all 0.2s ease;
+  min-width: 55px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.hud-btn:hover {
+  background: linear-gradient(145deg, #e55a4e, #d63031);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255,107,53,0.4);
+}
+
+/* Iconos personalizados del HUD */
+.hud-icon-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  transition: all 0.2s ease;
+}
+
+.hud-btn-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  transition: all 0.2s ease;
+}
+
+/* FONDO DEL SELECTOR DE MUNDOS */
+.world-selector-container {
+  flex: 1;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  margin-top: 0;
+}
+
+.worlds-background {
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+  padding: 2vh 3vw;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* 🎨 FONDO GAMING OSCURO FORZADO */
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
+  background-color: #16213e !important;
+}
+
+/* Overlay para la imagen de fondo con opacidad */
+.worlds-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../images/worlds/world-selector-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.worlds-grid {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(15px, 2.5vh, 25px);
+  align-items: center;
+  max-width: min(95vw, 400px);
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  padding: clamp(10px, 2vh, 20px) 0 clamp(20px, 4vh, 40px) 0;
+  box-sizing: border-box;
+}
+
+/* CARDS DE MUNDOS - CÍRCULO CENTRAL + CONTENIDO LATERAL */
+.world-orb {
+  width: 100%;
+  height: clamp(80px, 12vh, 110px);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  border-radius: clamp(15px, 3vw, 20px);
+  overflow: visible;
+  background: linear-gradient(145deg, 
+    rgba(255,255,255,0.15), 
+    rgba(255,255,255,0.08)
+  );
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 3vw, 20px);
+  min-height: 80px;
+}
+
+.orb-glow {
+  position: absolute;
+  inset: -4px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.volcano-glow {
+  background: linear-gradient(45deg, #ff4500, #dc143c, #ff6347);
+  animation: volcano-pulse 3s ease-in-out infinite;
+}
+
+.island-glow {
+  background: linear-gradient(45deg, #32cd32, #228b22, #90ee90);
+  animation: island-pulse 3s ease-in-out infinite;
+}
+
+.ocean-glow {
+  background: linear-gradient(45deg, #4682b4, #20b2aa, #87ceeb);
+  animation: ocean-pulse 3s ease-in-out infinite;
+}
+
+@keyframes volcano-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 69, 0, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(255, 69, 0, 0.6); }
+}
+
+@keyframes island-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(50, 205, 50, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(50, 205, 50, 0.6); }
+}
+
+@keyframes ocean-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(70, 130, 180, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(70, 130, 180, 0.6); }
+}
+
+.orb-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  text-align: right;
+}
+
+.world-name {
+  font-size: clamp(12px, 3.5vw, 16px);
+  font-weight: 900;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  letter-spacing: clamp(0.5px, 0.2vw, 1px);
+}
+
+.world-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stars-row {
+  font-size: clamp(14px, 4vw, 20px);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.7));
+  letter-spacing: clamp(1px, 0.3vw, 2px);
+}
+
+.level-count {
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: rgba(255,255,255,0.95);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  font-weight: bold;
+}
+
+.world-lock {
+  position: absolute;
+  top: clamp(8px, 2vw, 12px);
+  right: clamp(8px, 2vw, 12px);
+  width: clamp(28px, 6vw, 35px);
+  height: clamp(28px, 6vw, 35px);
+  background: rgba(0,0,0,0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px, 3vw, 18px);
+  z-index: 3;
+}
+
+.world-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+/* ESTADOS DE LOS ORBES */
+.world-orb:hover {
+  transform: scale(1.05) translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.world-orb.available {
+  background: linear-gradient(145deg, 
+    rgba(255,255,255,0.25), 
+    rgba(255,255,255,0.12)
+  );
+}
+
+.world-orb.available .orb-glow {
+  opacity: 0.6;
+}
+
+.world-orb.available:hover .orb-glow {
+  opacity: 1;
+}
+
+.world-orb.completed {
+  border-color: #ffd700;
+  background: linear-gradient(145deg, 
+    rgba(255,215,0,0.2), 
+    rgba(255,215,0,0.1)
+  );
+}
+
+.world-orb.completed .orb-glow {
+  opacity: 0.6;
+  background: linear-gradient(45deg, #ffd700, #ffed4e, #ffa500);
+  animation: completed-shine 2s ease-in-out infinite;
+}
+
+@keyframes completed-shine {
+  0%, 100% { 
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    opacity: 0.6;
+  }
+  50% { 
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.9);
+    opacity: 0.8;
+  }
+}
+
+.world-orb.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(80%);
+}
+
+.world-orb.locked:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.world-orb.locked .world-lock {
+  background: rgba(220, 20, 60, 0.8);
+  color: white;
+  animation: lock-shake 0.5s ease-in-out;
+}
+
+@keyframes lock-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+/* ICONOS DE MUNDOS - CÍRCULO CENTRAL RESPONSIVE */
+.world-icon {
+  width: clamp(40px, 8vw, 60px);
+  height: clamp(40px, 8vw, 60px);
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: clamp(2px, 0.5vw, 3px) solid rgba(255,255,255,0.8);
+  box-shadow: 0 clamp(4px, 1vw, 6px) clamp(15px, 3vw, 20px) rgba(0,0,0,0.4);
+  flex-shrink: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+/* CONTENIDO DEL MUNDO */
+.world-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.world-title {
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: bold;
+  margin: 0;
+  color: #333;
+}
+
+.world-stats {
+  display: flex;
+  gap: 10px;
+  font-size: clamp(12px, 3vw, 14px);
+  color: #666;
+  margin-top: 3px;
+}
+
+/* ESTADO DEL MUNDO - COMPACTO */
+.world-status {
+  width: clamp(35px, 8vw, 45px);
+  height: clamp(35px, 8vw, 45px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(18px, 5vw, 24px);
+  flex-shrink: 0;
+  font-weight: bold;
+}
+
+/* 🎨 ICONOS ESPECÍFICOS POR MUNDO */
+.ocean-icon {
+  background: url('../images/cards/ocean/portada.png') center/cover no-repeat,
+              linear-gradient(45deg, #4682B4, #87CEEB);
+}
+
+.island-icon {
+  background: url('../images/cards/island/portada.png') center/cover no-repeat,
+              linear-gradient(45deg, #32CD32, #90EE90);
+}
+
+.volcano-icon {
+  background: url('../images/cards/volcano/portada.png') center/cover no-repeat,
+              linear-gradient(45deg, #DC143C, #FF6347);
+}
+
+
+.world-status.available {
+  background: linear-gradient(45deg, #4CAF50, #8BC34A);
+  color: white;
+}
+
+.world-status.completed {
+  background: linear-gradient(45deg, #FFD700, #FFA500);
+  color: #333;
+}
+
+.world-status.locked {
+  background: #E0E0E0;
+  color: #666;
+}
+
+/* MODAL ESTILO GAMING */
+.game-dialog {
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+  border-radius: 20px;
+  box-shadow: 
+    0 20px 60px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+  padding: 0;
+  max-width: 380px;
+  text-align: center;
+  border: 3px solid #fff;
+  overflow: hidden;
+}
+
+.dialog-header {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding: 15px;
+  position: relative;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: clamp(18px, 5vw, 22px);
+  font-weight: bold;
+}
+
+.dialog-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ffd700, #ffed4e, #ffd700);
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+.world-modal-info {
+  padding: 20px;
+  text-align: center;
+}
+
+.world-modal-info p {
+  font-size: 16px;
+  color: #2c3e50;
+  margin: 0 0 20px 0;
+  font-weight: 500;
+}
+
+.world-modal-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+.stat-card {
+  background: linear-gradient(145deg, #ffffff, #f1f3f4);
+  border-radius: 12px;
+  padding: 10px 8px;
+  text-align: center;
+  box-shadow: 
+    0 4px 8px rgba(0,0,0,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+  border: 1px solid #e0e0e0;
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-icon {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.stat-text {
+  font-size: 11px;
+  font-weight: bold;
+  color: #2c3e50;
+  line-height: 1.2;
+}
+
+/* BOTONES ESTILO GAMING */
+.game-buttons {
+  padding: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  background: linear-gradient(145deg, #f1f3f4, #e9ecef);
+}
+
+.game-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.game-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.game-btn:hover::before {
+  left: 100%;
+}
+
+.game-btn.primary {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  box-shadow: 
+    0 6px 20px rgba(40, 167, 69, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  border: 2px solid #1e7e34;
+}
+
+.game-btn.primary:hover {
+  background: linear-gradient(135deg, #218838, #1c9970);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(40, 167, 69, 0.6),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.game-btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 4px 15px rgba(40, 167, 69, 0.4),
+    inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.game-btn.secondary {
+  background: linear-gradient(135deg, #6c757d, #495057);
+  color: white;
+  box-shadow: 
+    0 6px 20px rgba(108, 117, 125, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  border: 2px solid #343a40;
+}
+
+.game-btn.secondary:hover {
+  background: linear-gradient(135deg, #5a6268, #3d4246);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(108, 117, 125, 0.6),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.btn-icon {
+  font-size: 16px;
+}
+
+.btn-text {
+  font-weight: 800;
+}
+
+/* ANIMACIONES */
+@keyframes available-glow {
+  from { 
+    box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+    border-color: #4CAF50;
+  }
+  to { 
+    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.6);
+    border-color: #8BC34A;
+  }
+}
+
+@keyframes completed-sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(5deg); }
+}
+
+.world-card.completed {
+  animation: completed-sparkle 3s ease-in-out infinite;
+}
+
+/* EFECTOS DE PARTÍCULAS */
+.world-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.world-card.available:hover::before {
+  opacity: 1;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .world-card {
+    padding: 15px;
+  }
+  
+  .world-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .world-title {
+    font-size: 20px;
+  }
+  
+  .world-description {
+    font-size: 14px;
+  }
+  
+  .world-modal-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .worlds-grid {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 400px) {
+  .world-icon-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .world-progress {
+    flex: none;
+  }
+}

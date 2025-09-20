@@ -1,0 +1,15 @@
+{
+  "name": "memoflip",
+  "version": "1.0.0",
+  "description": "Juego de memoria moderno y divertido, optimizado para dispositivos móviles.",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^7.4.3"
+  }
+}

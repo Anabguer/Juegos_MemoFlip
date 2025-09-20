@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="Juego de memoria divertido y adictivo para entrenar tu mente">
+  <meta name="theme-color" content="#71c9ce">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MemoFlip">
+  
+  <title>MemoFlip - Selector de Mundos</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/world-selector.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+</head>
+<body>
+  <div class="wrap">
+    <header class="game-hud">
+      <div class="game-logo">
+        <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
+      </div>
+      <div class="player-hud">
+        <div class="hud-item stars">
+          <img src="images/ui/star.png" alt="Stars" class="hud-icon-img">
+          <span class="hud-value" id="totalStars">0</span>
+        </div>
+        <div class="hud-item progress">
+          <img src="images/ui/trofeo.png" alt="Trophy" class="hud-icon-img">
+          <span class="hud-value" id="totalLevels">0</span>
+          <span class="hud-max">/11</span>
+        </div>
+        <button id="showStats" class="hud-btn">
+          <img src="images/ui/ranking.png" alt="Stats" class="hud-btn-img">
+        </button>
+      </div>
+    </header>
+
+    <main class="world-selector-container">
+      <!-- Fondo del selector de mundos -->
+      <div class="worlds-background">
+        <div class="worlds-grid">
+          
+          <!-- MUNDO VOLCÁN (ARRIBA) -->
+          <div class="world-orb volcano-world" data-world="volcano" data-levels="3">
+            <div class="orb-glow volcano-glow"></div>
+            <!-- Icono central -->
+            <div class="world-icon volcano-icon"></div>
+            <!-- Contenido a la derecha -->
+            <div class="orb-content">
+              <div class="world-name">VOLCÁN</div>
+              <div class="world-progress">
+                <div class="stars-row" id="volcanoStars">✩✩✩</div>
+                <div class="level-count" id="volcanoProgress">0/3</div>
+              </div>
+            </div>
+            <div class="world-lock" id="volcanoStatus">🔒</div>
+          </div>
+
+          <!-- MUNDO ISLA (MEDIO) -->
+          <div class="world-orb island-world" data-world="island" data-levels="4">
+            <div class="orb-glow island-glow"></div>
+            <!-- Icono central -->
+            <div class="world-icon island-icon"></div>
+            <!-- Contenido a la derecha -->
+            <div class="orb-content">
+              <div class="world-name">ISLA</div>
+              <div class="world-progress">
+                <div class="stars-row" id="islandStars">✩✩✩✩</div>
+                <div class="level-count" id="islandProgress">0/4</div>
+              </div>
+            </div>
+            <div class="world-lock" id="islandStatus">🔒</div>
+          </div>
+
+          <!-- MUNDO OCÉANO (ABAJO) -->
+          <div class="world-orb ocean-world" data-world="ocean" data-levels="4">
+            <div class="orb-glow ocean-glow"></div>
+            <!-- Icono central -->
+            <div class="world-icon ocean-icon"></div>
+            <!-- Contenido a la derecha -->
+            <div class="orb-content">
+              <div class="world-name">OCÉANO</div>
+              <div class="world-progress">
+                <div class="stars-row" id="oceanStars">✩✩✩✩</div>
+                <div class="level-count" id="oceanProgress">0/4</div>
+              </div>
+            </div>
+            <div class="world-lock" id="oceanStatus">🟢</div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Sin modal - Entrada directa a los mundos -->
+
+    <!-- Modal de estadísticas (reutilizar del juego principal) -->
+    <div id="statsModal" class="modal">
+      <div class="dialog">
+        <h2>📊 Estadísticas Globales</h2>
+        <div id="statsContent" class="stats-content">
+          <!-- Se carga dinámicamente -->
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:15px">
+          <button id="closeStats" class="btn">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/settings.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/world-selector.js"></script>
+</body>
+</html>

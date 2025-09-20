@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>MemoFlip - Mundo Isla</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/world-map.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="world-map-header">
+      <button id="backToWorlds" class="btn-back">← Mundos</button>
+      <h1>🏝️ Mundo Isla</h1>
+      <button id="showStats" class="btn-mini">📊</button>
+    </header>
+
+    <main class="world-map-container">
+      <!-- Fondo específico de la isla -->
+      <div class="world-map-background island-map">
+        <div class="level-path island-path">
+          
+          <!-- Nivel 8 - Jefe (CIMA) -->
+          <div class="level-node boss-level" data-level="8" data-world="island">
+            <div class="node-content">
+              <span class="level-number">👑</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 7 -->
+          <div class="level-node" data-level="7" data-world="island">
+            <div class="node-content">
+              <span class="level-number">7</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 6 -->
+          <div class="level-node" data-level="6" data-world="island">
+            <div class="node-content">
+              <span class="level-number">6</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 5 (BASE) -->
+          <div class="level-node" data-level="5" data-world="island">
+            <div class="node-content">
+              <span class="level-number">5</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- Información del mundo -->
+        <div class="world-info-panel">
+          <h2>🏝️ Paraíso Tropical</h2>
+          <p>Aventúrate en las exuberantes selvas y playas doradas de la isla misteriosa.</p>
+          <div class="world-progress-info">
+            <span class="progress-item">📏 Tamaño: 4×4</span>
+            <span class="progress-item">🎯 Niveles: <span id="islandLevelsCompleted">0</span>/4</span>
+            <span class="progress-item">⭐ Estrellas: <span id="islandStarsEarned">0</span>/12</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal de nivel -->
+    <div id="levelModal" class="modal">
+      <div class="dialog">
+        <h2 id="levelTitle">Nivel 5 - Isla</h2>
+        <div class="level-info">
+          <p id="levelDescription">¡Explora las playas doradas!</p>
+          <div class="level-stats">
+            <span class="stat">📏 <span id="levelSize">4×4</span></span>
+            <span class="stat">⏱️ <span id="levelBestTime">--:--</span></span>
+            <span class="stat">⭐ <span id="levelBestStars">-</span></span>
+          </div>
+        </div>
+        <div class="modal-buttons">
+          <button id="playLevel" class="btn">🎮 Jugar Nivel</button>
+          <button id="closeLevelModal" class="btn">❌ Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de estadísticas -->
+    <div id="statsModal" class="modal">
+      <div class="dialog">
+        <h2>📊 Estadísticas - Isla</h2>
+        <div id="statsContent" class="stats-content"></div>
+        <div style="display:flex;justify-content:center;margin-top:15px">
+          <button id="closeStats" class="btn">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/settings.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/world-map.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} - MemoFlip</title>
+    
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/global-layout.css">
+    {{CUSTOM_CSS}}
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Container -->
+        <div id="header-container"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            {{BACKGROUND}}
+            <div class="content-container">
+                {{CONTENT}}
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts Globales -->
+    <script src="js/settings.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="components/header.js"></script>
+    
+    {{CUSTOM_JS}}
+    
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>

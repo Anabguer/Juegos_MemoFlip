@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemoFlip - Juego v20.0 TROFEOS ARREGLADOS</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- SCRIPTS NECESARIOS PARA LA LÓGICA DEL JUEGO -->
+    <script src="js/settings.js"></script>
+    <script src="js/game-config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/trophy-system.js"></script>
+  <style>
+        /* VERSIÓN FINAL - ESTADÍSTICAS VERTICALES */
+        * {
+        margin: 0;
+        padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+        height: 100vh;
+            overflow: hidden;
+    }
+    
+        /* HEADER UNIFICADO - IGUAL AL INDEX.HTML */
+    .game-hud {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        height: 90px;
+        min-height: 90px;
+        max-height: 90px;
+        z-index: 100;
+        width: 100%;
+    }
+    
+    .hud-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .hud-left { flex: 0 0 auto; }
+    .hud-center { flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .hud-right { 
+        flex: 0 0 auto; 
+        display: flex; 
+        align-items: center; 
+        gap: 8px;
+    }
+    
+    .logo-banner {
+        height: 60px;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+    
+    
+    .hud-stats {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        margin-top: 8px;
+    }
+    
+    .stat-item span {
+        line-height: 1;
+        vertical-align: middle;
+    }
+    
+    .hud-btn-img-large {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+        margin-top: 8px;
+    }
+    
+    .hud-nav {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+        padding-left: 10px;
+        border-left: 2px solid rgba(255, 215, 0, 0.3);
+        margin-top: 8px;
+    }
+    
+    .hud-btn-simple {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: 0.2s ease;
+    }
+    
+    .hud-btn-simple:hover {
+        background: rgba(255,255,255,0.1);
+        transform: scale(1.05);
+    }
+    
+    .hud-btn-img {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+        margin-top: 8px;
+    }
+    
+    /* BOTÓN HOME FLOTANTE - IGUAL AL WORLD-OCEAN.HTML */
+    .home-floating-btn {
+        position: fixed;
+        top: 120px;
+        left: 15px;
+        z-index: 200;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid #ffd700;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s ease;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    
+    .home-floating-btn:hover {
+        background: rgba(255, 215, 0, 0.2);
+        transform: scale(1.1);
+    }
+    
+    .home-floating-icon {
+        width: 24px;
+        height: 24px;
+        filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+    }
+    
+    /* TÍTULO DEL MUNDO Y NIVEL */
+    .world-title-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 20px;
+    }
+    
+    .world-title {
+        color: #FFD700;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        text-align: center;
+    }
+
+    /* CONTENEDOR DEL JUEGO */
+    .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: calc(100vh - 90px - 60px);
+        padding: 20px;
+        overflow-y: auto;
+    }
+    
+    /* TABLERO DE JUEGO */
+    .game-board {
+        display: grid;
+        gap: 12px;
+        max-width: 95vw;
+        width: 100%;
+        margin: 0 auto;
+        order: 1;
+        padding: 10px;
+        /* Grid dinámico se configura desde JavaScript - MÁXIMO 4 COLUMNAS */
+    }
+    
+    .card {
+        aspect-ratio: 1;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        border: 2px solid rgba(255, 215, 0, 0.5);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        min-width: 100px;
+        min-height: 100px;
+    }
+    
+    /* ACELERAR GIRO CUANDO NO COINCIDEN */
+    .card.no-match {
+        transition: 0.2s ease; /* Más rápido para no-match */
+    }
+    
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+    }
+    
+    .card.flipped {
+        background: linear-gradient(135deg, #4a90e2, #357abd);
+        border-color: #4a90e2;
+    }
+    
+    .card.matched {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        border-color: #2ecc71;
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+    
+    .card-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    
+        /* ESTADÍSTICAS DEL JUEGO - VERSIÓN VERTICAL */
+        .game-info {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            flex-wrap: nowrap;
+            justify-content: center;
+            max-width: 100%;
+            padding: 0 15px;
+            z-index: 50;
+        }
+        
+        .game-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 165, 0, 0.25));
+            border: 3px solid rgba(255, 215, 0, 0.6);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+            width: 90px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        
+        .game-stat:hover {
+            transform: scale(1.05);
+        }
+        
+        .game-stat-label {
+            font-size: 11px;
+            color: #FFD700;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .game-stat-value {
+            font-size: 18px;
+            color: #FFFFFF;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+    }
+    
+    /* MODAL DE VICTORIA */
+    .victory-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s ease;
+    }
+    
+    .victory-modal.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .victory-content {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        border: 3px solid #FFD700;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .victory-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+    }
+    
+    .victory-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #FFD700;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    
+    .victory-message {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #ecf0f1;
+    }
+    
+    .victory-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 25px;
+        gap: 15px;
+    }
+    
+    .victory-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        flex: 1;
+    }
+    
+    .victory-stat span:first-child {
+        font-size: 12px;
+        color: #bdc3c7;
+    }
+    
+    .victory-stat-value {
+        font-size: 18px;
+        font-weight: bold;
+        color: #FFD700;
+    }
+    
+    .victory-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+    
+    .victory-btn {
+        flex: 1;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s ease;
+        text-align: center;
+        white-space: nowrap;
+    }
+    
+    .victory-btn-repeat {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+    }
+    
+    .victory-btn-repeat:hover {
+        background: linear-gradient(135deg, #c0392b, #a93226);
+        transform: scale(1.05);
+    }
+    
+    .victory-btn-next {
+        background: linear-gradient(135deg, #27ae60, #229954);
+        color: white;
+    }
+    
+    .victory-btn-next:hover {
+        background: linear-gradient(135deg, #229954, #1e8449);
+        transform: scale(1.05);
+    }
+    
+    @media (max-width: 480px) {
+        .victory-buttons {
+            flex-direction: column;
+        }
+        
+        .victory-btn {
+            width: 100%;
+        }
+        }
+  </style>
+</head>
+<body>
+    <header class="game-hud">
+        <div class="hud-content">
+            <div class="hud-left"></div>
+            <div class="hud-center">
+                <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
+            </div>
+            <div class="hud-right">
+                <div class="hud-stats">
+                    <div class="stat-item">
+                        <img src="images/ui/star.png" alt="Stars" class="hud-btn-img-large">
+                        <span id="total-stars">0</span>
+                    </div>
+                    <div class="stat-item" onclick="showTrophies()" style="cursor: pointer;" title="Ver trofeos">
+                        <img src="images/ui/trofeo.png" alt="Trophies" class="hud-btn-img-large">
+                        <span id="total-trophies">0</span>
+                    </div>
+                </div>
+                <div class="hud-nav">
+                    <button class="hud-btn-simple" onclick="showRanking()" title="Ver ranking">
+                        <img src="images/ui/ranking.png" alt="Ranking" class="hud-btn-img">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- BOTÓN HOME FLOTANTE -->
+    <button class="home-floating-btn" onclick="window.location.href='index.html'" title="Volver al inicio">
+        <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
+    </button>
+    
+    <!-- TÍTULO DEL MUNDO -->
+    <div class="world-title-container">
+        <div class="world-title">Océano</div>
+          </div>
+
+    <!-- CONTENEDOR DEL JUEGO -->
+    <div class="game-container">
+        <!-- TABLERO DE JUEGO -->
+        <div class="game-board" id="gameBoard">
+            <!-- Las cartas se generarán dinámicamente -->
+        </div>
+        
+        <!-- ESTADÍSTICAS DEL JUEGO - VERSIÓN VERTICAL -->
+        <div class="game-info">
+            <div class="game-stat">
+                <div class="game-stat-label">Intentos</div>
+                <div class="game-stat-value" id="moves">0</div>
+      </div>
+            <div class="game-stat">
+                <div class="game-stat-label">Tiempo</div>
+                <div class="game-stat-value" id="time">0:00</div>
+  </div>
+            <div class="game-stat">
+                <div class="game-stat-label">Nivel</div>
+                <div class="game-stat-value" id="level">1</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- MODAL DE VICTORIA -->
+    <div class="victory-modal" id="victoryModal">
+        <div class="victory-content">
+            <div class="victory-icon">🎉</div>
+            <div class="victory-title">¡Nivel Completado!</div>
+            <div class="victory-message">¡Excelente trabajo! Has completado el nivel con éxito.</div>
+            
+            <div class="victory-stats">
+                <div class="victory-stat">
+                    <span>Intentos:</span>
+                    <span class="victory-stat-value" id="victoryMoves">0</span>
+                </div>
+                <div class="victory-stat">
+                    <span>Tiempo:</span>
+                    <span class="victory-stat-value" id="victoryTime">0:00</span>
+                </div>
+                <div class="victory-stat">
+                    <span>Estrellas:</span>
+                    <span class="victory-stat-value" id="victoryStars">⭐⭐⭐</span>
+                </div>
+      </div>
+            
+            <div class="victory-buttons">
+                <button class="victory-btn victory-btn-repeat" onclick="repeatLevel()">
+                    Jugar de Nuevo
+                </button>
+                <button class="victory-btn victory-btn-next" onclick="nextLevel()">
+                    Continuar Aventura
+                </button>
+      </div>
+    </div>
+  </div>
+
+    
+  <script>
+        console.log('🎮 SCRIPT DEL JUEGO CARGADO - VERSIÓN 20.0 TROFEOS ARREGLADOS 🎮');
+        console.log('🚀 INICIANDO MEMOFLIP GAME - SISTEMA UNIFICADO 🚀');
+        
+        // VARIABLES GLOBALES DEL JUEGO
+        let currentWorld = 'ocean';
+        let currentLevel = 1;
+        let currentLevelNumber = 1; // Número real del nivel (1-12)
+        
+        // ESTADO DEL JUEGO
+        let gameState = {
+            cards: [],
+            flippedCards: [],
+            matchedPairs: 0,
+            moves: 0,
+            time: 0,
+            timer: null,
+            isPlaying: false,
+            timeLimit: null,
+            shuffleTriggered: false
+        };
+        
+        // INICIALIZAR JUEGO
+        function initGame() {
+            console.log('Inicializando juego...');
+            
+            // Obtener nivel actual desde URL o localStorage
+            getCurrentLevel();
+            
+            // Actualizar título del header
+            updateHeaderTitle();
+            
+            // Crear cartas según la configuración
+            createCards();
+            
+            // Iniciar cronómetro según configuración
+            startTimer();
+            
+            // Actualizar estadísticas del header
+            updateHeaderStats();
+            
+            updateDisplay();
+        }
+        
+    // OBTENER NIVEL ACTUAL
+    function getCurrentLevel() {
+        // Obtener desde URL parameters primero
+        const urlParams = new URLSearchParams(window.location.search);
+        const worldParam = urlParams.get('world');
+        const levelParam = urlParams.get('level');
+        
+        if (worldParam && levelParam) {
+            currentWorld = worldParam;
+            currentLevel = parseInt(levelParam);
+            currentLevelNumber = getRealLevelNumber(currentWorld, currentLevel);
+            console.log(`Cargando desde URL: Mundo ${currentWorld}, Nivel ${currentLevel}`);
+        } else {
+            // Cargar progreso desde localStorage
+            const savedWorld = localStorage.getItem('currentWorld');
+            const savedLevel = localStorage.getItem('currentLevel');
+            
+            if (savedWorld && savedLevel) {
+                currentWorld = savedWorld;
+                currentLevel = parseInt(savedLevel);
+                currentLevelNumber = getRealLevelNumber(currentWorld, currentLevel);
+                console.log(`Cargando progreso guardado: Mundo ${currentWorld}, Nivel ${currentLevel}`);
+            } else {
+                // Empezar desde el principio
+                currentLevel = 1;
+                currentWorld = 'ocean';
+                currentLevelNumber = 1;
+                console.log(`Empezando desde el principio: Mundo ${currentWorld}, Nivel ${currentLevel}`);
+            }
+        }
+        
+        console.log(`Mundo actual: ${currentWorld}, Nivel: ${currentLevel}, Nivel real: ${currentLevelNumber}`);
+    }
+        
+        // CALCULAR NÚMERO REAL DEL NIVEL (1-12)
+        function getRealLevelNumber(world, level) {
+            const worldOffsets = {
+                'ocean': 0,   // Niveles 1-4
+                'island': 4,  // Niveles 5-8
+                'volcano': 8  // Niveles 9-12
+            };
+            return worldOffsets[world] + level;
+        }
+        
+        // ACTUALIZAR TÍTULO DEL MUNDO
+        function updateHeaderTitle() {
+            const worldNames = {
+                'ocean': 'Océano',
+                'island': 'Isla',
+                'volcano': 'Volcán'
+            };
+            
+            const title = worldNames[currentWorld];
+            const titleElement = document.querySelector('.world-title');
+            if (titleElement) {
+                titleElement.textContent = title;
+            }
+        }
+        
+        // CREAR CARTAS
+        function createCards() {
+            // Usar la configuración correcta del juego
+            // Para el océano, usar currentLevel directamente (1-4)
+            const levelConfig = getLevelConfig(currentWorld, currentLevel);
+            const worldCards = WORLD_CARDS[currentWorld] || WORLD_CARDS.ocean;
+            
+            if (!levelConfig) {
+                console.error('No se encontró configuración para el nivel', currentLevel, 'del mundo', currentWorld);
+                return;
+            }
+            
+            console.log(`🔥 DEBUG: currentLevel=${currentLevel}, currentLevelNumber=${currentLevelNumber}`);
+            console.log(`Creando ${levelConfig.cards} cartas (${levelConfig.pairs} pares)...`);
+            
+            // Limpiar tablero
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = '';
+            
+            // Configurar grid dinámicamente - MÁXIMO 3 COLUMNAS PARA CARTAS GRANDES
+            let cols, rows;
+            
+            // Configuración específica por número de cartas - MÁXIMO 3 COLUMNAS
+            if (levelConfig.cards <= 6) {
+                cols = 3; // 2x3 para 6 cartas (3 pares)
+                rows = 2;
+            } else if (levelConfig.cards <= 8) {
+                cols = 3; // 2.7x3 para 8 cartas (4 pares) - CARTAS MÁS GRANDES
+                rows = 3;
+            } else if (levelConfig.cards <= 10) {
+                cols = 3; // 3.3x3 para 10 cartas (5 pares) - CARTAS MÁS GRANDES
+                rows = 4;
+            } else if (levelConfig.cards <= 12) {
+                cols = 3; // 4x3 para 12 cartas (6 pares) - CARTAS MÁS GRANDES
+                rows = 4;
+            } else if (levelConfig.cards <= 14) {
+                cols = 3; // 4.7x3 para 14 cartas (7 pares) - CARTAS MÁS GRANDES
+                rows = 5;
+            } else if (levelConfig.cards <= 16) {
+                cols = 3; // 5.3x3 para 16 cartas (8 pares) - CARTAS MÁS GRANDES
+                rows = 6;
+            } else {
+                // Para más cartas, usar máximo 3 columnas
+                cols = 3;
+                rows = Math.ceil(levelConfig.cards / 3);
+            }
+            
+            gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            console.log(`Grid configurado: ${cols} columnas x ${rows} filas para ${levelConfig.cards} cartas`);
+            
+            // Seleccionar cartas para este nivel
+            const selectedCards = worldCards.slice(0, levelConfig.pairs);
+            
+            // Crear pares de cartas
+            const cardPairs = [];
+            selectedCards.forEach(card => {
+                cardPairs.push({...card, id: Math.random(), flipped: false, matched: false});
+                cardPairs.push({...card, id: Math.random(), flipped: false, matched: false});
+            });
+            
+            // Mezclar cartas
+            const shuffledCards = cardPairs.sort(() => Math.random() - 0.5);
+            
+            // Crear elementos HTML
+            shuffledCards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.dataset.index = index;
+                cardElement.dataset.cardId = card.id;
+                cardElement.onclick = () => flipCard(index);
+                
+                // Imagen de portada
+                const cardImage = document.createElement('img');
+                cardImage.src = `images/cards/${currentWorld}/portada.png`;
+                cardImage.className = 'card-image';
+                cardElement.appendChild(cardImage);
+                
+                gameBoard.appendChild(cardElement);
+            });
+            
+            // Guardar en estado del juego
+            gameState.cards = shuffledCards;
+            gameState.matchedPairs = 0;
+            gameState.moves = 0;
+            gameState.time = 0;
+            gameState.timeLimit = levelConfig.timer;
+            
+            console.log(`Cartas creadas: ${shuffledCards.length} (${levelConfig.pairs} pares)`);
+        }
+        
+        
+        // VOLTEAR CARTA - SOLUCIÓN DEFINITIVA
+        function flipCard(index) {
+            console.log(`🔥 INTENTANDO VOLTEAR CARTA ${index}`);
+            console.log(`🔥 Estado actual: flippedCards.length = ${gameState.flippedCards.length}`);
+            console.log(`🔥 Carta ${index}: flipped = ${gameState.cards[index].flipped}, matched = ${gameState.cards[index].matched}`);
+            
+            // BLOQUEAR SI YA HAY 2 CARTAS VOLTEADAS - ESTO ES LO MÁS IMPORTANTE
+            if (gameState.flippedCards.length >= 2) {
+                console.log(`🔥 BLOQUEADO: Ya hay ${gameState.flippedCards.length} cartas volteadas`);
+                return;
+            }
+            
+            // BLOQUEAR SI LA CARTA YA ESTÁ VOLTEADA O EMPAREJADA
+            if (gameState.cards[index].flipped || gameState.cards[index].matched) {
+                console.log(`🔥 BLOQUEADO: Carta ${index} ya está volteada o emparejada`);
+                return;
+            }
+            
+            const card = document.querySelector(`[data-index="${index}"]`);
+            const cardData = gameState.cards[index];
+            
+            // Voltear carta
+            card.classList.add('flipped');
+            cardData.flipped = true;
+            
+            // Cambiar imagen
+            const cardImage = card.querySelector('.card-image');
+            cardImage.src = cardData.image;
+            
+            gameState.flippedCards.push(index);
+            console.log(`🔥 Carta ${index} volteada: ${cardData.emoji} (Total volteadas: ${gameState.flippedCards.length})`);
+            
+            // Verificar si hay 2 cartas volteadas
+            if (gameState.flippedCards.length === 2) {
+                console.log('🔥 2 cartas volteadas, verificando coincidencia...');
+                setTimeout(() => {
+                    checkMatch();
+                }, 500);
+            }
+        }
+        
+        // VERIFICAR COINCIDENCIA
+        function checkMatch() {
+            // Verificar que hay exactamente 2 cartas volteadas
+            if (gameState.flippedCards.length !== 2) {
+                console.log(`Error: checkMatch llamado con ${gameState.flippedCards.length} cartas volteadas`);
+                return;
+            }
+            
+            const [index1, index2] = gameState.flippedCards;
+            const card1 = gameState.cards[index1];
+            const card2 = gameState.cards[index2];
+            
+            gameState.moves++;
+            console.log(`Verificando coincidencia: ${card1.emoji} vs ${card2.emoji}`);
+            
+            // Limpiar flippedCards inmediatamente para evitar clicks adicionales
+            gameState.flippedCards = [];
+            
+            if (card1.emoji === card2.emoji) {
+                // ¡Coincidencia!
+                const cardElement1 = document.querySelector(`[data-index="${index1}"]`);
+                const cardElement2 = document.querySelector(`[data-index="${index2}"]`);
+                
+                cardElement1.classList.add('matched');
+                cardElement2.classList.add('matched');
+                
+                // Marcar las cartas como emparejadas
+                gameState.cards[index1].matched = true;
+                gameState.cards[index2].matched = true;
+                
+                gameState.matchedPairs++;
+                console.log(`¡Par encontrado! Total pares: ${gameState.matchedPairs}`);
+                
+                // Verificar si el juego está completo usando la configuración correcta
+                const levelConfig = getLevelConfig(currentWorld, currentLevel);
+                if (levelConfig && gameState.matchedPairs >= levelConfig.pairs) {
+                    console.log(`¡Juego completado! ${gameState.matchedPairs}/${levelConfig.pairs} pares encontrados`);
+                    setTimeout(() => {
+                        gameWon();
+                    }, 500);
+                }
+            } else {
+                // No hay coincidencia, voltear de vuelta más rápido
+                const cardElement1 = document.querySelector(`[data-index="${index1}"]`);
+                const cardElement2 = document.querySelector(`[data-index="${index2}"]`);
+                
+                // Agregar clase para acelerar la transición
+                cardElement1.classList.add('no-match');
+                cardElement2.classList.add('no-match');
+                
+                setTimeout(() => {
+                    cardElement1.classList.remove('flipped', 'no-match');
+                    cardElement2.classList.remove('flipped', 'no-match');
+                    
+                    const cardImage1 = cardElement1.querySelector('.card-image');
+                    const cardImage2 = cardElement2.querySelector('.card-image');
+                    
+                    cardImage1.src = `images/cards/${currentWorld}/portada.png`;
+                    cardImage2.src = `images/cards/${currentWorld}/portada.png`;
+                    
+                    gameState.cards[index1].flipped = false;
+                    gameState.cards[index2].flipped = false;
+                }, 700); // Reducido de 1000ms a 700ms
+            }
+            
+            updateDisplay();
+        }
+        
+        // CRONOMETRO
+        function startTimer() {
+            console.log('Iniciando cronómetro...');
+            
+            // Parar timer anterior si existe
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+            }
+            
+            // Solo iniciar cronómetro si el nivel tiene timer
+            if (gameState.timeLimit !== null) {
+                gameState.timer = setInterval(() => {
+                    gameState.time++;
+                    console.log(`Tiempo: ${gameState.time} segundos`);
+                    updateDisplay();
+                    
+                    // Verificar si se agotó el tiempo
+                    if (gameState.timeLimit && gameState.time >= gameState.timeLimit) {
+                        gameOver();
+                    }
+                }, 1000);
+                console.log('Cronómetro iniciado correctamente');
+            } else {
+                // Sin cronómetro, pero actualizar display
+                gameState.timer = setInterval(() => {
+                    gameState.time++;
+                    updateDisplay();
+                }, 1000);
+                console.log('Cronómetro iniciado (sin límite de tiempo)');
+            }
+        }
+        
+        function stopTimer() {
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
+        }
+        
+        // JUEGO GANADO
+        function gameWon() {
+            stopTimer();
+            console.log('¡Juego completado!');
+            
+            // Calcular estrellas basadas en intentos
+            const stars = calculateStars(gameState.moves, gameState.time);
+            
+            // Actualizar modal con estadísticas
+            document.getElementById('victoryMoves').textContent = gameState.moves;
+            document.getElementById('victoryTime').textContent = formatTime(gameState.time);
+            document.getElementById('victoryStars').textContent = '⭐'.repeat(stars);
+            
+            // Guardar progreso con estrellas
+            saveProgress(stars);
+            
+            // Verificar trofeos
+            checkTrophies();
+            
+            // Mostrar modal de victoria
+            showVictoryModal();
+        }
+        
+        // MOSTRAR MODAL DE VICTORIA
+        function showVictoryModal() {
+            console.log('Mostrando modal de victoria');
+            const modal = document.getElementById('victoryModal');
+            modal.classList.add('show');
+        }
+        
+        // OCULTAR MODAL DE VICTORIA
+        function hideVictoryModal() {
+            console.log('Ocultando modal de victoria');
+            const modal = document.getElementById('victoryModal');
+            modal.classList.remove('show');
+        }
+        
+        // CALCULAR ESTRELLAS
+        function calculateStars(moves, time) {
+            const levelConfig = getLevelConfig(currentWorld, currentLevel);
+            if (!levelConfig) return 1;
+            
+            const maxMoves = levelConfig.pairs * 2; // Mínimo teórico
+            
+            if (moves <= maxMoves) return 3;
+            if (moves <= maxMoves * 1.5) return 2;
+            return 1;
+        }
+        
+        
+        // SIGUIENTE NIVEL (función global)
+        window.nextLevel = function() {
+            hideVictoryModal();
+            
+            console.log(`Estado actual: nivel ${currentLevel}, mundo ${currentWorld}, nivel real: ${currentLevelNumber}`);
+            
+            // Incrementar el nivel actual
+            currentLevel++;
+            currentLevelNumber++;
+            
+            // Guardar progreso del nivel actual
+            localStorage.setItem('currentWorld', currentWorld);
+            localStorage.setItem('currentLevel', currentLevel);
+            
+            console.log(`Nuevo nivel: ${currentLevel}, nivel real: ${currentLevelNumber}`);
+            
+            // Verificar si hay más niveles disponibles en el mundo actual
+            if (currentLevel <= 4) {
+                console.log(`Avanzando al nivel ${currentLevel} del mundo ${currentWorld}`);
+                
+                // Actualizar título del header
+                updateHeaderTitle();
+                
+                // Reiniciar el juego con el nuevo nivel
+                resetGame();
+            } else {
+                // Si no hay más niveles en este mundo, volver al selector de mundos
+                console.log('No hay más niveles en este mundo, volviendo al selector de mundos');
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // REPETIR NIVEL (función global)
+        window.repeatLevel = function() {
+            hideVictoryModal();
+            console.log(`Repitiendo nivel ${currentLevel} del mundo ${currentWorld}`);
+            resetGame();
+        }
+        
+        // REINICIAR JUEGO
+        function resetGame() {
+            console.log(`Reiniciando juego - Nivel ${currentLevel} del mundo ${currentWorld} (nivel real: ${currentLevelNumber})...`);
+            
+            gameState = {
+                cards: [],
+                flippedCards: [],
+                matchedPairs: 0,
+                moves: 0,
+                time: 0,
+                timer: null,
+                isPlaying: false,
+                timeLimit: null,
+                shuffleTriggered: false
+            };
+            
+            
+            // Actualizar display con el nivel actual
+            const levelElement = document.getElementById('level');
+            if (levelElement) {
+                levelElement.textContent = currentLevel;
+                console.log(`Display actualizado: Nivel ${currentLevel}`);
+            }
+            
+            // Recrear las cartas directamente
+            createCards();
+            
+            // Iniciar cronómetro
+            startTimer();
+            
+            // Actualizar display
+            updateDisplay();
+        }
+        
+        // ACTUALIZAR DISPLAY
+        function updateDisplay() {
+            document.getElementById('moves').textContent = gameState.moves;
+            document.getElementById('time').textContent = formatTime(gameState.time);
+            document.getElementById('level').textContent = currentLevel;
+            
+            // Actualizar estrellas totales en el header
+            updateHeaderStats();
+        }
+        
+        // ACTUALIZAR ESTADÍSTICAS DEL HEADER
+        function updateHeaderStats() {
+            // Usar únicamente el sistema Storage para mantener consistencia total
+            const totalStats = Storage.getTotalStats();
+            document.getElementById('total-stars').textContent = totalStats.totalStars;
+            console.log(`Estadísticas actualizadas - Estrellas: ${totalStats.totalStars}`);
+            
+            // Sumar trofeos
+            let totalTrophies = 0;
+            const trophiesData = localStorage.getItem('trophies');
+            if (trophiesData) {
+                const trophies = JSON.parse(trophiesData);
+                totalTrophies = trophies.length;
+            }
+            
+            document.getElementById('total-trophies').textContent = totalTrophies;
+        }
+        
+        // FUNCIÓN PARA GUARDAR PROGRESO
+        function saveProgress(stars) {
+            console.log(`🔥 GUARDANDO PROGRESO: ${stars} estrellas para nivel ${currentLevel} del mundo ${currentWorld}`);
+            
+            // Usar únicamente el sistema Storage para mantener consistencia total
+            const levelNumber = getRealLevelNumber(currentWorld, currentLevel);
+            console.log(`🔥 Número de nivel calculado: ${levelNumber}`);
+            
+            const result = Storage.saveScore(levelNumber, gameState.moves, gameState.time, stars);
+            console.log(`🔥 Resultado del guardado:`, result);
+            console.log(`🔥 Progreso guardado: Nivel ${levelNumber} con ${stars} estrellas`);
+            
+            // Verificar que se guardó correctamente
+            const savedData = Storage.getBestScore(levelNumber);
+            console.log(`🔥 Datos guardados verificados:`, savedData);
+            
+            // Actualizar estadísticas del header
+            updateHeaderStats();
+        }
+        
+        // FORMATO DE TIEMPO
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Función global para mostrar trofeos
+    function showTrophies() {
+        window.location.href = 'trophies.html';
+    }
+    
+    // Función global para mostrar ranking
+    function showRanking() {
+        window.location.href = 'ranking.html';
+    }
+    
+    // VERIFICAR TROFEOS
+    function checkTrophies() {
+        console.log('🏆 Verificando trofeos...');
+        
+        if (typeof TrophySystem !== 'undefined') {
+            console.log('🏆 TrophySystem encontrado');
+            
+            const stars = calculateStars(gameState.moves, gameState.time);
+            console.log(`🏆 Verificando trofeos para nivel ${currentLevelNumber}, movimientos: ${gameState.moves}, tiempo: ${gameState.time}, estrellas: ${stars}`);
+            
+            const newTrophies = TrophySystem.checkTrophies(
+                currentLevelNumber, 
+                gameState.moves, 
+                gameState.time, 
+                stars
+            );
+            
+            console.log(`🏆 Trofeos encontrados: ${newTrophies.length}`);
+            
+            // Mostrar notificaciones de nuevos trofeos
+            newTrophies.forEach(trophy => {
+                console.log(`🏆 ¡Nuevo trofeo ganado: ${trophy.name}!`);
+                if (typeof showTrophyNotification !== 'undefined') {
+                    showTrophyNotification(trophy);
+                }
+            });
+            
+            // Actualizar contador de trofeos en el header
+            updateHeaderStats();
+        } else {
+            console.log('🏆 ERROR: TrophySystem no está disponible');
+        }
+    }
+    
+    // FUNCIÓN PARA LIMPIAR PROGRESO Y EMPEZAR DE NUEVO
+    function resetGameProgress() {
+        console.log('Limpiando datos corruptos del juego...');
+        localStorage.removeItem('currentLevel');
+        localStorage.removeItem('currentWorld');
+        // NO borrar los progresos de los mundos para mantener las estrellas
+        console.log('Datos corruptos limpiados, manteniendo progreso de estrellas');
+    }
+
+    // INICIALIZAR CUANDO SE CARGA LA PÁGINA
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Página cargada, iniciando juego...');
+        
+        // NO limpiar datos del localStorage - mantener el progreso
+        console.log('Manteniendo progreso del localStorage...');
+        
+        initGame();
+    });
+  </script>
+</body>
+</html>

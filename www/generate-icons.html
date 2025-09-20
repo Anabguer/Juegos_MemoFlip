@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generador de Iconos MemoFlip</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .icon-preview { display: inline-block; margin: 10px; text-align: center; }
+        .icon-preview img { border: 1px solid #ccc; }
+        canvas { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Generador de Iconos MemoFlip</h1>
+    <p>Haz clic derecho en cada icono y selecciona "Guardar imagen como..." para descargar.</p>
+    
+    <div id="icons"></div>
+    
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        
+        function generateIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Fondo con gradiente
+            const gradient = ctx.createLinearGradient(0, 0, 0, size);
+            gradient.addColorStop(0, '#a6e3e9');
+            gradient.addColorStop(1, '#71c9ce');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Borde redondeado
+            const radius = size * 0.1;
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, radius);
+            ctx.fill();
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // Emoji cerebro
+            ctx.font = `${size * 0.6}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🧠', size/2, size/2);
+            
+            return canvas;
+        }
+        
+        function createDownloadLink(canvas, size) {
+            const container = document.createElement('div');
+            container.className = 'icon-preview';
+            
+            const img = document.createElement('img');
+            img.src = canvas.toDataURL();
+            img.width = Math.min(size, 100);
+            img.height = Math.min(size, 100);
+            img.download = `icon-${size}x${size}.png`;
+            
+            const label = document.createElement('div');
+            label.textContent = `${size}x${size}`;
+            
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL();
+            link.download = `icon-${size}x${size}.png`;
+            link.appendChild(img);
+            
+            container.appendChild(link);
+            container.appendChild(label);
+            
+            return container;
+        }
+        
+        const iconsContainer = document.getElementById('icons');
+        
+        sizes.forEach(size => {
+            const canvas = generateIcon(size);
+            const preview = createDownloadLink(canvas, size);
+            iconsContainer.appendChild(preview);
+        });
+    </script>
+</body>
+</html>

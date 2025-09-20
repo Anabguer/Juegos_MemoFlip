@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generador de Iconos MemoFlip</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .icon-preview { display: inline-block; margin: 10px; text-align: center; }
+        .icon-preview img { border: 1px solid #ccc; }
+        canvas { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Generador de Iconos MemoFlip</h1>
+    <p>Haz clic derecho en cada icono y selecciona "Guardar imagen como..." para descargar.</p>
+    
+    <div id="icons"></div>
+    
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        
+        function generateIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Fondo con gradiente oceánico
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#1a1a2e');
+            gradient.addColorStop(0.5, '#16213e');
+            gradient.addColorStop(1, '#0f3460');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Borde redondeado
+            const radius = size * 0.15;
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, radius);
+            ctx.fill();
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // Sombra interior
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowBlur = size * 0.05;
+            ctx.shadowOffsetY = size * 0.02;
+            
+            // Icono de carta (representando el juego de memoria)
+            const cardSize = size * 0.6;
+            const cardX = (size - cardSize) / 2;
+            const cardY = (size - cardSize) / 2;
+            
+            // Carta principal
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(cardX, cardY, cardSize, cardSize * 0.7);
+            
+            // Sombra de la carta
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(cardX + size * 0.02, cardY + size * 0.02, cardSize, cardSize * 0.7);
+            
+            // Carta principal (encima)
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(cardX, cardY, cardSize, cardSize * 0.7);
+            
+            // Emoji en la carta
+            ctx.shadowColor = 'transparent';
+            ctx.font = `${size * 0.3}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🧠', size/2, size/2 - size * 0.05);
+            
+            // Indicador de flip
+            ctx.fillStyle = '#ff6b35';
+            ctx.beginPath();
+            ctx.arc(size/2 + cardSize * 0.3, size/2 - cardSize * 0.2, size * 0.08, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Texto "flip"
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `${size * 0.08}px Arial`;
+            ctx.fillText('FLIP', size/2 + cardSize * 0.3, size/2 - cardSize * 0.2);
+            
+            return canvas;
+        }
+        
+        function createDownloadLink(canvas, size) {
+            const container = document.createElement('div');
+            container.className = 'icon-preview';
+            
+            const img = document.createElement('img');
+            img.src = canvas.toDataURL();
+            img.width = Math.min(size, 100);
+            img.height = Math.min(size, 100);
+            img.download = `icon-${size}x${size}.png`;
+            
+            const label = document.createElement('div');
+            label.textContent = `${size}x${size}`;
+            
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL();
+            link.download = `icon-${size}x${size}.png`;
+            link.appendChild(img);
+            
+            container.appendChild(link);
+            container.appendChild(label);
+            
+            return container;
+        }
+        
+        const iconsContainer = document.getElementById('icons');
+        
+        sizes.forEach(size => {
+            const canvas = generateIcon(size);
+            const preview = createDownloadLink(canvas, size);
+            iconsContainer.appendChild(preview);
+        });
+    </script>
+</body>
+</html>
+
+

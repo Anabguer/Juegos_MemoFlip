@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>MemoFlip - Mundo Isla</title>
+  <style>
+    /* CSS INLINE - HEADER UNIFICADO PERFECTO */
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+    .app-container { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
+    .game-hud { display: flex; align-items: center; padding: 15px; background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2)); backdrop-filter: blur(10px); border-bottom: 2px solid rgba(255, 215, 0, 0.3); height: 90px; min-height: 90px; max-height: 90px; z-index: 100; width: 100%; }
+    .hud-content { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100%; }
+    .hud-left { flex: 0 0 auto; }
+    .hud-center { flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .hud-right { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; }
+    .logo-banner { height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+    .hud-stats { display: flex; gap: 10px; align-items: center; }
+    .stat-item { display: flex; align-items: center; gap: 5px; color: white; font-size: 14px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8); margin-top: 8px; }
+    .stat-item span { line-height: 1; vertical-align: middle; }
+    .hud-btn-img-large { width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); margin-top: 8px; }
+    .hud-nav { display: flex; align-items: center; margin-left: 10px; padding-left: 10px; border-left: 2px solid rgba(255, 215, 0, 0.3); margin-top: 8px; }
+    .hud-btn-simple { background: none; border: none; color: white; cursor: pointer; padding: 8px; border-radius: 8px; transition: 0.2s ease; }
+    .hud-btn-simple:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
+    .hud-btn-img { width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); margin-top: 8px; }
+    .home-floating-btn { position: fixed; top: 120px; left: 15px; z-index: 200; background: rgba(0, 0, 0, 0.8); border: 2px solid #ffd700; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s ease; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+    .home-floating-btn:hover { background: rgba(255, 215, 0, 0.2); transform: scale(1.1); }
+    .home-floating-icon { width: 24px; height: 24px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); }
+    .main-content { flex: 1; position: relative; height: calc(100vh - 90px); background: linear-gradient(135deg, rgba(46,26,26,0.4), rgba(62,34,22,0.4), rgba(96,52,15,0.4)), url('images/worlds/island-world-clean.png') center/cover no-repeat, linear-gradient(135deg, #2e1a1a, #3e2216, #60340f); }
+    .content-container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- HEADER DIRECTO (sin componente) -->
+    <header class="game-hud">
+        <div class="hud-content">
+            <div class="hud-left"></div>
+            <div class="hud-center">
+                <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
+            </div>
+            <div class="hud-right">
+                <div class="hud-stats">
+                    <div class="stat-item">
+                        <img src="images/ui/star.png" alt="Stars" class="hud-btn-img-large">
+                        <span id="total-stars">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <img src="images/ui/trofeo.png" alt="Trophies" class="hud-btn-img-large">
+                        <span id="total-trophies">0</span>
+                    </div>
+                </div>
+                <div class="hud-nav">
+                    <button class="hud-btn-simple" onclick="showRanking()">
+                        <img src="images/ui/ranking.png" alt="Ranking" class="hud-btn-img">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- BOTÓN HOME FLOTANTE -->
+    <button class="home-floating-btn" onclick="window.location.href='index.html'" title="Volver al inicio">
+        <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
+    </button>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="content-container">
+        <div class="world-map-container">
+      <!-- Fondo específico de la isla -->
+      <div class="world-map-background island-map">
+        <div class="level-path island-path">
+          
+          <!-- Nivel 8 - Jefe (CIMA) -->
+          <div class="level-node boss-level" data-level="8" data-world="island">
+            <div class="node-content">
+              <span class="level-number">👑</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 7 -->
+          <div class="level-node" data-level="7" data-world="island">
+            <div class="node-content">
+              <span class="level-number">7</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 6 -->
+          <div class="level-node" data-level="6" data-world="island">
+            <div class="node-content">
+              <span class="level-number">6</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+          <div class="path-connector"></div>
+
+          <!-- Nivel 5 (BASE) -->
+          <div class="level-node" data-level="5" data-world="island">
+            <div class="node-content">
+              <span class="level-number">5</span>
+              <div class="stars-display"></div>
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- Información del mundo -->
+        <div class="world-info-panel">
+          <h2>🏝️ Paraíso Tropical</h2>
+          <p>Aventúrate en las exuberantes selvas y playas doradas de la isla misteriosa.</p>
+          <div class="world-progress-info">
+            <span class="progress-item">📏 Tamaño: 4×4</span>
+            <span class="progress-item">🎯 Niveles: <span id="islandLevelsCompleted">0</span>/4</span>
+            <span class="progress-item">⭐ Estrellas: <span id="islandStarsEarned">0</span>/12</span>
+          </div>
+        </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal de nivel -->
+    <div id="levelModal" class="modal">
+      <div class="dialog">
+        <h2 id="levelTitle">Nivel 5 - Isla</h2>
+        <div class="level-info">
+          <p id="levelDescription">¡Explora las playas doradas!</p>
+          <div class="level-stats">
+            <span class="stat">📏 <span id="levelSize">4×4</span></span>
+            <span class="stat">⏱️ <span id="levelBestTime">--:--</span></span>
+            <span class="stat">⭐ <span id="levelBestStars">-</span></span>
+          </div>
+        </div>
+        <div class="modal-buttons">
+          <button id="playLevel" class="btn">🎮 Jugar Nivel</button>
+          <button id="closeLevelModal" class="btn">❌ Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de estadísticas -->
+    <div id="statsModal" class="modal">
+      <div class="dialog">
+        <h2>📊 Estadísticas - Isla</h2>
+        <div id="statsContent" class="stats-content"></div>
+        <div style="display:flex;justify-content:center;margin-top:15px">
+          <button id="closeStats" class="btn">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/settings.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/world-map.js"></script>
+  <script>
+    function showRanking() { window.location.href = 'ranking.html'; }
+    function updateHeaderStats() {
+      const totalStats = Storage.getTotalStats();
+      const totalStarsElement = document.getElementById('total-stars');
+      const totalTrophiesElement = document.getElementById('total-trophies');
+      if (totalStarsElement) totalStarsElement.textContent = totalStats.totalStars;
+      if (totalTrophiesElement) totalTrophiesElement.textContent = totalStats.totalTrophies;
+    }
+    document.addEventListener('DOMContentLoaded', function() { updateHeaderStats(); });
+  </script>
+</body>
+</html>
+
+

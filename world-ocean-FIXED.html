@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo Océano - MemoFlip</title>
+    
+    <style>
+        /* CSS INLINE - SIEMPRE FUNCIONA */
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        }
+        
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        /* HEADER FIJO */
+        .game-hud {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            height: 90px;
+            min-height: 90px;
+            max-height: 90px;
+            z-index: 100;
+            width: 100%;
+        }
+        
+        .hud-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hud-left { flex: 0 0 auto; }
+        .hud-center { flex: 1; display: flex; flex-direction: column; align-items: center; }
+        .hud-right { 
+            flex: 0 0 auto; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; /* REDUCIDO */
+        }
+        
+        .logo-banner {
+            height: 60px; /* REDUCIDO PARA DAR MÁS ESPACIO */
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .hud-stats {
+            display: flex;
+            gap: 10px; /* REDUCIDO */
+            align-items: center;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* REDUCIDO */
+            color: white;
+            font-size: 14px; /* REDUCIDO */
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            margin-top: 8px; /* BAJAR POSICIÓN VERTICAL */
+        }
+        
+        .hud-btn-img-large {
+            width: 24px; /* VOLVER AL TAMAÑO ANTERIOR */
+            height: 24px; /* VOLVER AL TAMAÑO ANTERIOR */
+            object-fit: contain;
+            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+            margin-top: 8px; /* BAJAR POSICIÓN VERTICAL */
+        }
+        
+        .hud-nav {
+            display: flex;
+            align-items: center;
+            margin-left: 10px; /* REDUCIDO */
+            padding-left: 10px; /* REDUCIDO */
+            border-left: 2px solid rgba(255, 215, 0, 0.3);
+            margin-top: 8px; /* BAJAR POSICIÓN VERTICAL IGUAL QUE LOS OTROS */
+        }
+        
+        .hud-btn-simple {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: 0.2s ease;
+        }
+        
+        .hud-btn-simple:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+        }
+        
+        .hud-btn-img {
+            width: 28px; /* VOLVER AL TAMAÑO ANTERIOR */
+            height: 28px; /* VOLVER AL TAMAÑO ANTERIOR */
+            object-fit: contain;
+            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+            margin-top: 8px; /* BAJAR POSICIÓN VERTICAL */
+        }
+        
+        /* BOTÓN HOME FLOTANTE */
+        .home-floating-btn {
+            position: fixed;
+            top: 120px;
+            left: 15px;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .home-floating-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .home-floating-icon {
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+        }
+        
+        /* CONTENIDO */
+        .main-content {
+            flex: 1;
+            position: relative;
+            height: calc(100vh - 90px);
+            background: 
+                linear-gradient(135deg, rgba(26,26,46,0.4), rgba(22,33,62,0.4), rgba(15,52,96,0.4)),
+                url('images/worlds/ocean-world-clean.png') center/cover no-repeat,
+                linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        }
+        
+        .content-container {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .test-message {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER DIRECTO (sin componente) -->
+        <header class="game-hud">
+            <div class="hud-content">
+                <div class="hud-left"></div>
+                
+                <div class="hud-center">
+                    <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
+                </div>
+                
+                <div class="hud-right">
+                    <div class="hud-stats">
+                        <div class="stat-item">
+                            <img src="images/ui/star.png" alt="Stars" class="hud-btn-img-large">
+                            <span>0</span>
+                        </div>
+                        <div class="stat-item">
+                            <img src="images/ui/trofeo.png" alt="Trophies" class="hud-btn-img-large">
+                            <span>0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hud-nav">
+                        <button class="hud-btn-simple" onclick="showRanking()">
+                            <img src="images/ui/ranking.png" alt="Ranking" class="hud-btn-img">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- BOTÓN HOME FLOTANTE -->
+        <button class="home-floating-btn" onclick="window.location.href='world-selector.html'" title="Volver al inicio">
+            <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
+        </button>
+        
+        <!-- CONTENIDO -->
+        <main class="main-content">
+            <div class="content-container">
+                <div class="test-message">
+                    <h1>🌊 Mundo Océano</h1>
+                    <p><strong>¡ESTA PÁGINA FUNCIONA!</strong></p>
+                    <p>CSS inline, sin cache, sin problemas.</p>
+                    <p>Header de 90px, botón home flotante, fondo del océano.</p>
+                    
+                    <h2>🔍 DEBUG BOTONES:</h2>
+                    <p>✅ <strong>Botón ranking:</strong> <span id="ranking-status">Checking...</span></p>
+                    <p>✅ <strong>Botón test rojo:</strong> Debería estar visible en el header</p>
+                    <p>✅ <strong>Área nav roja:</strong> Debería tener fondo rojo</p>
+                    
+                    <div style="margin-top: 20px;">
+                        <button onclick="showRanking()" style="background: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; margin: 5px; cursor: pointer;">🎯 Test Ranking</button>
+                        <a href="world-selector.html" style="background: #007bff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin: 5px;">← Volver</a>
+                        <a href="world-ocean-FIXED.html" style="background: #28a745; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin: 5px;">Recargar</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Scripts necesarios -->
+    <script src="js/settings.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/ranking-system.js"></script>
+    <script>
+        // Función para mostrar ranking
+        function showRanking() {
+            window.location.href = 'ranking.html';
+        }
+        
+        // Actualizar estadísticas
+        function updateStats() {
+            // Obtener estadísticas del localStorage
+            const totalStats = {
+                totalStars: localStorage.getItem('totalStars') || 0,
+                totalTrophies: localStorage.getItem('totalTrophies') || 0
+            };
+            
+            // Actualizar elementos
+            const starsElements = document.querySelectorAll('.stat-item span');
+            if (starsElements[0]) starsElements[0].textContent = totalStats.totalStars;
+            if (starsElements[1]) starsElements[1].textContent = totalStats.totalTrophies;
+        }
+        
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('World Ocean FIXED cargado');
+            updateStats();
+            
+            // Debug botones
+            setTimeout(() => {
+                const rankingBtn = document.querySelector('.hud-nav button');
+                const navArea = document.querySelector('.hud-nav');
+                
+                let status = '';
+                if (rankingBtn) {
+                    status += '✅ Botón encontrado ';
+                } else {
+                    status += '❌ Botón NO encontrado ';
+                }
+                
+                if (navArea) {
+                    status += '✅ Área nav encontrada';
+                } else {
+                    status += '❌ Área nav NO encontrada';
+                }
+                
+                document.getElementById('ranking-status').textContent = status;
+                console.log('Debug ranking:', status);
+            }, 100);
+        });
+    </script>
+</body>
+</html>

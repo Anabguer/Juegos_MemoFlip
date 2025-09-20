@@ -1,0 +1,11 @@
+{
+  "appId": "com.memoflip.game",
+  "appName": "MemoFlip",
+  "webDir": "www",
+  "android": {
+    "buildOptions": {
+      "keystorePath": "",
+      "keystoreAlias": ""
+    }
+  }
+}

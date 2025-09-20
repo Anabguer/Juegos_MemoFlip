@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemoFlip - Juego</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            height: 90px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-center {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            height: 60px;
+        }
+        
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .home-btn {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+        
+        .home-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .home-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* GAME BOARD */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            height: calc(100vh - 90px);
+        }
+        
+        .game-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 600px;
+        }
+        
+        .card {
+            width: 100px;
+            height: 120px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border: 3px solid rgba(255,255,255,0.2);
+        }
+        
+        .card-back {
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            color: white;
+        }
+        
+        .card-front {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+        }
+        
+        .card.matched {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .card img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <button class="home-btn" onclick="window.location.href='index.html'">
+                <img src="images/ui/home.png" alt="Home" class="home-icon">
+            </button>
+        </div>
+        
+        <div class="header-center">
+            <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo">
+        </div>
+        
+        <div class="header-right">
+            <div class="stats">
+                <span>⭐ <span id="total-stars">0</span></span>
+                <span>🏆 <span id="total-trophies">0</span></span>
+                <button onclick="showRanking()">📊</button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- GAME -->
+    <div class="game-container">
+        <div class="game-info">
+            <span>Intentos: <span id="moves">0</span></span>
+            <span>Tiempo: <span id="time">0:00</span></span>
+            <span>Nivel: <span id="level">1</span></span>
+        </div>
+        
+        <div class="board" id="board">
+            <!-- Las cartas se generarán aquí -->
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN DEL JUEGO
+        const CARDS = [
+            { id: 1, emoji: '🐟', image: 'images/cards/ocean/pez-dorado.png' },
+            { id: 2, emoji: '🦀', image: 'images/cards/ocean/cangrejo.png' },
+            { id: 3, emoji: '🐠', image: 'images/cards/ocean/pez-tropical.png' },
+            { id: 4, emoji: '🐡', image: 'images/cards/ocean/pez-globo.png' },
+            { id: 5, emoji: '🐙', image: 'images/cards/ocean/delfin.png' },
+            { id: 6, emoji: '🐳', image: 'images/cards/ocean/ballena.png' }
+        ];
+        
+        // ESTADO DEL JUEGO
+        let gameState = {
+            cards: [],
+            flippedCards: [],
+            matchedPairs: 0,
+            moves: 0,
+            time: 0,
+            timer: null,
+            isPlaying: false
+        };
+        
+        // INICIALIZAR JUEGO
+        function initGame() {
+            console.log('Inicializando juego...');
+            createCards();
+            startTimer();
+            updateDisplay();
+        }
+        
+        // CREAR CARTAS
+        function createCards() {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            
+            // Duplicar las cartas para hacer pares
+            let cardPairs = [...CARDS, ...CARDS];
+            
+            // Mezclar las cartas
+            cardPairs = shuffleArray(cardPairs);
+            
+            // Crear elementos HTML
+            gameState.cards = cardPairs.map((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.dataset.index = index;
+                
+                cardElement.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-face card-back">
+                            <img src="images/cards/ocean/portada.png" alt="Portada">
+                        </div>
+                        <div class="card-face card-front">
+                            <img src="${card.image}" alt="${card.emoji}">
+                        </div>
+                    </div>
+                `;
+                
+                cardElement.addEventListener('click', () => flipCard(index));
+                board.appendChild(cardElement);
+                
+                return {
+                    element: cardElement,
+                    id: card.id,
+                    image: card.image,
+                    emoji: card.emoji,
+                    isFlipped: false,
+                    isMatched: false
+                };
+            });
+            
+            console.log('Cartas creadas:', gameState.cards.length);
+        }
+        
+        // VOLTEAR CARTA
+        function flipCard(index) {
+            const card = gameState.cards[index];
+            
+            // Verificar si se puede voltear
+            if (card.isFlipped || card.isMatched || gameState.flippedCards.length >= 2) {
+                return;
+            }
+            
+            // Voltear carta
+            card.isFlipped = true;
+            card.element.classList.add('flipped');
+            gameState.flippedCards.push(card);
+            
+            console.log(`Carta ${index} volteada: ${card.emoji}`);
+            
+            // Si hay 2 cartas volteadas, verificar si coinciden
+            if (gameState.flippedCards.length === 2) {
+                gameState.moves++;
+                updateDisplay();
+                
+                setTimeout(() => {
+                    checkMatch();
+                }, 1000);
+            }
+        }
+        
+        // VERIFICAR COINCIDENCIA
+        function checkMatch() {
+            const [card1, card2] = gameState.flippedCards;
+            
+            if (card1.id === card2.id) {
+                // ¡Coinciden!
+                card1.isMatched = true;
+                card2.isMatched = true;
+                card1.element.classList.add('matched');
+                card2.element.classList.add('matched');
+                
+                gameState.matchedPairs++;
+                console.log('¡Par encontrado!');
+                
+                // Verificar si el juego terminó
+                if (gameState.matchedPairs === CARDS.length) {
+                    gameWon();
+                }
+            } else {
+                // No coinciden, voltear de nuevo
+                card1.isFlipped = false;
+                card2.isFlipped = false;
+                card1.element.classList.remove('flipped');
+                card2.element.classList.remove('flipped');
+            }
+            
+            gameState.flippedCards = [];
+        }
+        
+        // JUEGO GANADO
+        function gameWon() {
+            stopTimer();
+            console.log('¡Juego completado!');
+            alert(`¡Felicidades! Completaste el juego en ${gameState.moves} movimientos y ${formatTime(gameState.time)}!`);
+            
+            // Reiniciar juego después de 2 segundos
+            setTimeout(() => {
+                resetGame();
+            }, 2000);
+        }
+        
+        // REINICIAR JUEGO
+        function resetGame() {
+            gameState = {
+                cards: [],
+                flippedCards: [],
+                matchedPairs: 0,
+                moves: 0,
+                time: 0,
+                timer: null,
+                isPlaying: false
+            };
+            initGame();
+        }
+        
+        // CRONOMETRO
+        function startTimer() {
+            gameState.timer = setInterval(() => {
+                gameState.time++;
+                updateDisplay();
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
+        }
+        
+        // ACTUALIZAR DISPLAY
+        function updateDisplay() {
+            document.getElementById('moves').textContent = gameState.moves;
+            document.getElementById('time').textContent = formatTime(gameState.time);
+        }
+        
+        // FUNCIONES UTILITARIAS
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function showRanking() {
+            window.location.href = 'ranking.html';
+        }
+        
+        // INICIALIZAR CUANDO SE CARGA LA PÁGINA
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Página cargada, iniciando juego...');
+            initGame();
+        });
+    </script>
+</body>
+</html>
+

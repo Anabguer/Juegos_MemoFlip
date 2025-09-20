@@ -1,0 +1,499 @@
+/* Mapas de Mundos Individuales - MemoFlip */
+
+/* Usar toda la pantalla con fondo gaming - SIN PADDING */
+.wrap {
+  padding: 0 !important;
+  gap: 0 !important;
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
+  margin: 0 !important;
+}
+
+/* USAR LOS MISMOS ESTILOS QUE LA PANTALLA PRINCIPAL */
+/* Los estilos del .game-hud ya están definidos en world-selector.css */
+/* Solo necesitamos ajustar el margen para que funcione aquí */
+.game-hud {
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Banner del mismo tamaño que la pantalla principal */
+.game-hud .logo-banner {
+  height: clamp(45px, 15vw, 70px) !important;
+}
+
+/* Botón home simple sin fondo */
+.hud-btn-simple {
+  background: none !important;
+  border: none !important;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+  min-width: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+}
+
+/* Icono home personalizado */
+.home-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+  transition: all 0.2s ease;
+}
+
+/* Iconos personalizados del HUD */
+.hud-icon-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  transition: all 0.2s ease;
+}
+
+.hud-btn-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  transition: all 0.2s ease;
+}
+
+.hud-btn-simple:hover {
+  background: rgba(255,255,255,0.1) !important;
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.7));
+}
+
+.hud-btn-simple:hover .home-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.7));
+}
+
+/* Secciones del HUD separadas */
+.home-section {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  padding-right: 15px;
+  border-right: 1px solid rgba(255,255,255,0.2);
+}
+
+.stats-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #34495e, #2c3e50);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 
+    0 3px 8px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topbar-btn:hover {
+  background: linear-gradient(145deg, #3c5a78, #34495e);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+}
+
+.topbar-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.world-info-compact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.logo-banner-small {
+  height: clamp(20px, 5vw, 28px);
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+  margin-bottom: 2px;
+}
+
+.world-title-compact {
+  font-size: clamp(14px, 4vw, 18px);
+  font-weight: 900;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  letter-spacing: 1px;
+}
+
+.world-stats-compact {
+  display: flex;
+  gap: 8px;
+}
+
+.stat-compact {
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: rgba(255,255,255,0.9);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  font-weight: bold;
+}
+
+/* CONTENEDOR DEL MAPA */
+.world-map-container {
+  flex: 1;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: stretch;
+  height: calc(100vh - 60px);
+  width: 100vw;
+  position: relative;
+}
+
+.world-map-background {
+  height: 100vh;
+  width: 100vw;
+  min-height: 100vh;
+  background: 
+    linear-gradient(135deg, rgba(26,26,46,0.6), rgba(22,33,62,0.6), rgba(15,52,96,0.6)),
+    linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
+  background-color: #16213e !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Overlay para la imagen de fondo - FORZAR EXPANSIÓN COMPLETA */
+.world-map-background::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* FONDOS LIMPIOS POR MUNDO */
+.ocean-map {
+  background: 
+    linear-gradient(135deg, rgba(26,26,46,0.4), rgba(22,33,62,0.4), rgba(15,52,96,0.4)),
+    url('../images/worlds/ocean-world-clean.png') center/cover no-repeat,
+    linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
+}
+
+.ocean-map::before {
+  display: none;
+}
+
+.island-map {
+  /* 🎨 FONDO LIMPIO DE LA ISLA EXPANDIDO */
+  background: 
+    linear-gradient(135deg, rgba(26,26,46,0.4), rgba(22,33,62,0.4), rgba(15,52,96,0.4)),
+    url('../images/worlds/island-world-clean.png') center/cover no-repeat,
+    linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
+}
+
+.volcano-map {
+  /* 🎨 FONDO LIMPIO DEL VOLCÁN EXPANDIDO */
+  background: 
+    linear-gradient(135deg, rgba(26,26,46,0.4), rgba(22,33,62,0.4), rgba(15,52,96,0.4)),
+    url('../images/worlds/volcano-world-clean.png') center/cover no-repeat,
+    linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
+}
+
+/* CAMINO DE NIVELES CON CSS */
+.level-path {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.5vh, 15px);
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  justify-content: space-between;
+  max-width: 200px;
+  padding: clamp(10px, 2vh, 20px) 3vw clamp(10px, 2vh, 20px) 3vw;
+  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
+  max-height: calc(100vh - 60px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* CAMINO DORADO CREADO CON CSS */
+.level-path::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  left: 50%;
+  width: 8px;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    #ffd700 10%,
+    #ffed4e 20%,
+    #ffd700 30%,
+    #ffed4e 40%,
+    #ffd700 50%,
+    #ffed4e 60%,
+    #ffd700 70%,
+    #ffed4e 80%,
+    #ffd700 90%,
+    transparent 100%
+  );
+  border-radius: 4px;
+  box-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateX(-50%);
+  z-index: 0;
+  animation: path-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes path-glow {
+  from { 
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  to { 
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* NODOS DE NIVELES */
+.level-node {
+  width: clamp(45px, 8vw, 70px);
+  height: clamp(45px, 8vw, 70px);
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  
+  /* Imagen por defecto */
+  background: url('../images/level-unlocked.png') center/cover no-repeat,
+              linear-gradient(45deg, var(--accent), var(--ok));
+  border: 4px solid #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.level-node.locked {
+  background: url('../images/level-locked.png') center/cover no-repeat,
+              #666;
+  filter: grayscale(100%);
+  cursor: not-allowed;
+}
+
+.level-node.completed {
+  background: url('../images/level-completed.png') center/cover no-repeat,
+              linear-gradient(45deg, gold, orange);
+  animation: completed-glow 2s ease-in-out infinite alternate;
+}
+
+.level-node.boss-level {
+  background: url('../images/level-boss.png') center/cover no-repeat,
+              linear-gradient(45deg, purple, magenta);
+  width: clamp(55px, 10vw, 80px);
+  height: clamp(55px, 10vw, 80px);
+  border-color: gold;
+  border-width: 6px;
+}
+
+.level-node:not(.locked):hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+
+/* CONTENIDO DEL NODO */
+.node-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.level-number {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.stars-display {
+  font-size: 12px;
+  min-height: 14px;
+}
+
+/* CONECTORES DE CAMINO */
+.path-connector {
+  width: 6px;
+  height: 35px;
+  background: linear-gradient(to bottom, 
+    rgba(255,215,0,0.9) 0%,
+    rgba(255,215,0,0.5) 50%,
+    rgba(255,215,0,0.9) 100%
+  );
+  border-radius: 3px;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.path-connector.inactive {
+  background: rgba(100,100,100,0.5);
+}
+
+/* SIN PANEL DE INFORMACIÓN - TODO EN LA BARRA SUPERIOR */
+
+/* ANIMACIONES */
+@keyframes completed-glow {
+  from { 
+    box-shadow: 0 8px 20px rgba(255,215,0,0.4);
+    border-color: #FFD700;
+  }
+  to { 
+    box-shadow: 0 12px 30px rgba(255,215,0,0.8);
+    border-color: #FFA500;
+  }
+}
+
+@keyframes available-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.level-node.available {
+  animation: available-pulse 2s ease-in-out infinite;
+}
+
+/* EFECTOS DE PARTÍCULAS ESPECÍFICOS POR MUNDO */
+.ocean-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.bubble {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: bubble-float 4s ease-in-out infinite;
+}
+
+@keyframes bubble-float {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-20px) scale(1);
+    opacity: 0;
+  }
+}
+
+
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .level-path {
+    gap: clamp(10px, 1.8vh, 18px);
+    padding: clamp(8px, 1.5vh, 15px) 2vw clamp(40px, 8vh, 80px) 2vw;
+  }
+  
+  .level-node {
+    width: clamp(60px, 10vw, 75px);
+    height: clamp(60px, 10vw, 75px);
+  }
+  
+  .level-node.boss-level {
+    width: clamp(70px, 12vw, 85px);
+    height: clamp(70px, 12vw, 85px);
+  }
+  
+  .level-number {
+    font-size: clamp(18px, 4vw, 24px);
+  }
+}
+  
+  .world-info-panel {
+    padding: 15px;
+    margin: 0 10px;
+  }
+  
+  .world-info-panel h2 {
+    font-size: 20px;
+  }
+  
+  .world-info-panel p {
+    font-size: 14px;
+  }
+  
+  .progress-item {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .level-path {
+    gap: 20px;
+  }
+  
+  .path-connector {
+    height: 25px;
+  }
+  
+  .world-progress-info {
+    flex-direction: column;
+    align-items: center;
+  }
+}

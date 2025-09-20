@@ -1,0 +1,218 @@
+/* Selector de Mundos - MemoFlip */
+
+/* CONTENEDOR DE MUNDOS - POSICIÓN ABSOLUTA */
+.worlds-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* TARJETAS DE MUNDO - CENTRADAS CON TEXT-ALIGN */
+.world-card {
+  position: absolute;
+  width: 260px !important;
+  height: 120px !important;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  /* CENTRADO SIMPLE */
+  left: 50%;
+  margin-left: -130px; /* Mitad del ancho para centrar */
+}
+
+/* POSICIONES ESPECÍFICAS */
+.world-card.volcano-pos {
+  top: 15%;
+}
+
+.world-card.island-pos {
+  top: 45%;
+}
+
+.world-card.ocean-pos {
+  top: 75%;
+}
+
+.world-card:hover {
+  transform: scale(1.05);
+}
+
+.world-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.world-card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+  border: 3px solid #ffd700;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  gap: 18px !important;
+  padding: 18px !important;
+  box-sizing: border-box;
+}
+
+/* IMAGEN DEL MUNDO */
+.world-image {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 15px;
+  object-fit: cover;
+  border: 3px solid rgba(255,215,0,0.5);
+  flex-shrink: 0;
+}
+
+/* INFORMACIÓN DEL MUNDO */
+.world-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.world-name {
+  color: #ffd700 !important;
+  font-size: 18px !important;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  text-align: left;
+}
+
+/* ESTADÍSTICAS DEL MUNDO */
+.world-stats {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.stat-icon {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+}
+
+/* EFECTOS DE HOVER */
+.world-card:hover .world-card-front {
+  background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+  border-color: #ffed4e;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
+
+.world-card:hover .world-name {
+  color: #ffed4e;
+}
+
+.world-card:hover .world-image {
+  border-color: #ffed4e;
+  transform: scale(1.05);
+}
+
+/* MUNDOS BLOQUEADOS */
+.world-card.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.world-card.locked:hover {
+  transform: none;
+}
+
+.world-card.locked .world-card-front {
+  background: linear-gradient(135deg, rgba(60,60,60,0.8), rgba(40,40,40,0.6));
+  border-color: #666;
+}
+
+.world-card.locked .world-image {
+  filter: grayscale(100%) brightness(0.5);
+  border-color: #666;
+}
+
+.world-card.locked .world-name {
+  color: #999;
+}
+
+.world-card.locked .stat {
+  color: #666;
+}
+
+.world-lock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.world-card:not(.locked) .world-lock {
+  display: none;
+}
+
+.lock-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-bottom: 5px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.lock-text {
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* RESPONSIVE MÓVIL */
+@media (max-width: 768px) {
+  .world-card {
+    width: 240px;
+    height: 70px;
+    margin-left: -120px; /* Mitad del ancho móvil */
+  }
+  
+  .world-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .world-name {
+    font-size: 12px;
+  }
+  
+  .stat {
+    font-size: 10px;
+  }
+  
+  .stat-icon {
+    width: 12px;
+    height: 12px;
+  }
+}
