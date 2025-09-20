@@ -153,6 +153,8 @@
     min-width: 120px;
     max-width: 150px;
     height: 180px;
+    display: flex;
+    flex-direction: column;
     flex-shrink: 0;
 }
 
@@ -184,6 +186,8 @@
     display: flex;
     align-items: center;
     gap: clamp(15px, 3vw, 20px);
+    height: 100%;
+    justify-content: space-between;
 }
 
 .trophy-icon-container {

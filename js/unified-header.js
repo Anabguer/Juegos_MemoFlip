@@ -31,10 +31,16 @@ function showTrophies() {
     window.location.href = 'trophies.html';
 }
 
+// Hacer la función global explícitamente
+window.showTrophies = showTrophies;
+
 // FUNCIÓN GLOBAL PARA MOSTRAR RANKING
 function showRanking() {
     window.location.href = 'ranking.html';
 }
+
+// Hacer la función global explícitamente
+window.showRanking = showRanking;
 
 // INICIALIZAR CABECERA EN TODAS LAS PÁGINAS
 function initUnifiedHeader() {
