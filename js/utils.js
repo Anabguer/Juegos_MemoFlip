@@ -56,10 +56,15 @@ const Storage = {
     const scores = this.getScores();
     let totalGames = 0, totalStars = 0;
     
-    Object.values(scores).forEach(score => {
+    console.log('🌟 DEBUG TOTAL STATS - Scores disponibles:', scores);
+    
+    Object.entries(scores).forEach(([level, score]) => {
+      console.log(`🌟 Nivel ${level}: ${score.bestStars} estrellas`);
       totalGames += score.timesPlayed;
       totalStars += score.bestStars;
     });
+    
+    console.log(`🌟 Total estrellas calculadas: ${totalStars}`);
     
     // Obtener total de trofeos
     let totalTrophies = 0;
