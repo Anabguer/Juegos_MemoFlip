@@ -106,11 +106,36 @@
 /* CONTENEDOR DE TROFEOS */
 .trophies-container {
     padding: 0 clamp(10px, 2vw, 15px) clamp(15px, 3vh, 20px);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: clamp(8px, 2vw, 12px);
+    justify-content: center;
+    align-items: flex-start;
     position: relative;
     z-index: 2;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 215, 0, 0.3) transparent;
+}
+
+/* Estilos para el scrollbar */
+.trophies-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.trophies-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.trophies-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.5);
+    border-radius: 4px;
+}
+
+.trophies-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.7);
 }
 
 /* TARJETA DE TROFEO */
@@ -124,6 +149,10 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    width: calc(33.333% - 12px);
+    min-width: 120px;
+    max-width: 150px;
+    flex-shrink: 0;
 }
 
 .trophy-card:hover {
