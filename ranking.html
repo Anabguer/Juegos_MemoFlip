@@ -36,6 +36,7 @@
         .home-floating-btn { position: fixed; top: 120px; left: 15px; z-index: 200; background: rgba(0, 0, 0, 0.8); border: 2px solid #ffd700; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s ease; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
         .home-floating-btn:hover { background: rgba(255, 215, 0, 0.2); transform: scale(1.1); }
         .home-floating-icon { width: 24px; height: 24px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); }
+        .close-icon { color: #ffd700; font-size: 20px; font-weight: bold; }
         .main-content { flex: 1; position: relative; height: calc(100vh - 90px); }
         .content-container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
     </style>
@@ -75,9 +76,9 @@
             </div>
         </header>
         
-        <!-- BOTÓN HOME FLOTANTE -->
-        <button class="home-floating-btn" onclick="window.location.href='index.html'" title="Volver al inicio">
-            <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
+        <!-- BOTÓN CERRAR FLOTANTE -->
+        <button class="home-floating-btn" onclick="window.history.back()" title="Cerrar">
+            <span class="close-icon">✕</span>
         </button>
         
         <!-- Main Content -->

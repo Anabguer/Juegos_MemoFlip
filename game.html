@@ -587,9 +587,16 @@
         
         if (worldParam && levelParam) {
             currentWorld = worldParam;
-            currentLevel = parseInt(levelParam);
-            currentLevelNumber = getRealLevelNumber(currentWorld, currentLevel);
-            console.log(`Cargando desde URL: Mundo ${currentWorld}, Nivel ${currentLevel}`);
+            currentLevelNumber = parseInt(levelParam); // Nivel global (1-12)
+            // Convertir nivel global a nivel local del mundo
+            if (currentWorld === 'ocean') {
+                currentLevel = currentLevelNumber; // Niveles 1-4
+            } else if (currentWorld === 'island') {
+                currentLevel = currentLevelNumber - 4; // Niveles 5-8 → 1-4
+            } else if (currentWorld === 'volcano') {
+                currentLevel = currentLevelNumber - 8; // Niveles 9-12 → 1-4
+            }
+            console.log(`Cargando desde URL: Mundo ${currentWorld}, Nivel Global ${currentLevelNumber}, Nivel Local ${currentLevel}`);
         } else {
             // Cargar progreso desde localStorage
             const savedWorld = localStorage.getItem('currentWorld');
@@ -1066,18 +1073,15 @@
         
         // FUNCIÓN PARA GUARDAR PROGRESO
         function saveProgress(stars) {
-            console.log(`🔥 GUARDANDO PROGRESO: ${stars} estrellas para nivel ${currentLevel} del mundo ${currentWorld}`);
+            console.log(`🔥 GUARDANDO PROGRESO: ${stars} estrellas para nivel ${currentLevelNumber} del mundo ${currentWorld}`);
             
-            // Usar únicamente el sistema Storage para mantener consistencia total
-            const levelNumber = getRealLevelNumber(currentWorld, currentLevel);
-            console.log(`🔥 Número de nivel calculado: ${levelNumber}`);
-            
-            const result = Storage.saveScore(levelNumber, gameState.moves, gameState.time, stars);
+            // Usar directamente el nivel global (1-12)
+            const result = Storage.saveScore(currentLevelNumber, gameState.moves, gameState.time, stars);
             console.log(`🔥 Resultado del guardado:`, result);
-            console.log(`🔥 Progreso guardado: Nivel ${levelNumber} con ${stars} estrellas`);
+            console.log(`🔥 Progreso guardado: Nivel ${currentLevelNumber} con ${stars} estrellas`);
             
             // Verificar que se guardó correctamente
-            const savedData = Storage.getBestScore(levelNumber);
+            const savedData = Storage.getBestScore(currentLevelNumber);
             console.log(`🔥 Datos guardados verificados:`, savedData);
             
             // Actualizar estadísticas del header
