@@ -11,8 +11,8 @@
 /* TARJETAS DE MUNDO - CENTRADAS CON TEXT-ALIGN */
 .world-card {
   position: absolute;
-  width: 260px !important;
-  height: 120px !important;
+  width: 260px;
+  height: 120px;
   cursor: pointer;
   transition: transform 0.3s ease;
   /* CENTRADO SIMPLE */
@@ -54,15 +54,15 @@
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
-  gap: 18px !important;
-  padding: 18px !important;
+  gap: 18px;
+  padding: 18px;
   box-sizing: border-box;
 }
 
 /* IMAGEN DEL MUNDO */
 .world-image {
-  width: 80px !important;
-  height: 80px !important;
+  width: 80px;
+  height: 80px;
   border-radius: 15px;
   object-fit: cover;
   border: 3px solid rgba(255,215,0,0.5);
@@ -79,8 +79,8 @@
 }
 
 .world-name {
-  color: #ffd700 !important;
-  font-size: 18px !important;
+  color: #ffd700;
+  font-size: 18px;
   font-weight: bold;
   margin: 0;
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);

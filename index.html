@@ -18,379 +18,7 @@
     
     <!-- CABECERA UNIFICADA -->
     <link rel="stylesheet" href="css/unified-header.css">
-    
-    <style>
-        /* CSS INLINE - HEADER UNIFICADO PERFECTO */
-        * { box-sizing: border-box; }
-        
-        /* FORZAR ACTUALIZACIÓN VISUAL DE ESTRELLAS */
-        #ocean-stars, #island-stars, #volcano-stars {
-            transition: transform 0.1s ease, color 0.1s ease;
-        }
-        
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-        }
-        
-        /* RESPETAR PREFERENCIAS DE MOVIMIENTO REDUCIDO */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            
-            .world-card:hover {
-                transform: none !important;
-            }
-            
-            .hud-btn:hover {
-                transform: none !important;
-            }
-        }
-        
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            width: 100vw;
-        }
-        
-        /* HEADER FIJO */
-        .game-hud {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-            height: 90px;
-            min-height: 90px;
-            max-height: 90px;
-            z-index: 100;
-            width: 100%;
-        }
-        
-        .hud-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .hud-left { flex: 0 0 auto; }
-        .hud-center { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        .hud-right { 
-            flex: 0 0 auto; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px;
-        }
-        
-        .logo-banner {
-            height: 60px;
-            width: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
-        
-        .hud-stats {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-            margin-top: 8px;
-        }
-        
-        .stat-item span {
-            line-height: 1;
-            vertical-align: middle;
-            margin-top: 8px; /* BAJAR EL NÚMERO PARA ALINEARLO CON EL ICONO */
-        }
-        
-        .hud-btn-img-large {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
-            margin-top: 8px;
-        }
-        
-        .hud-nav {
-            display: flex;
-            align-items: center;
-            margin-left: 10px;
-            padding-left: 10px;
-            border-left: 2px solid rgba(255, 215, 0, 0.3);
-            margin-top: 8px;
-        }
-        
-        .hud-btn-simple {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: 0.2s ease;
-        }
-        
-        .hud-btn-simple:hover {
-            background: rgba(255,255,255,0.1);
-            transform: scale(1.05);
-        }
-        
-        .hud-btn-img {
-            width: 28px;
-            height: 28px;
-            object-fit: contain;
-            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
-            margin-top: 8px;
-        }
-        
-        /* CONTENIDO PRINCIPAL */
-        .main-content {
-            flex: 1 !important;
-            position: relative !important;
-            height: calc(100vh - 90px) !important;
-            background: 
-                linear-gradient(135deg, rgba(26,26,46,0.4), rgba(22,33,62,0.4), rgba(15,52,96,0.4)),
-                url('images/worlds/world-selector-background.png') center/cover no-repeat,
-                linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
-        }
-        
-        .content-container {
-            position: relative !important;
-            z-index: 1 !important;
-            height: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            overflow: hidden !important;
-        }
-        
-        /* FORZAR CENTRADO ABSOLUTO DE TARJETAS */
-        .worlds-container {
-            position: absolute !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: clamp(80px, 12vh, 120px) !important;
-            padding: clamp(10px, 2vh, 20px) !important;
-            width: 100% !important;
-            max-width: 95vw !important;
-            box-sizing: border-box !important;
-        }
-        
-        .world-card {
-            position: relative !important;
-            margin: 0 auto !important;
-            width: 260px !important;
-            height: 120px !important;
-            left: auto !important;
-            right: auto !important;
-            top: auto !important;
-            margin-left: auto !important;
-            transform: none !important;
-        }
-        
-        /* SOBRESCRIBIR POSICIONES ESPECÍFICAS */
-        .world-card.volcano-pos {
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            margin-left: auto !important;
-        }
-        
-        .world-card.island-pos {
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            margin-left: auto !important;
-        }
-        
-        .world-card.ocean-pos {
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            margin-left: auto !important;
-        }
-        
-        .worlds-grid {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: clamp(80px, 12vh, 120px) !important;
-            width: 100% !important;
-            max-width: 400px !important;
-            margin: 0 auto !important;
-            padding: 0 !important;
-        }
-        
-        /* FORZAR CENTRADO EN MÓVIL */
-        @media (max-width: 768px) {
-            .worlds-container {
-                padding: 5px !important;
-                max-width: 98vw !important;
-                gap: clamp(60px, 8vh, 80px) !important;
-            }
-            
-            .world-card {
-                max-width: 350px !important;
-            }
-            
-            .worlds-grid {
-                max-width: 350px !important;
-                gap: clamp(60px, 8vh, 80px) !important;
-            }
-        }
-        
-        /* EFECTOS PARA LA PANTALLA PRINCIPAL */
-        
-        /* Estrellas que aparecen y desaparecen */
-        .floating-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        
-        .star {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 1), rgba(255, 215, 0, 0.5));
-            animation: star-blink 4s ease-in-out infinite;
-        }
-        
-        /* Estrellas en diferentes posiciones */
-        .star:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
-        .star:nth-child(2) { top: 30%; left: 80%; animation-delay: 1s; }
-        .star:nth-child(3) { top: 45%; left: 25%; animation-delay: 2s; }
-        .star:nth-child(4) { top: 60%; left: 70%; animation-delay: 3s; }
-        .star:nth-child(5) { top: 75%; left: 10%; animation-delay: 4s; }
-        .star:nth-child(6) { top: 85%; left: 85%; animation-delay: 5s; }
-        
-        @keyframes star-blink {
-            0%, 90%, 100% { 
-                opacity: 0; 
-                transform: scale(0);
-                box-shadow: none;
-            }
-            5% { 
-                opacity: 1; 
-                transform: scale(1);
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            }
-            10%, 80% { 
-                opacity: 1; 
-                transform: scale(1.2);
-                box-shadow: 0 0 15px rgba(255, 255, 255, 1);
-            }
-            85% { 
-                opacity: 0.5; 
-                transform: scale(0.8);
-                box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-            }
-        }
-        
-        /* Efectos en tarjetas de mundos */
-        .world-card {
-            animation: float-card 4s ease-in-out infinite !important;
-        }
-        
-        .world-card:nth-child(1) { animation-delay: 0s !important; }
-        .world-card:nth-child(2) { animation-delay: 1s !important; }
-        .world-card:nth-child(3) { animation-delay: 2s !important; }
-        
-        @keyframes float-card {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        
-        .world-card:hover {
-            transform: scale(1.05) translateY(-5px) !important;
-            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3) !important;
-            transition: all 0.3s ease !important;
-        }
-        
-        /* Partículas de energía cósmica */
-        .energy-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        
-        .energy-particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: cosmic-float 15s infinite linear;
-        }
-        
-        /* Partículas de diferentes colores cósmicos */
-        .energy-particle:nth-child(1) { 
-            width: 4px; height: 4px; 
-            top: 80%; left: 5%; 
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.8), rgba(255, 140, 0, 0.3));
-            animation-delay: 0s; 
-        }
-        .energy-particle:nth-child(2) { 
-            width: 3px; height: 3px; 
-            top: 85%; left: 95%; 
-            background: radial-gradient(circle, rgba(138, 43, 226, 0.7), rgba(75, 0, 130, 0.3));
-            animation-delay: 5s; 
-        }
-        .energy-particle:nth-child(3) { 
-            width: 5px; height: 5px; 
-            top: 90%; left: 85%; 
-            background: radial-gradient(circle, rgba(0, 255, 127, 0.6), rgba(34, 139, 34, 0.3));
-            animation-delay: 10s; 
-        }
-        
-        @keyframes cosmic-float {
-            0% { 
-                transform: translateY(0px) translateX(0px) rotate(0deg) scale(0.5);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            50% { 
-                transform: translateY(-50vh) translateX(30px) rotate(180deg) scale(1);
-                opacity: 0.8;
-            }
-            90% { opacity: 0.3; }
-            100% { 
-                transform: translateY(-100vh) translateX(60px) rotate(360deg) scale(1.5);
-                opacity: 0;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/global-styles.css">
     <link rel="stylesheet" href="css/world-selector.css?v=20250919080500">
     
     <!-- PWA -->
@@ -406,113 +34,88 @@
                 <div class="hud-left"></div>
                 
                 <div class="hud-center">
-      <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
-    </div>
+                    <img src="images/ui/banner.png" alt="MemoFlip" class="logo-banner">
+                </div>
                 
                 <div class="hud-right">
-                    <div class="hud-stats">
-                        <div class="stat-item">
-                            <img src="images/ui/star.png" alt="Stars" class="hud-btn-img-large">
-                            <span id="total-stars">0</span>
-                        </div>
-                        <div class="stat-item" onclick="showTrophies()" style="cursor: pointer;" title="Ver trofeos">
-                            <img src="images/ui/trofeo.png" alt="Trophies" class="hud-btn-img-large">
-                            <span id="total-trophies">0</span>
-                        </div>
-                    </div>
+                    <button class="hud-btn" onclick="window.location.href='trophies.html'" title="Trofeos">
+                        <span class="btn-icon">🏆</span>
+                        <span class="btn-number" id="trophy-count">0</span>
+                    </button>
                     
-                    <div class="hud-nav">
-                        <button class="hud-btn-simple" onclick="showRanking()">
-                            <img src="images/ui/ranking.png" alt="Ranking" class="hud-btn-img">
-                        </button>
-                    </div>
-        </div>
-      </div>
-    </header>
+                    <button class="hud-btn" onclick="window.location.href='ranking.html'" title="Ranking">
+                        <span class="btn-icon">🏅</span>
+                    </button>
+                    
+                    <button class="hud-btn" title="Estrellas">
+                        <span class="btn-icon">⭐</span>
+                        <span class="btn-number" id="star-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Fondo del selector de mundos -->
-            <div class="world-background" style="background: url('images/worlds/world-selector-background.png') center/cover no-repeat, linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);"></div>
-            
-            <!-- EFECTOS DE LA PANTALLA PRINCIPAL -->
-            <div class="floating-stars">
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-            </div>
-            
-            <div class="energy-particles">
-                <div class="energy-particle"></div>
-                <div class="energy-particle"></div>
-                <div class="energy-particle"></div>
-            </div>
-            
-            <div class="content-container">
-                <!-- Contenedor de mundos -->
-                <div class="worlds-container">
-                    <!-- VOLCÁN (ARRIBA) -->
-                    <div class="world-card volcano-pos locked" data-world="volcano" id="volcano-card">
-                        <div class="world-card-inner">
-                            <div class="world-card-front">
-                                <img src="images/cards/volcano/portada.png" alt="Mundo Volcán" class="world-image">
-                                <div class="world-info">
-                                    <h3 class="world-name">Volcán Ardiente</h3>
-                                    <div class="world-stats">
-                                        <div class="stat">
-                                            <img src="images/ui/star.png" alt="Stars" class="stat-icon">
-                                            <span id="volcano-stars">0</span>/16
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="world-lock" id="volcano-lock">
-                                    <img src="images/ui/candado.png" alt="Bloqueado" class="lock-icon">
-                                    <div class="lock-text">Requiere <span id="volcano-required">12</span> estrellas</div>
-  </div>
-      </div>
-    </div>
-  </div>
+            <div class="worlds-grid">
+                <!-- MUNDO OCÉANO -->
+                <div class="world-card" onclick="selectWorld('ocean')">
+                    <span class="world-icon">🌊</span>
+                    <h2 class="world-title">Mundo Océano</h2>
+                    <p class="world-description">Sumérgete en las profundidades del océano y encuentra las criaturas marinas más fascinantes.</p>
+                    <div class="world-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Estrellas</div>
+                            <div class="stat-value" id="ocean-stars">0/12</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Niveles</div>
+                            <div class="stat-value">4</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Dificultad</div>
+                            <div class="stat-value">Fácil</div>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- ISLA (MEDIO) -->
-                    <div class="world-card island-pos locked" data-world="island" id="island-card">
-                        <div class="world-card-inner">
-                            <div class="world-card-front">
-                                <img src="images/cards/island/portada.png" alt="Mundo Isla" class="world-image">
-                                <div class="world-info">
-                                    <h3 class="world-name">Isla Tropical</h3>
-                                    <div class="world-stats">
-                                        <div class="stat">
-                                            <img src="images/ui/star.png" alt="Stars" class="stat-icon">
-                                            <span id="island-stars">0</span>/16
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="world-lock" id="island-lock">
-                                    <img src="images/ui/candado.png" alt="Bloqueado" class="lock-icon">
-                                    <div class="lock-text">Requiere <span id="island-required">6</span> estrellas</div>
-      </div>
-      </div>
-    </div>
-  </div>
+                <!-- MUNDO ISLA -->
+                <div class="world-card locked" onclick="selectWorld('island')">
+                    <span class="world-icon">🏝️</span>
+                    <h2 class="world-title">Isla Tropical</h2>
+                    <p class="world-description">Explora una isla tropical llena de vida salvaje y tesoros ocultos.</p>
+                    <div class="world-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Estrellas</div>
+                            <div class="stat-value" id="island-stars">0/16</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Niveles</div>
+                            <div class="stat-value">4</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Dificultad</div>
+                            <div class="stat-value">Media</div>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- OCÉANO (ABAJO) -->
-                    <div class="world-card ocean-pos" data-world="ocean" id="ocean-card">
-                        <div class="world-card-inner">
-                            <div class="world-card-front">
-                                <img src="images/cards/ocean/portada.png" alt="Mundo Océano" class="world-image">
-                                <div class="world-info">
-                                    <h3 class="world-name">Océano Profundo</h3>
-                                    <div class="world-stats">
-                                        <div class="stat">
-                                            <img src="images/ui/star.png" alt="Stars" class="stat-icon">
-                                            <span id="ocean-stars">0</span>/12
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <!-- MUNDO VOLCÁN -->
+                <div class="world-card locked" onclick="selectWorld('volcano')">
+                    <span class="world-icon">🌋</span>
+                    <h2 class="world-title">Volcán Ardiente</h2>
+                    <p class="world-description">Desafía el calor del volcán y descubre los secretos de las profundidades.</p>
+                    <div class="world-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Estrellas</div>
+                            <div class="stat-value" id="volcano-stars">0/20</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Niveles</div>
+                            <div class="stat-value">4</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Dificultad</div>
+                            <div class="stat-value">Difícil</div>
                         </div>
                     </div>
                 </div>
@@ -520,160 +123,35 @@
         </main>
     </div>
 
-    <!-- Scripts -->
-  <script src="js/settings.js"></script>
-  <script src="js/utils.js"></script>
+    <!-- SCRIPTS -->
+    <script src="js/constants.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/utils.js"></script>
     <script src="js/trophy-system.js"></script>
-    <script src="js/ranking-system.js"></script>
-    <script src="js/game-config.js"></script>
-    <script src="js/world-selector.js"></script>
     
     <script>
-        // Funciones del header
-        function showRanking() {
-            window.location.href = 'ranking.html';
-        }
-        
-        // Actualizar estadísticas
-        function updateHeaderStats() {
-            const totalStats = Storage.getTotalStats();
-            const totalStarsElement = document.getElementById('total-stars');
-            const totalTrophiesElement = document.getElementById('total-trophies');
+        // FUNCIONES DEL MUNDO SELECTOR
+        function selectWorld(world) {
+            const worldConfig = WORLDS[world.toUpperCase()];
+            const requiredStars = worldConfig.requiredStars;
+            const currentStars = Storage.getTotalStats().totalStars;
             
-            if (totalStarsElement) totalStarsElement.textContent = totalStats.totalStars;
-            if (totalTrophiesElement) totalTrophiesElement.textContent = totalStats.totalTrophies;
-        }
-        
-        // ACTUALIZAR ESTADÍSTICAS DE CADA MUNDO INDIVIDUAL
-        function updateWorldStats() {
-            // Obtener scores del localStorage
-            const scores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
-            console.log('🌍 ACTUALIZANDO ESTADÍSTICAS DE MUNDOS...');
-            console.log('🌍 Scores obtenidos:', scores);
-            
-            // Calcular estrellas del mundo océano (niveles 1-4)
-            let oceanStars = 0;
-            for (let i = 1; i <= 4; i++) {
-                if (scores[i] && scores[i].bestStars > 0) {
-                    oceanStars += scores[i].bestStars;
+            if (currentStars >= requiredStars) {
+                // Mundo desbloqueado
+                if (world === 'ocean') {
+                    window.location.href = 'world-ocean.html';
+                } else if (world === 'island') {
+                    window.location.href = 'world-island.html';
+                } else if (world === 'volcano') {
+                    window.location.href = 'world-volcano.html';
                 }
-            }
-            
-            // Calcular TODOS los trofeos conseguidos
-            const allTrophiesData = JSON.parse(localStorage.getItem('memoflip_trophies') || '{}');
-            const totalTrophiesEarned = Object.keys(allTrophiesData).length;
-            console.log('🌍 Total trofeos conseguidos:', totalTrophiesEarned, allTrophiesData);
-            
-            // Actualizar elemento del mundo océano
-            const oceanStarsElement = document.getElementById('ocean-stars');
-            if (oceanStarsElement) {
-                oceanStarsElement.textContent = oceanStars;
-                console.log('🌍 Estrellas del océano actualizadas:', oceanStars);
-                
-                // FORZAR RE-RENDERIZADO VISUAL
-                oceanStarsElement.style.transform = 'scale(1.05)';
-                setTimeout(() => {
-                    oceanStarsElement.style.transform = 'scale(1)';
-                }, 100);
-            }
-            
-            // Trofeos del océano eliminados
-            
-        // Calcular estrellas del mundo isla (niveles 5-8)
-        let islandStars = 0;
-        for (let i = 5; i <= 8; i++) {
-            if (scores[i] && scores[i].bestStars > 0) {
-                islandStars += scores[i].bestStars;
-            }
-        }
-            
-            // Usar los mismos trofeos para todos los mundos
-            
-            // Actualizar elemento del mundo isla
-            const islandStarsElement = document.getElementById('island-stars');
-            if (islandStarsElement) {
-                islandStarsElement.textContent = islandStars;
-                // FORZAR RE-RENDERIZADO VISUAL
-                islandStarsElement.style.transform = 'scale(1.05)';
-                setTimeout(() => {
-                    islandStarsElement.style.transform = 'scale(1)';
-                }, 100);
-            }
-            
-            // Trofeos de la isla eliminados
-            
-        // Calcular estrellas del mundo volcán (niveles 9-12)
-        let volcanoStars = 0;
-        for (let i = 9; i <= 12; i++) {
-            if (scores[i] && scores[i].bestStars > 0) {
-                volcanoStars += scores[i].bestStars;
+            } else {
+                // Mundo bloqueado - mostrar modal
+                showWorldLockedModal(worldConfig.displayName, requiredStars, currentStars);
             }
         }
         
-        // Actualizar elemento del mundo volcán
-        const volcanoStarsElement = document.getElementById('volcano-stars');
-        if (volcanoStarsElement) {
-            volcanoStarsElement.textContent = volcanoStars;
-            // FORZAR RE-RENDERIZADO VISUAL
-            volcanoStarsElement.style.transform = 'scale(1.05)';
-            setTimeout(() => {
-                volcanoStarsElement.style.transform = 'scale(1)';
-            }, 100);
-        }
-            
-            // Trofeos del volcán eliminados
-        }
-        
-        // DETECTAR CUANDO SE REGRESA DEL JUEGO Y ACTUALIZAR ESTADÍSTICAS
-        window.addEventListener('focus', function() {
-            setTimeout(() => {
-                updateHeaderStats();
-                updateWorldStats();
-            }, 100);
-        });
-        
-        // ACTUALIZAR ESTADÍSTICAS CUANDO CAMBIA EL LOCALSTORAGE
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'memoflip_scores') {
-                setTimeout(() => {
-                    updateHeaderStats();
-                    updateWorldStats();
-                }, 100);
-            }
-        });
-        
-        // ACTUALIZAR ESTADÍSTICAS PERIÓDICAMENTE (cada 2 segundos)
-        setInterval(() => {
-            updateHeaderStats();
-            updateWorldStats();
-        }, 2000);
-        
-        // Inicializar página
-        document.addEventListener('DOMContentLoaded', function() {
-            // ESPERAR UN POCO PARA ASEGURAR QUE TODO ESTÉ CARGADO
-            setTimeout(() => {
-                updateHeaderStats();
-                updateWorldStats();
-                
-                // Inicializar selector de mundos
-                if (typeof initWorldSelector === 'function') {
-                    initWorldSelector();
-                }
-                
-                // Actualizar estados de mundos
-                updateWorldStates();
-            }, 500);
-        });
-        
-        // RESPALDO - También ejecutar cuando la ventana esté completamente cargada
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                updateHeaderStats();
-                updateWorldStats();
-            }, 200);
-        });
-        
-        // MODAL PARA MUNDOS BLOQUEADOS
+        // FUNCIÓN PARA MOSTRAR MODAL DE MUNDO BLOQUEADO
         function showWorldLockedModal(worldName, requiredStars, currentStars) {
             const modal = document.createElement('div');
             modal.className = 'world-locked-modal';
@@ -703,102 +181,6 @@
                     </div>
                 </div>
             `;
-            
-            // Agregar estilos
-            const style = document.createElement('style');
-            style.textContent = `
-                .world-locked-modal {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    z-index: 1000;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-                .modal-backdrop {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.8);
-                    backdrop-filter: blur(5px);
-                }
-                .modal-content {
-                    position: relative;
-                    background: linear-gradient(135deg, #1a1a2e, #16213e);
-                    border: 2px solid #ffd700;
-                    border-radius: 20px;
-                    padding: 20px;
-                    max-width: 400px;
-                    width: 90%;
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-                    animation: modalSlideIn 0.3s ease-out;
-                }
-                @keyframes modalSlideIn {
-                    from { transform: translateY(-50px); opacity: 0; }
-                    to { transform: translateY(0); opacity: 1; }
-                }
-                .modal-header h2 {
-                    color: #ffd700;
-                    margin: 0 0 15px 0;
-                    text-align: center;
-                    font-size: 1.5em;
-                }
-                .modal-body {
-                    color: white;
-                    text-align: center;
-                    margin-bottom: 20px;
-                }
-                .modal-body p {
-                    margin: 10px 0;
-                    line-height: 1.5;
-                }
-                .stars-info {
-                    background: rgba(255, 215, 0, 0.1);
-                    border-radius: 10px;
-                    padding: 15px;
-                    margin: 15px 0;
-                }
-                .star-item {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin: 8px 0;
-                    font-size: 1.1em;
-                }
-                .star-icon, .heart-icon {
-                    margin-right: 10px;
-                    font-size: 1.2em;
-                }
-                .motivation {
-                    color: #ffd700;
-                    font-weight: bold;
-                    font-style: italic;
-                }
-                .modal-footer {
-                    text-align: center;
-                }
-                .modal-btn {
-                    background: linear-gradient(135deg, #ffd700, #ffed4e);
-                    color: #1a1a2e;
-                    border: none;
-                    padding: 12px 30px;
-                    border-radius: 25px;
-                    font-size: 1.1em;
-                    font-weight: bold;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                }
-                .modal-btn:hover {
-                    transform: scale(1.05);
-                    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-                }
-            `;
-            document.head.appendChild(style);
             document.body.appendChild(modal);
         }
         
@@ -808,6 +190,139 @@
                 modal.remove();
             }
         }
+        
+        // ACTUALIZAR ESTADÍSTICAS DE MUNDOS
+        function updateWorldStats() {
+            const scores = Storage.getScores();
+            
+            // Calcular estrellas del mundo océano (niveles 1-4)
+            let oceanStars = 0;
+            for (let i = WORLDS.OCEAN.startLevel; i <= WORLDS.OCEAN.endLevel; i++) {
+                if (scores[i] && scores[i].bestStars > 0) {
+                    oceanStars += scores[i].bestStars;
+                }
+            }
+            
+            // Actualizar elemento del mundo océano
+            const oceanStarsElement = document.getElementById('ocean-stars');
+            if (oceanStarsElement) {
+                oceanStarsElement.textContent = oceanStars;
+                // FORZAR RE-RENDERIZADO VISUAL
+                oceanStarsElement.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    oceanStarsElement.style.transform = 'scale(1)';
+                }, 100);
+            }
+            
+            // Calcular estrellas del mundo isla (niveles 5-8)
+            let islandStars = 0;
+            for (let i = WORLDS.ISLAND.startLevel; i <= WORLDS.ISLAND.endLevel; i++) {
+                if (scores[i] && scores[i].bestStars > 0) {
+                    islandStars += scores[i].bestStars;
+                }
+            }
+            
+            // Actualizar elemento del mundo isla
+            const islandStarsElement = document.getElementById('island-stars');
+            if (islandStarsElement) {
+                islandStarsElement.textContent = islandStars;
+                // FORZAR RE-RENDERIZADO VISUAL
+                islandStarsElement.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    islandStarsElement.style.transform = 'scale(1)';
+                }, 100);
+            }
+            
+            // Calcular estrellas del mundo volcán (niveles 9-12)
+            let volcanoStars = 0;
+            for (let i = WORLDS.VOLCANO.startLevel; i <= WORLDS.VOLCANO.endLevel; i++) {
+                if (scores[i] && scores[i].bestStars > 0) {
+                    volcanoStars += scores[i].bestStars;
+                }
+            }
+            
+            // Actualizar elemento del mundo volcán
+            const volcanoStarsElement = document.getElementById('volcano-stars');
+            if (volcanoStarsElement) {
+                volcanoStarsElement.textContent = volcanoStars;
+                // FORZAR RE-RENDERIZADO VISUAL
+                volcanoStarsElement.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    volcanoStarsElement.style.transform = 'scale(1)';
+                }, 100);
+            }
+            
+            // ACTUALIZAR ESTADO DE MUNDOS (BLOQUEADO/DESBLOQUEADO)
+            const currentStars = Storage.getTotalStats().totalStars;
+            
+            // Mundo Isla - requiere estrellas según configuración
+            const islandCard = document.querySelector('.world-card:nth-child(2)');
+            if (islandCard) {
+                if (currentStars >= WORLDS.ISLAND.requiredStars) {
+                    islandCard.classList.remove('locked');
+                } else {
+                    islandCard.classList.add('locked');
+                }
+            }
+            
+            // Mundo Volcán - requiere estrellas según configuración
+            const volcanoCard = document.querySelector('.world-card:nth-child(3)');
+            if (volcanoCard) {
+                if (currentStars >= WORLDS.VOLCANO.requiredStars) {
+                    volcanoCard.classList.remove('locked');
+                } else {
+                    volcanoCard.classList.add('locked');
+                }
+            }
+        }
+        
+        // ACTUALIZAR ESTADÍSTICAS DEL HEADER
+        function updateHeaderStats() {
+            const stats = Storage.getTotalStats();
+            
+            const starCountElement = document.getElementById('star-count');
+            if (starCountElement) {
+                starCountElement.textContent = stats.totalStars;
+            }
+            
+            const trophyCountElement = document.getElementById('trophy-count');
+            if (trophyCountElement) {
+                trophyCountElement.textContent = stats.totalTrophies;
+            }
+        }
+        
+        // DETECTAR CUANDO SE REGRESA DEL JUEGO Y ACTUALIZAR ESTADÍSTICAS
+        window.addEventListener('focus', function() {
+            setTimeout(() => {
+                updateHeaderStats();
+                updateWorldStats();
+            }, 100);
+        });
+        
+        // ACTUALIZAR ESTADÍSTICAS CUANDO CAMBIA EL LOCALSTORAGE
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'memoflip_scores') {
+                setTimeout(() => {
+                    updateHeaderStats();
+                    updateWorldStats();
+                }, 100);
+            }
+        });
+        
+        // ACTUALIZAR ESTADÍSTICAS PERIÓDICAMENTE
+        setInterval(() => {
+            updateHeaderStats();
+            updateWorldStats();
+        }, UPDATE_CONFIG.STATS_UPDATE_INTERVAL);
+        
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            // ESPERAR UN POCO PARA ASEGURAR QUE TODO ESTÉ CARGADO
+            setTimeout(() => {
+                updateHeaderStats();
+                updateWorldStats();
+            }, 100);
+        });
         
         // Las funciones están en world-selector.js
     </script>
