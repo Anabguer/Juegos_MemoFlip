@@ -1074,6 +1074,7 @@
         // FUNCIÓN PARA GUARDAR PROGRESO
         function saveProgress(stars) {
             console.log(`🔥 GUARDANDO PROGRESO: ${stars} estrellas para nivel ${currentLevelNumber} del mundo ${currentWorld}`);
+            console.log(`🔥 DEBUG - currentWorld: ${currentWorld}, currentLevelNumber: ${currentLevelNumber}, currentLevel: ${currentLevel}`);
             
             // Usar directamente el nivel global (1-12)
             const result = Storage.saveScore(currentLevelNumber, gameState.moves, gameState.time, stars);
@@ -1083,6 +1084,10 @@
             // Verificar que se guardó correctamente
             const savedData = Storage.getBestScore(currentLevelNumber);
             console.log(`🔥 Datos guardados verificados:`, savedData);
+            
+            // Verificar localStorage completo
+            const allScores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
+            console.log(`🔥 localStorage completo después del guardado:`, allScores);
             
             // Actualizar estadísticas del header
             updateHeaderStats();
