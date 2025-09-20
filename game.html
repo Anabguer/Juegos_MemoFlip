@@ -650,11 +650,11 @@
             // Convertir nivel global a nivel local del mundo
             let localLevel;
             if (currentWorld === 'ocean') {
-                localLevel = currentLevel; // Niveles 1-4
+                localLevel = currentLevelNumber; // Niveles 1-4
             } else if (currentWorld === 'island') {
-                localLevel = currentLevel - 4; // Niveles 5-8 → 1-4
+                localLevel = currentLevelNumber - 4; // Niveles 5-8 → 1-4
             } else if (currentWorld === 'volcano') {
-                localLevel = currentLevel - 8; // Niveles 9-12 → 1-4
+                localLevel = currentLevelNumber - 8; // Niveles 9-12 → 1-4
             }
             
             console.log(`🔥 DEBUG CREATE CARDS: currentWorld=${currentWorld}, currentLevel=${currentLevel}, currentLevelNumber=${currentLevelNumber}, localLevel=${localLevel}`);
@@ -841,11 +841,11 @@
             // Verificar si el juego está completo usando la configuración correcta
             let localLevel;
             if (currentWorld === 'ocean') {
-                localLevel = currentLevel; // Niveles 1-4
+                localLevel = currentLevelNumber; // Niveles 1-4
             } else if (currentWorld === 'island') {
-                localLevel = currentLevel - 4; // Niveles 5-8 → 1-4
+                localLevel = currentLevelNumber - 4; // Niveles 5-8 → 1-4
             } else if (currentWorld === 'volcano') {
-                localLevel = currentLevel - 8; // Niveles 9-12 → 1-4
+                localLevel = currentLevelNumber - 8; // Niveles 9-12 → 1-4
             }
             
             const levelConfig = getLevelConfig(currentWorld, localLevel);
