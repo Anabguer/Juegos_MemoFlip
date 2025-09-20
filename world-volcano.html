@@ -1,176 +1,864 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <title>MemoFlip - Mundo Volcán</title>
-  
-  <!-- CABECERA UNIFICADA -->
-  <link rel="stylesheet" href="css/unified-header.css">
-  
-  <style>
-    /* CSS INLINE - HEADER UNIFICADO PERFECTO */
-    * { box-sizing: border-box; }
-    body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
-    .app-container { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
-    .game-hud { display: flex; align-items: center; padding: 15px; background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2)); backdrop-filter: blur(10px); border-bottom: 2px solid rgba(255, 215, 0, 0.3); height: 90px; min-height: 90px; max-height: 90px; z-index: 100; width: 100%; }
-    .hud-content { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100%; }
-    .hud-left { flex: 0 0 auto; }
-    .hud-center { flex: 1; display: flex; flex-direction: column; align-items: center; }
-    .hud-right { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; }
-    .logo-banner { height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-    .hud-stats { display: flex; gap: 10px; align-items: center; }
-    .stat-item { display: flex; align-items: center; gap: 5px; color: white; font-size: 14px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8); margin-top: 8px; }
-    .stat-item span { line-height: 1; vertical-align: middle; margin-top: 8px; /* BAJAR EL NÚMERO PARA ALINEARLO CON EL ICONO */ }
-    .hud-btn-img-large { width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); margin-top: 8px; }
-    .hud-nav { display: flex; align-items: center; margin-left: 10px; padding-left: 10px; border-left: 2px solid rgba(255, 215, 0, 0.3); margin-top: 8px; }
-    .hud-btn-simple { background: none; border: none; color: white; cursor: pointer; padding: 8px; border-radius: 8px; transition: 0.2s ease; }
-    .hud-btn-simple:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
-    .hud-btn-img { width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); margin-top: 8px; }
-    .home-floating-btn { position: fixed; top: 120px; left: 15px; z-index: 200; background: rgba(0, 0, 0, 0.8); border: 2px solid #ffd700; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s ease; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
-    .home-floating-btn:hover { background: rgba(255, 215, 0, 0.2); transform: scale(1.1); }
-    .home-floating-icon { width: 24px; height: 24px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); }
-    .main-content { flex: 1; position: relative; height: calc(100vh - 90px); background: linear-gradient(135deg, rgba(26,46,46,0.4), rgba(22,62,62,0.4), rgba(15,96,96,0.4)), url('images/worlds/volcano-world-clean.png') center/cover no-repeat, linear-gradient(135deg, #1a2e2e, #163e3e, #0f6060); }
-    .content-container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo Volcán - MemoFlip</title>
+    
+    <!-- CABECERA UNIFICADA -->
+    <link rel="stylesheet" href="css/unified-header.css">
+    
+    <style>
+        /* CSS INLINE - HEADER UNIFICADO PERFECTO */
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+        
+        /* PANTALLA DE CARGA - OCULTAR TODO HASTA QUE ESTÉ LISTO */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.2s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        /* OCULTAR CONTENIDO PRINCIPAL HASTA QUE ESTÉ LISTO */
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .main-content.ready {
+            opacity: 1;
+        }
+        .app-container { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
+        .game-hud { display: flex; align-items: center; padding: 15px; background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2)); backdrop-filter: blur(10px); border-bottom: 2px solid rgba(255, 215, 0, 0.3); height: 90px; min-height: 90px; max-height: 90px; z-index: 100; width: 100%; }
+        .hud-content { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100%; }
+        .hud-left { flex: 0 0 auto; }
+        .hud-center { flex: 1; display: flex; flex-direction: column; align-items: center; }
+        .hud-right { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; }
+        .logo-banner { height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        .hud-stats { display: flex; gap: 10px; align-items: center; }
+        .stat-item { display: flex; align-items: center; gap: 5px; color: white; font-size: 14px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8); margin-top: 8px; }
+        .stat-item span { line-height: 1; vertical-align: middle; margin-top: 8px; /* BAJAR EL NÚMERO PARA ALINEARLO CON EL ICONO */ }
+        .hud-btn-img-large { width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); margin-top: 8px; }
+        .hud-nav { display: flex; align-items: center; margin-left: 10px; padding-left: 10px; border-left: 2px solid rgba(255, 215, 0, 0.3); margin-top: 8px; }
+        .hud-btn-simple { background: none; border: none; color: white; cursor: pointer; padding: 8px; border-radius: 8px; transition: 0.2s ease; }
+        .hud-btn-simple:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
+        .hud-btn-img { width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); margin-top: 8px; }
+        .home-floating-btn { position: fixed; top: 120px; left: 15px; z-index: 200; background: rgba(0, 0, 0, 0.8); border: 2px solid #ffd700; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s ease; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+        .home-floating-btn:hover { background: rgba(255, 215, 0, 0.2); transform: scale(1.1); }
+        .home-floating-icon { width: 24px; height: 24px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); }
+        .main-content { flex: 1; position: relative; height: calc(100vh - 90px); background: linear-gradient(135deg, rgba(26,26,46,0.4), rgba(22,33,62,0.4), rgba(15,52,96,0.4)), url('images/worlds/ocean-world-clean.png') center/cover no-repeat, linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+        .content-container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* MAPA DE MUNDO Y NODOS */
+        .world-map-container {
+            position: relative !important;
+            z-index: 1 !important;
+            height: calc(100vh - 90px) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            overflow: hidden !important;
+        }
+        
+        .level-path {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: clamp(10px, 2vh, 20px) !important;
+            padding: clamp(10px, 2vh, 20px) 2vw !important;
+            position: relative !important;
+            z-index: 2 !important;
+        }
+        
+        .level-node {
+            width: clamp(80px, 12vw, 100px) !important;
+            height: clamp(80px, 12vw, 100px) !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            position: relative !important;
+            z-index: 2 !important;
+            /* SIN transición - nodos estáticos por defecto */
+            flex-shrink: 0 !important;
+            /* background: linear-gradient(45deg, #ff6b35, #7bd389) !important; */
+            border: 5px solid white !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: white !important;
+            font-family: system-ui, -apple-system, sans-serif !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        .level-node.boss-level {
+            /* background: linear-gradient(45deg, #9b59b6, #e74c3c) !important; */
+            width: clamp(95px, 14vw, 115px) !important;
+            height: clamp(95px, 14vw, 115px) !important;
+            border-color: gold !important;
+            border-width: 6px !important;
+            /* SIN animación - boss quieto */
+        }
+        
+        .level-number {
+            position: absolute !important;
+            bottom: -8px !important;
+            right: -8px !important;
+            font-size: clamp(14px, 3vw, 18px) !important;
+            font-weight: 900 !important;
+            margin: 0 !important;
+            color: white !important;
+            text-shadow: 
+                2px 2px 6px rgba(0,0,0,1),
+                -1px -1px 2px rgba(0,0,0,0.8) !important;
+            line-height: 1 !important;
+            font-family: system-ui, -apple-system, sans-serif !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: rgba(0, 0, 0, 0.8) !important;
+            border-radius: 50% !important;
+            width: 24px !important;
+            height: 24px !important;
+            backdrop-filter: blur(5px) !important;
+            border: 2px solid rgba(255, 215, 0, 0.8) !important;
+            z-index: 3 !important;
+        }
+        
+        .stars-display {
+            position: absolute !important;
+            bottom: -8px !important;
+            left: -8px !important;
+            font-size: clamp(10px, 2vw, 12px) !important;
+            color: #ffd700 !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+            background: rgba(0, 0, 0, 0.7) !important;
+            padding: 2px 6px !important;
+            border-radius: 10px !important;
+            border: 1px solid rgba(255, 215, 0, 0.5) !important;
+            z-index: 3 !important;
+            min-width: 30px !important;
+            text-align: center !important;
+        }
+        
+        /* Mostrar estrellas vacías cuando no hay contenido */
+        .stars-display:empty::before {
+            content: "☆☆☆" !important;
+            color: rgba(255, 215, 0, 0.3) !important;
+            font-size: clamp(8px, 1.5vw, 10px) !important;
+        }
+        
+        .path-connector {
+            width: 4px !important;
+            height: clamp(15px, 3vh, 25px) !important;
+            background: linear-gradient(to bottom, #ffd700, rgba(255, 215, 0, 0.3)) !important;
+            margin: clamp(5px, 1vh, 10px) 0 !important;
+            border-radius: 2px !important;
+        }
+        
+        /* ESTADOS CORRECTOS DESDE EL INICIO - SIN FLICKER */
+        .level-node[data-level="1"] {
+            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        .level-node[data-level="2"] {
+            background-image: url('images/ui/nodos/level-ocean-locked.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        .level-node[data-level="3"] {
+            background-image: url('images/ui/nodos/level-ocean-locked.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        .level-node[data-level="4"] {
+            background-image: url('images/ui/nodos/level-ocean-locked.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        /* Estados específicos que JS aplicará - MAYOR ESPECIFICIDAD */
+        .level-node[data-level="2"].available {
+            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+        }
+        
+        .level-node[data-level="3"].available {
+            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+        }
+        
+        .level-node[data-level="4"].available {
+            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+        }
+        
+        .level-node.unlocked {
+            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+        }
+        
+        .level-node[data-level="1"].completed {
+            background-image: url('images/ui/nodos/level-completed.png') !important;
+        }
+        
+        .level-node[data-level="2"].completed {
+            background-image: url('images/ui/nodos/level-completed.png') !important;
+        }
+        
+        .level-node[data-level="3"].completed {
+            background-image: url('images/ui/nodos/level-completed.png') !important;
+        }
+        
+        .level-node[data-level="4"].completed {
+            background-image: url('images/ui/nodos/level-boss.png') !important;
+        }
+        
+        .level-node.completed {
+            background-image: url('images/ui/nodos/level-completed.png') !important;
+        }
+        
+        .level-node.boss-level.unlocked {
+            background-image: url('images/ui/nodos/level-boss.png') !important;
+        }
+        
+        /* Estados de nodos */
+        .level-node.locked {
+            background-image: url('images/ui/nodos/level-ocean-locked.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        .level-node.completed {
+            background-image: url('images/ui/nodos/level-completed.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+        
+        /* EFECTOS TEMÁTICOS DEL OCÉANO */
+        
+        /* Burbujitas flotantes */
+        .ocean-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .bubble {
+            position: absolute;
+            background: radial-gradient(circle, rgba(173, 216, 230, 0.6), rgba(135, 206, 235, 0.3));
+            border-radius: 50%;
+            animation: float-up 6s infinite linear;
+            box-shadow: 0 0 10px rgba(173, 216, 230, 0.5);
+        }
+        
+        .bubble:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; animation-duration: 15s; }
+        .bubble:nth-child(2) { width: 15px; height: 15px; left: 20%; animation-delay: 3s; animation-duration: 12s; }
+        .bubble:nth-child(3) { width: 25px; height: 25px; left: 70%; animation-delay: 6s; animation-duration: 18s; }
+        .bubble:nth-child(4) { width: 12px; height: 12px; left: 80%; animation-delay: 9s; animation-duration: 10s; }
+        .bubble:nth-child(5) { width: 18px; height: 18px; left: 30%; animation-delay: 12s; animation-duration: 20s; }
+        .bubble:nth-child(6) { width: 22px; height: 22px; left: 60%; animation-delay: 4s; animation-duration: 14s; }
+        
+        @keyframes float-up {
+            0% { 
+                bottom: -30px; 
+                opacity: 0; 
+                transform: translateX(0px) scale(0.5);
+            }
+            10% { 
+                opacity: 1; 
+            }
+            90% { 
+                opacity: 1; 
+            }
+            100% { 
+                bottom: 100vh; 
+                opacity: 0; 
+                transform: translateX(20px) scale(1.2);
+            }
+        }
+        
+        /* Efectos de ondas de agua */
+        .water-waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(0deg, rgba(0, 191, 255, 0.2), transparent);
+            z-index: 1;
+        }
+        
+        .water-waves::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(0, 191, 255, 0.1)"/></svg>') repeat-x;
+            animation: wave-movement 10s ease-in-out infinite;
+        }
+        
+        @keyframes wave-movement {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-100px); }
+        }
+        
+        /* Sombras temáticas en nodos - TODOS QUIETOS POR DEFECTO */
+        .level-node {
+            box-shadow: 
+                0 10px 25px rgba(0, 191, 255, 0.3),
+                0 0 20px rgba(173, 216, 230, 0.2),
+                inset 0 0 20px rgba(255, 255, 255, 0.1) !important;
+            /* SIN animación - nodos estáticos */
+        }
+        
+        /* SOLO el nodo activo se mueve (el disponible para jugar) */
+        .level-node.available {
+            animation: 
+                ocean-pulse 3s ease-in-out infinite alternate,
+                gentle-sway 4s ease-in-out infinite,
+                breathing 2s ease-in-out infinite alternate !important;
+            box-shadow: 
+                0 15px 35px rgba(0, 255, 127, 0.4),
+                0 0 25px rgba(0, 255, 127, 0.3),
+                inset 0 0 25px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Nodos bloqueados - quietos y apagados */
+        .level-node.locked {
+            box-shadow: 
+                0 5px 15px rgba(100, 100, 100, 0.3),
+                inset 0 0 10px rgba(0, 0, 0, 0.2) !important;
+            filter: grayscale(100%) brightness(0.6) !important;
+        }
+        
+        /* Nodos completados - quietos con brillo dorado */
+        .level-node.completed {
+            box-shadow: 
+                0 10px 30px rgba(255, 215, 0, 0.4),
+                0 0 20px rgba(255, 215, 0, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        .level-node:hover {
+            transform: scale(1.15) rotate(3deg) !important;
+            box-shadow: 
+                0 20px 45px rgba(0, 191, 255, 0.6),
+                0 0 40px rgba(173, 216, 230, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.4) !important;
+            animation-play-state: paused !important;
+        }
+        
+        @keyframes gentle-sway {
+            0%, 100% { transform: translateX(0px) rotate(0deg); }
+            25% { transform: translateX(3px) rotate(1deg); }
+            50% { transform: translateX(0px) rotate(0deg); }
+            75% { transform: translateX(-3px) rotate(-1deg); }
+        }
+        
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        
+        .level-node.boss-level {
+            box-shadow: 
+                0 15px 40px rgba(255, 215, 0, 0.4),
+                0 0 25px rgba(255, 140, 0, 0.3),
+                inset 0 0 25px rgba(255, 255, 255, 0.1) !important;
+            /* SIN animación - boss también quieto */
+        }
+        
+        .level-node.boss-level:hover {
+            transform: scale(1.2) rotate(5deg) !important;
+            box-shadow: 
+                0 25px 60px rgba(255, 215, 0, 0.8),
+                0 0 50px rgba(255, 140, 0, 0.7),
+                0 0 25px rgba(255, 255, 255, 0.5) !important;
+        }
+        
+        @keyframes boss-sway {
+            0%, 100% { transform: translateX(0px) rotate(0deg); }
+            25% { transform: translateX(5px) rotate(2deg); }
+            50% { transform: translateX(0px) rotate(0deg); }
+            75% { transform: translateX(-5px) rotate(-2deg); }
+        }
+        
+        @keyframes boss-breathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes ocean-pulse {
+            from { 
+                box-shadow: 
+                    0 10px 25px rgba(0, 191, 255, 0.3),
+                    0 0 20px rgba(173, 216, 230, 0.2),
+                    inset 0 0 20px rgba(255, 255, 255, 0.1);
+            }
+            to { 
+                box-shadow: 
+                    0 12px 30px rgba(0, 191, 255, 0.4),
+                    0 0 25px rgba(173, 216, 230, 0.3),
+                    inset 0 0 25px rgba(255, 255, 255, 0.15);
+            }
+        }
+        
+        @keyframes boss-glow {
+            from { 
+                box-shadow: 
+                    0 15px 40px rgba(255, 215, 0, 0.4),
+                    0 0 25px rgba(255, 140, 0, 0.3),
+                    inset 0 0 25px rgba(255, 255, 255, 0.1);
+            }
+            to { 
+                box-shadow: 
+                    0 20px 50px rgba(255, 215, 0, 0.6),
+                    0 0 35px rgba(255, 140, 0, 0.5),
+                    inset 0 0 30px rgba(255, 255, 255, 0.2);
+            }
+        }
+        
+        @keyframes completed-glow {
+            from { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            to { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+        }
+        
+        /* Partículas de luz flotantes */
+        .light-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .light-particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent);
+            border-radius: 50%;
+            animation: float-light 8s infinite linear;
+        }
+        
+        .light-particle:nth-child(1) { width: 3px; height: 3px; left: 15%; animation-delay: 0s; }
+        .light-particle:nth-child(2) { width: 2px; height: 2px; left: 45%; animation-delay: 2s; }
+        .light-particle:nth-child(3) { width: 4px; height: 4px; left: 75%; animation-delay: 4s; }
+        .light-particle:nth-child(4) { width: 2px; height: 2px; left: 85%; animation-delay: 6s; }
+        
+        @keyframes float-light {
+            0% { 
+                bottom: -10px; 
+                opacity: 0; 
+                transform: translateX(0px);
+            }
+            20% { 
+                opacity: 1; 
+            }
+            80% { 
+                opacity: 1; 
+            }
+            100% { 
+                bottom: 100vh; 
+                opacity: 0; 
+                transform: translateX(30px);
+            }
+        }
+    </style>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
 </head>
 <body>
-  <div class="app-container">
-    <!-- HEADER DIRECTO (sin componente) -->
-    <header class="game-hud">
-        <div class="hud-content">
-            <div class="hud-left"></div>
-            <div class="hud-center">
-                <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
-            </div>
-            <div class="hud-right">
-                <div class="hud-stats">
-                    <div class="stat-item">
-                        <img src="images/ui/star.png" alt="Stars" class="hud-btn-img-large">
-                        <span id="total-stars">0</span>
+    <!-- PANTALLA DE CARGA -->
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Cargando...</div>
+      </div>
+    </div>
+    
+    <div class="app-container">
+        <!-- HEADER DIRECTO (sin componente) -->
+        <header class="game-hud">
+            <div class="hud-content">
+                <div class="hud-left"></div>
+                <div class="hud-center">
+                    <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
+                </div>
+                <div class="hud-right">
+                    <div class="hud-stats">
+                        <div class="stat-item">
+                            <img src="images/ui/star.png" alt="Stars" class="hud-btn-img-large">
+                            <span id="total-stars">0</span>
+                        </div>
+                        <div class="stat-item" onclick="showTrophies()" style="cursor: pointer;" title="Ver trofeos">
+                            <img src="images/ui/trofeo.png" alt="Trophies" class="hud-btn-img-large">
+                            <span id="total-trophies">0</span>
+                        </div>
                     </div>
-                    <div class="stat-item" onclick="showTrophies()" style="cursor: pointer;" title="Ver trofeos">
-                        <img src="images/ui/trofeo.png" alt="Trophies" class="hud-btn-img-large">
-                        <span id="total-trophies">0</span>
+                    <div class="hud-nav">
+                        <button class="hud-btn-simple" onclick="showRanking()">
+                            <img src="images/ui/ranking.png" alt="Ranking" class="hud-btn-img">
+                        </button>
                     </div>
                 </div>
-                <div class="hud-nav">
-                    <button class="hud-btn-simple" onclick="showRanking()">
-                        <img src="images/ui/ranking.png" alt="Ranking" class="hud-btn-img">
-                    </button>
-                </div>
             </div>
-        </div>
-    </header>
-    
-    <!-- BOTÓN HOME FLOTANTE -->
-    <button class="home-floating-btn" onclick="window.location.href='index.html'" title="Volver al inicio">
-        <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
-    </button>
-    
-    <!-- Main Content -->
-    <main class="main-content">
-      <div class="content-container">
-        <div class="world-map-container">
-      <!-- Fondo específico del volcán -->
-      <div class="world-map-background volcano-map">
-        <div class="level-path volcano-path">
-          
-          <!-- Nivel 11 - Jefe Final (CIMA) -->
-          <div class="level-node boss-level" data-level="11" data-world="volcano">
-            <div class="node-content">
-              <span class="level-number">👑</span>
-              <div class="stars-display"></div>
-            </div>
-          </div>
-
-          <div class="path-connector"></div>
-
-          <!-- Nivel 10 -->
-          <div class="level-node" data-level="10" data-world="volcano">
-            <div class="node-content">
-              <span class="level-number">10</span>
-              <div class="stars-display"></div>
-            </div>
-          </div>
-
-          <div class="path-connector"></div>
-
-          <!-- Nivel 9 (BASE) -->
-          <div class="level-node" data-level="9" data-world="volcano">
-            <div class="node-content">
-              <span class="level-number">9</span>
-              <div class="stars-display"></div>
-            </div>
-          </div>
-
-        </div>
+        </header>
         
-        <!-- Información del mundo -->
-        <div class="world-info-panel">
-          <h2>🌋 Corazón de Fuego</h2>
-          <p>Enfrenta el desafío final en las ardientes laderas del volcán ancestral.</p>
-          <div class="world-progress-info">
-            <span class="progress-item">📏 Tamaño: 4×5</span>
-            <span class="progress-item">🎯 Niveles: <span id="volcanoLevelsCompleted">0</span>/3</span>
-            <span class="progress-item">⭐ Estrellas: <span id="volcanoStarsEarned">0</span>/9</span>
-          </div>
-        </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- Modal de nivel -->
-    <div id="levelModal" class="modal">
-      <div class="dialog">
-        <h2 id="levelTitle">Nivel 9 - Volcán</h2>
-        <div class="level-info">
-          <p id="levelDescription">¡El desafío ardiente comienza!</p>
-          <div class="level-stats">
-            <span class="stat">📏 <span id="levelSize">4×5</span></span>
-            <span class="stat">⏱️ <span id="levelBestTime">--:--</span></span>
-            <span class="stat">⭐ <span id="levelBestStars">-</span></span>
-          </div>
-        </div>
-        <div class="modal-buttons">
-          <button id="playLevel" class="btn">🎮 Jugar Nivel</button>
-          <button id="closeLevelModal" class="btn">❌ Cerrar</button>
-        </div>
-      </div>
+        <!-- BOTÓN HOME FLOTANTE -->
+        <button class="home-floating-btn" onclick="window.location.href='index.html'" title="Volver al inicio">
+            <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
+        </button>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Fondo del mundo -->
+            <div class="world-map-background ocean-map"></div>
+            
+            <!-- EFECTOS TEMÁTICOS DEL OCÉANO -->
+            <div class="ocean-bubbles">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+            </div>
+            
+            <div class="light-particles">
+                <div class="light-particle"></div>
+                <div class="light-particle"></div>
+                <div class="light-particle"></div>
+                <div class="light-particle"></div>
+            </div>
+            
+            <div class="water-waves"></div>
+            
+            <div class="content-container">
+                <!-- Contenedor del mapa del mundo -->
+                <div class="world-map-container">
+                    <!-- Camino de niveles -->
+                    <div class="level-path" id="oceanLevelPath">
+                        <!-- Nivel 4 - Boss -->
+                        <div class="level-node boss-level" data-level="4">
+                            <div class="level-number">4</div>
+                            <div class="stars-display"></div>
+                        </div>
+                        
+                        <!-- Conector -->
+                        <div class="path-connector"></div>
+                        
+                        <!-- Nivel 3 -->
+                        <div class="level-node" data-level="3">
+                            <div class="level-number">3</div>
+                            <div class="stars-display"></div>
+                        </div>
+                        
+                        <!-- Conector -->
+                        <div class="path-connector"></div>
+                        
+                        <!-- Nivel 2 -->
+                        <div class="level-node" data-level="2">
+                            <div class="level-number">2</div>
+                            <div class="stars-display"></div>
+                        </div>
+                        
+                        <!-- Conector -->
+                        <div class="path-connector"></div>
+                        
+                        <!-- Nivel 1 -->
+                        <div class="level-node" data-level="1">
+                            <div class="level-number">1</div>
+                            <div class="stars-display"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <!-- Modal de estadísticas -->
-    <div id="statsModal" class="modal">
-      <div class="dialog">
-        <h2>📊 Estadísticas - Volcán</h2>
-        <div id="statsContent" class="stats-content"></div>
-        <div style="display:flex;justify-content:center;margin-top:15px">
-          <button id="closeStats" class="btn">Cerrar</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <script src="js/settings.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/world-map.js"></script>
-  <script src="components/header.js"></script>
-  <script>
-    // Inicializar página
-    document.addEventListener('DOMContentLoaded', function() {
-      // Inicializar header
-      initHeader({
-        showHome: true,
-        showRanking: true,
-        homeUrl: 'world-selector.html',
-        title: ''
-      });
-    });
-  </script>
+    <!-- Scripts -->
+    <script src="js/settings.js"></script>
+    <script src="js/utils.js"></script>
+    <!-- <script src="js/world-map.js"></script> --> <!-- DESHABILITADO para evitar errores -->
+    
+    <script>
+        // Funciones del header
+        function showRanking() {
+            window.location.href = 'ranking.html';
+        }
+        
+        // Actualizar estadísticas
+        function updateHeaderStats() {
+            const totalStats = Storage.getTotalStats();
+            const totalStarsElement = document.getElementById('total-stars');
+            const totalTrophiesElement = document.getElementById('total-trophies');
+            
+            if (totalStarsElement) totalStarsElement.textContent = totalStats.totalStars;
+            if (totalTrophiesElement) totalTrophiesElement.textContent = totalStats.totalTrophies;
+        }
+        
+        // Actualizar estados de nodos del océano
+        function updateOceanNodes() {
+            // Obtener progreso de niveles - USAR LAS CLAVES CORRECTAS DEL SISTEMA UNIFICADO
+            const scores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
+            
+            const level1Score = scores['1']; // Nivel 1 del océano = clave '1'
+            const level2Score = scores['2']; // Nivel 2 del océano = clave '2'
+            const level3Score = scores['3']; // Nivel 3 del océano = clave '3'
+            const level4Score = scores['4']; // Nivel 4 del océano = clave '4'
+            
+            // Primero, quitar todas las clases de estado de todos los nodos
+            document.querySelectorAll('.level-node').forEach(node => {
+                node.classList.remove('completed', 'unlocked', 'locked', 'available');
+            });
+            
+            // Actualizar nodo 1
+            const node1 = document.querySelector('.level-node[data-level="1"]');
+            if (node1) {
+                if (level1Score && level1Score.bestStars > 0) {
+                    node1.classList.add('completed');
+                    const stars1 = node1.querySelector('.stars-display');
+                    if (stars1) stars1.textContent = '⭐'.repeat(level1Score.bestStars);
+                } else {
+                    node1.classList.add('available'); // Nivel 1 siempre disponible
+                }
+            }
+            
+            // Actualizar nodo 2
+            const node2 = document.querySelector('.level-node[data-level="2"]');
+            if (node2) {
+                if (level2Score && level2Score.bestStars > 0) {
+                    node2.classList.add('completed');
+                    const stars2 = node2.querySelector('.stars-display');
+                    if (stars2) stars2.textContent = '⭐'.repeat(level2Score.bestStars);
+                } else if (level1Score && level1Score.bestStars > 0) {
+                    node2.classList.add('available'); // Disponible si completaste nivel 1
+                } else {
+                    node2.classList.add('locked');
+                }
+            }
+            
+            // Actualizar nodo 3
+            const node3 = document.querySelector('.level-node[data-level="3"]');
+            if (node3) {
+                if (level3Score && level3Score.bestStars > 0) {
+                    node3.classList.add('completed');
+                    const stars3 = node3.querySelector('.stars-display');
+                    if (stars3) stars3.textContent = '⭐'.repeat(level3Score.bestStars);
+                } else if (level2Score && level2Score.bestStars > 0) {
+                    node3.classList.add('available'); // Disponible si completaste nivel 2
+                } else {
+                    node3.classList.add('locked');
+                }
+            }
+            
+            // Actualizar nodo 4 (boss)
+            const node4 = document.querySelector('.level-node[data-level="4"]');
+            if (node4) {
+                if (level4Score && level4Score.bestStars > 0) {
+                    node4.classList.add('completed');
+                    const stars4 = node4.querySelector('.stars-display');
+                    if (stars4) stars4.textContent = '⭐'.repeat(level4Score.bestStars);
+                } else if (level3Score && level3Score.bestStars > 0) {
+                    node4.classList.add('available'); // Disponible si completaste nivel 3
+                } else {
+                    node4.classList.add('locked');
+                }
+            }
+        }
+        
+        // ACTUALIZAR NODOS ANTES DE QUE SE VEA LA PÁGINA
+        function applyNodeStatesImmediately() {
+            const scores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
+            const level1Score = scores['level_1'];
+            const level2Score = scores['level_2'];
+            const level3Score = scores['level_3'];
+            const level4Score = scores['level_4'];
+            
+            // Aplicar clases directamente al CSS
+            const style = document.createElement('style');
+            style.id = 'node-states-immediate';
+            
+            let css = '';
+            
+            // Nodo 1
+            if (level1Score && level1Score.bestStars > 0) {
+                css += '.level-node[data-level="1"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
+            } else {
+                css += '.level-node[data-level="1"] { background-image: url("images/ui/nodos/level-ocean-unlocked.png") !important; }';
+            }
+            
+            // Nodo 2
+            if (level2Score && level2Score.bestStars > 0) {
+                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
+            } else if (level1Score && level1Score.bestStars > 0) {
+                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-ocean-unlocked.png") !important; }';
+            } else {
+                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-ocean-locked.png") !important; }';
+            }
+            
+            // Nodo 3
+            if (level3Score && level3Score.bestStars > 0) {
+                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
+            } else if (level2Score && level2Score.bestStars > 0) {
+                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-ocean-unlocked.png") !important; }';
+            } else {
+                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-ocean-locked.png") !important; }';
+            }
+            
+            // Nodo 4 (boss)
+            if (level4Score && level4Score.bestStars > 0) {
+                css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
+            } else if (level3Score && level3Score.bestStars > 0) {
+                css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-boss.png") !important; }';
+            } else {
+                css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-ocean-locked.png") !important; }';
+            }
+            
+            style.textContent = css;
+            document.head.appendChild(style);
+        }
+        
+        // Aplicar estados ANTES de que se renderice
+        applyNodeStatesImmediately();
+        
+        // DETECTAR CUANDO SE REGRESA DEL JUEGO Y ACTUALIZAR NODOS
+        window.addEventListener('focus', function() {
+            setTimeout(() => {
+                updateOceanNodes();
+                updateHeaderStats();
+            }, 100);
+        });
+        
+        // FUNCIÓN PARA MOSTRAR CONTENIDO CUANDO ESTÉ LISTO
+        function showContentWhenReady() {
+            
+            // Aplicar estados de nodos
+            updateOceanNodes();
+            
+            // Actualizar header
+            updateHeaderStats();
+            
+            // Inicializar mapa del mundo - DESHABILITADO para evitar errores
+            // if (typeof initWorldMap === 'function') {
+            //     initWorldMap('ocean');
+            // }
+            
+            // Agregar event listeners a los nodos
+            const levelNodes = document.querySelectorAll('.level-node');
+            levelNodes.forEach(node => {
+                node.addEventListener('click', function() {
+                    const level = this.getAttribute('data-level');
+                    if (!this.classList.contains('locked')) {
+                        // Ir al juego con parámetros en la URL
+                        window.location.href = `game.html?world=ocean&level=${level}`;
+                    }
+                });
+            });
+            
+            // Mostrar contenido después de aplicar estados
+            setTimeout(() => {
+                // Mostrar contenido principal
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) {
+                    mainContent.classList.add('ready');
+                }
+                
+                // Ocultar pantalla de carga
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    loadingScreen.classList.add('hidden');
+                    // Remover completamente después de la transición
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 200);
+                }
+            }, 200); // Delay para que se vea la pantalla de carga un momento
+        }
+        
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esperar un momento para que todo se cargue correctamente sin mostrar loading
+            setTimeout(() => {
+                showContentWhenReady();
+            }, 800); // 800ms para que se cargue todo correctamente
+        });
+    </script>
+    
     <!-- CABECERA UNIFICADA -->
     <script src="js/unified-header.js"></script>
+    
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
 </body>
 </html>
-
-
