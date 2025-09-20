@@ -1036,8 +1036,8 @@
             // Actualizar display con el nivel actual
             const levelElement = document.getElementById('level');
             if (levelElement) {
-                levelElement.textContent = currentLevel;
-                console.log(`Display actualizado: Nivel ${currentLevel}`);
+                levelElement.textContent = currentLevelNumber;
+                console.log(`Display actualizado: Nivel ${currentLevelNumber}`);
             }
             
             // Recrear las cartas directamente
@@ -1054,7 +1054,7 @@
         function updateDisplay() {
             document.getElementById('moves').textContent = gameState.moves;
             document.getElementById('time').textContent = formatTime(gameState.time);
-            document.getElementById('level').textContent = currentLevel;
+            document.getElementById('level').textContent = currentLevelNumber;
             
             // Actualizar estrellas totales en el header
             updateHeaderStats();
