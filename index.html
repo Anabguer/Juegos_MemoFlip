@@ -451,7 +451,7 @@
                                         </div>
                                         <div class="stat">
                                             <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="volcano-trophies">0</span>/1
+                                            <span id="volcano-trophies">0</span>/6
                                         </div>
                                     </div>
                                 </div>
@@ -477,7 +477,7 @@
                                         </div>
                                         <div class="stat">
                                             <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="island-trophies">0</span>/1
+                                            <span id="island-trophies">0</span>/6
                                         </div>
                                     </div>
                                 </div>
@@ -503,7 +503,7 @@
                                         </div>
                                         <div class="stat">
                                             <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="ocean-trophies">0</span>/1
+                                            <span id="ocean-trophies">0</span>/6
                                         </div>
                                     </div>
                                 </div>
@@ -552,10 +552,9 @@
                 }
             }
             
-            // Calcular trofeos del mundo océano
-            let oceanTrophies = 0;
-            const oceanTrophiesData = JSON.parse(localStorage.getItem('memoflip_trophies') || '{}');
-            if (oceanTrophiesData.ocean_guardian) oceanTrophies++;
+            // Calcular TODOS los trofeos conseguidos
+            const allTrophiesData = JSON.parse(localStorage.getItem('memoflip_trophies') || '{}');
+            const totalTrophiesEarned = Object.keys(allTrophiesData).length;
             
             // Actualizar elemento del mundo océano
             const oceanStarsElement = document.getElementById('ocean-stars');
@@ -569,10 +568,10 @@
                 }, 100);
             }
             
-            // Actualizar trofeos del mundo océano
+            // Actualizar trofeos del mundo océano (todos los trofeos)
             const oceanTrophiesElement = document.getElementById('ocean-trophies');
             if (oceanTrophiesElement) {
-                oceanTrophiesElement.textContent = oceanTrophies;
+                oceanTrophiesElement.textContent = totalTrophiesEarned;
             }
             
             // Calcular estrellas del mundo isla (niveles 5-8)
@@ -583,9 +582,7 @@
                 }
             }
             
-            // Calcular trofeos del mundo isla
-            let islandTrophies = 0;
-            if (oceanTrophiesData.island_king) islandTrophies++;
+            // Usar los mismos trofeos para todos los mundos
             
             // Actualizar elemento del mundo isla
             const islandStarsElement = document.getElementById('island-stars');
@@ -598,10 +595,10 @@
                 }, 100);
             }
             
-            // Actualizar trofeos del mundo isla
+            // Actualizar trofeos del mundo isla (todos los trofeos)
             const islandTrophiesElement = document.getElementById('island-trophies');
             if (islandTrophiesElement) {
-                islandTrophiesElement.textContent = islandTrophies;
+                islandTrophiesElement.textContent = totalTrophiesEarned;
             }
             
             // Calcular estrellas del mundo volcán (niveles 9-12)
@@ -612,9 +609,7 @@
                 }
             }
             
-            // Calcular trofeos del mundo volcán
-            let volcanoTrophies = 0;
-            if (oceanTrophiesData.volcano_lord) volcanoTrophies++;
+            // Usar los mismos trofeos para todos los mundos
             
             // Actualizar elemento del mundo volcán
             const volcanoStarsElement = document.getElementById('volcano-stars');
@@ -627,10 +622,10 @@
                 }, 100);
             }
             
-            // Actualizar trofeos del mundo volcán
+            // Actualizar trofeos del mundo volcán (todos los trofeos)
             const volcanoTrophiesElement = document.getElementById('volcano-trophies');
             if (volcanoTrophiesElement) {
-                volcanoTrophiesElement.textContent = volcanoTrophies;
+                volcanoTrophiesElement.textContent = totalTrophiesEarned;
             }
         }
         
