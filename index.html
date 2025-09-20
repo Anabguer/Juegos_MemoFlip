@@ -555,6 +555,7 @@
             // Calcular TODOS los trofeos conseguidos
             const allTrophiesData = JSON.parse(localStorage.getItem('memoflip_trophies') || '{}');
             const totalTrophiesEarned = Object.keys(allTrophiesData).length;
+            console.log('🌍 Total trofeos conseguidos:', totalTrophiesEarned, allTrophiesData);
             
             // Actualizar elemento del mundo océano
             const oceanStarsElement = document.getElementById('ocean-stars');
