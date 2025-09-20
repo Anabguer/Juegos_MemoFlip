@@ -52,7 +52,30 @@ const Storage = {
     return scores[level] || null;
   },
   
+  // FUNCIÓN PARA LIMPIAR DATOS CORRUPTOS
+  cleanCorruptedData() {
+    const scores = this.getScores();
+    let cleaned = false;
+    
+    // Eliminar nivel 9 (volcán) si no se ha completado correctamente
+    if (scores['9']) {
+      console.log('🧹 Limpiando datos corruptos del nivel 9 (volcán)');
+      delete scores['9'];
+      cleaned = true;
+    }
+    
+    if (cleaned) {
+      localStorage.setItem('memoflip_scores', JSON.stringify(scores));
+      console.log('🧹 Datos limpiados correctamente');
+    }
+    
+    return cleaned;
+  },
+
   getTotalStats() {
+    // Limpiar datos corruptos antes de calcular
+    this.cleanCorruptedData();
+    
     const scores = this.getScores();
     let totalGames = 0, totalStars = 0;
     
