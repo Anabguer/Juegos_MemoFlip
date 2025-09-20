@@ -1,0 +1,134 @@
+/* CABECERA UNIFICADA - UNA SOLA VEZ PARA TODAS LAS PÁGINAS */
+
+/* HEADER UNIFICADO - IGUAL EN TODAS LAS PÁGINAS */
+.game-hud {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    height: 90px;
+    min-height: 90px;
+    max-height: 90px;
+    z-index: 100;
+    width: 100%;
+}
+
+.hud-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.hud-left { flex: 0 0 auto; }
+.hud-center { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.hud-right { 
+    flex: 0 0 auto; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+}
+
+.logo-banner {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.hud-stats {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    margin-top: 8px;
+}
+
+.stat-item span {
+    line-height: 1;
+    vertical-align: middle;
+    margin-top: 8px; /* ALINEACIÓN PERFECTA CON ICONOS */
+}
+
+.hud-btn-img-large {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+    margin-top: 8px;
+}
+
+.hud-nav {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 2px solid rgba(255, 215, 0, 0.3);
+    margin-top: 8px;
+}
+
+.hud-btn-simple {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+.hud-btn-simple:hover {
+    background: rgba(255,255,255,0.1);
+    transform: scale(1.05);
+}
+
+.hud-btn-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+    margin-top: 8px;
+}
+
+/* BOTÓN HOME FLOTANTE - IGUAL EN TODAS LAS PÁGINAS */
+.home-floating-btn {
+    position: fixed;
+    top: 120px;
+    left: 15px;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #ffd700;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.home-floating-btn:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: scale(1.1);
+}
+
+.home-floating-icon {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+}

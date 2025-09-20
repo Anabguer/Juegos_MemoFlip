@@ -1,0 +1,31 @@
+<!-- CABECERA UNIFICADA PARA TODAS LAS PÁGINAS -->
+<header class="game-hud">
+    <div class="hud-content">
+        <div class="hud-left"></div>
+        <div class="hud-center">
+            <img src="images/ui/logo-banner.png" alt="MemoFlip" class="logo-banner">
+        </div>
+        <div class="hud-right">
+            <div class="hud-stats">
+                <div class="stat-item">
+                    <img src="images/ui/star.png" alt="Stars" class="hud-btn-img-large">
+                    <span id="total-stars">0</span>
+                </div>
+                <div class="stat-item" onclick="showTrophies()" style="cursor: pointer;" title="Ver trofeos">
+                    <img src="images/ui/trofeo.png" alt="Trophies" class="hud-btn-img-large">
+                    <span id="total-trophies">0</span>
+                </div>
+            </div>
+            <div class="hud-nav">
+                <button class="hud-btn-simple" onclick="showRanking()" title="Ver ranking">
+                    <img src="images/ui/ranking.png" alt="Ranking" class="hud-btn-img">
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- BOTÓN HOME FLOTANTE -->
+<button class="home-floating-btn" onclick="window.location.href='index.html'" title="Volver al inicio">
+    <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
+</button>
