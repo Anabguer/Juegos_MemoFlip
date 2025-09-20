@@ -673,6 +673,13 @@
             const level3Score = scores['11']; // Nivel 3 del volcán = clave '11'
             const level4Score = scores['12']; // Nivel 4 del volcán = clave '12'
             
+            console.log('🌋 DEBUG VOLCÁN - Scores:', {
+                level1Score,
+                level2Score, 
+                level3Score,
+                level4Score
+            });
+            
             // Primero, quitar todas las clases de estado de todos los nodos
             document.querySelectorAll('.level-node').forEach(node => {
                 node.classList.remove('completed', 'unlocked', 'locked', 'available');
@@ -684,7 +691,10 @@
                 if (level1Score && level1Score.bestStars > 0) {
                     node1.classList.add('completed');
                     const stars1 = node1.querySelector('.stars-display');
-                    if (stars1) stars1.textContent = '⭐'.repeat(level1Score.bestStars);
+                    if (stars1) {
+                        stars1.textContent = '⭐'.repeat(level1Score.bestStars);
+                        console.log('🌋 Nodo 1 - Estrellas actualizadas:', '⭐'.repeat(level1Score.bestStars));
+                    }
                 } else {
                     node1.classList.add('available'); // Nivel 1 siempre disponible
                 }
