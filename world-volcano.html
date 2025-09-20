@@ -668,12 +668,15 @@
             // Obtener progreso de niveles - USAR LAS CLAVES CORRECTAS DEL SISTEMA UNIFICADO
             const scores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
             
+            console.log('🌋 DEBUG VOLCÁN - localStorage completo:', scores);
+            console.log('🌋 DEBUG VOLCÁN - Claves disponibles:', Object.keys(scores));
+            
             const level1Score = scores['9']; // Nivel 1 del volcán = clave '9'
             const level2Score = scores['10']; // Nivel 2 del volcán = clave '10'
             const level3Score = scores['11']; // Nivel 3 del volcán = clave '11'
             const level4Score = scores['12']; // Nivel 4 del volcán = clave '12'
             
-            console.log('🌋 DEBUG VOLCÁN - Scores:', {
+            console.log('🌋 DEBUG VOLCÁN - Scores específicos:', {
                 level1Score,
                 level2Score, 
                 level3Score,

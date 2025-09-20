@@ -669,12 +669,15 @@
             // Obtener progreso de niveles - USAR LAS CLAVES CORRECTAS DEL SISTEMA UNIFICADO
             const scores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
             
+            console.log('🏝️ DEBUG ISLA - localStorage completo:', scores);
+            console.log('🏝️ DEBUG ISLA - Claves disponibles:', Object.keys(scores));
+            
             const level1Score = scores['5']; // Nivel 1 de la isla = clave '5'
             const level2Score = scores['6']; // Nivel 2 de la isla = clave '6'
             const level3Score = scores['7']; // Nivel 3 de la isla = clave '7'
             const level4Score = scores['8']; // Nivel 4 de la isla = clave '8'
             
-            console.log('🏝️ DEBUG ISLA - Scores:', {
+            console.log('🏝️ DEBUG ISLA - Scores específicos:', {
                 level1Score,
                 level2Score, 
                 level3Score,
