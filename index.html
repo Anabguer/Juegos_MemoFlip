@@ -451,7 +451,7 @@
                                         </div>
                                         <div class="stat">
                                             <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="volcano-trophies">0</span>/4
+                                            <span id="volcano-trophies">0</span>/1
                                         </div>
                                     </div>
                                 </div>
@@ -477,7 +477,7 @@
                                         </div>
                                         <div class="stat">
                                             <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="island-trophies">0</span>/4
+                                            <span id="island-trophies">0</span>/1
                                         </div>
                                     </div>
                                 </div>
@@ -503,7 +503,7 @@
                                         </div>
                                         <div class="stat">
                                             <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="ocean-trophies">0</span>/3
+                                            <span id="ocean-trophies">0</span>/1
                                         </div>
                                     </div>
                                 </div>
@@ -552,6 +552,11 @@
                 }
             }
             
+            // Calcular trofeos del mundo océano
+            let oceanTrophies = 0;
+            const oceanTrophiesData = JSON.parse(localStorage.getItem('memoflip_trophies') || '{}');
+            if (oceanTrophiesData.ocean_guardian) oceanTrophies++;
+            
             // Actualizar elemento del mundo océano
             const oceanStarsElement = document.getElementById('ocean-stars');
             if (oceanStarsElement) {
@@ -564,6 +569,12 @@
                 }, 100);
             }
             
+            // Actualizar trofeos del mundo océano
+            const oceanTrophiesElement = document.getElementById('ocean-trophies');
+            if (oceanTrophiesElement) {
+                oceanTrophiesElement.textContent = oceanTrophies;
+            }
+            
             // Calcular estrellas del mundo isla (niveles 5-8)
             let islandStars = 0;
             for (let i = 5; i <= 8; i++) {
@@ -571,6 +582,10 @@
                     islandStars += scores[i].bestStars;
                 }
             }
+            
+            // Calcular trofeos del mundo isla
+            let islandTrophies = 0;
+            if (oceanTrophiesData.island_king) islandTrophies++;
             
             // Actualizar elemento del mundo isla
             const islandStarsElement = document.getElementById('island-stars');
@@ -583,6 +598,12 @@
                 }, 100);
             }
             
+            // Actualizar trofeos del mundo isla
+            const islandTrophiesElement = document.getElementById('island-trophies');
+            if (islandTrophiesElement) {
+                islandTrophiesElement.textContent = islandTrophies;
+            }
+            
             // Calcular estrellas del mundo volcán (niveles 9-12)
             let volcanoStars = 0;
             for (let i = 9; i <= 12; i++) {
@@ -590,6 +611,10 @@
                     volcanoStars += scores[i].bestStars;
                 }
             }
+            
+            // Calcular trofeos del mundo volcán
+            let volcanoTrophies = 0;
+            if (oceanTrophiesData.volcano_lord) volcanoTrophies++;
             
             // Actualizar elemento del mundo volcán
             const volcanoStarsElement = document.getElementById('volcano-stars');
@@ -600,6 +625,12 @@
                 setTimeout(() => {
                     volcanoStarsElement.style.transform = 'scale(1)';
                 }, 100);
+            }
+            
+            // Actualizar trofeos del mundo volcán
+            const volcanoTrophiesElement = document.getElementById('volcano-trophies');
+            if (volcanoTrophiesElement) {
+                volcanoTrophiesElement.textContent = volcanoTrophies;
             }
         }
         

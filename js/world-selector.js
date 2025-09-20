@@ -146,7 +146,7 @@ function enterWorld(worldKey) {
   // Verificar si está desbloqueado
   if (totalStars < world.requiredStars) {
     const remaining = world.requiredStars - totalStars;
-    alert(`Este mundo está bloqueado. Necesitas ${remaining} estrellas más. (Tienes ${totalStars}/${world.requiredStars})`);
+    alert(`🔒 ${world.name}\n\n¡Este mundo está bloqueado!\n\nNecesitas ${remaining} estrellas más para desbloquearlo.\n\n⭐ Tienes: ${totalStars} estrellas\n🎯 Necesitas: ${world.requiredStars} estrellas\n\n¡Sigue jugando para conseguir más estrellas!`);
     return;
   }
   
