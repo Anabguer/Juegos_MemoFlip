@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MemoFlip - Juego v20.0 TROFEOS ARREGLADOS</title>
+    <title>MemoFlip - Juego v21.0 RACE CONDITION ARREGLADO</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -530,8 +530,8 @@
 
     
   <script>
-        console.log('🎮 SCRIPT DEL JUEGO CARGADO - VERSIÓN 20.0 TROFEOS ARREGLADOS 🎮');
-        console.log('🚀 INICIANDO MEMOFLIP GAME - SISTEMA UNIFICADO 🚀');
+        console.log('🎮 SCRIPT DEL JUEGO CARGADO - VERSIÓN 21.0 RACE CONDITION ARREGLADO 🎮');
+        console.log('🚀 INICIANDO MEMOFLIP GAME - LÓGICA DE CARTAS PERFECTA 🚀');
         
         // VARIABLES GLOBALES DEL JUEGO
         let currentWorld = 'ocean';
@@ -548,7 +548,8 @@
             timer: null,
             isPlaying: false,
             timeLimit: null,
-            shuffleTriggered: false
+            shuffleTriggered: false,
+            isProcessing: false  // FLAG PARA BLOQUEAR CLICKS DURANTE PROCESAMIENTO
         };
         
         // INICIALIZAR JUEGO
@@ -723,13 +724,19 @@
         }
         
         
-        // VOLTEAR CARTA - SOLUCIÓN DEFINITIVA
+        // VOLTEAR CARTA - SOLUCIÓN DEFINITIVA CON FLAG DE BLOQUEO
         function flipCard(index) {
             console.log(`🔥 INTENTANDO VOLTEAR CARTA ${index}`);
-            console.log(`🔥 Estado actual: flippedCards.length = ${gameState.flippedCards.length}`);
+            console.log(`🔥 Estado actual: flippedCards.length = ${gameState.flippedCards.length}, isProcessing = ${gameState.isProcessing}`);
             console.log(`🔥 Carta ${index}: flipped = ${gameState.cards[index].flipped}, matched = ${gameState.cards[index].matched}`);
             
-            // BLOQUEAR SI YA HAY 2 CARTAS VOLTEADAS - ESTO ES LO MÁS IMPORTANTE
+            // BLOQUEAR SI ESTÁ PROCESANDO - ESTO ES LO MÁS IMPORTANTE
+            if (gameState.isProcessing) {
+                console.log(`🔥 BLOQUEADO: Sistema procesando, no se pueden hacer más clicks`);
+                return;
+            }
+            
+            // BLOQUEAR SI YA HAY 2 CARTAS VOLTEADAS
             if (gameState.flippedCards.length >= 2) {
                 console.log(`🔥 BLOQUEADO: Ya hay ${gameState.flippedCards.length} cartas volteadas`);
                 return;
@@ -758,6 +765,7 @@
             // Verificar si hay 2 cartas volteadas
             if (gameState.flippedCards.length === 2) {
                 console.log('🔥 2 cartas volteadas, verificando coincidencia...');
+                gameState.isProcessing = true; // BLOQUEAR CLICKS DURANTE PROCESAMIENTO
                 setTimeout(() => {
                     checkMatch();
                 }, 500);
@@ -769,6 +777,7 @@
             // Verificar que hay exactamente 2 cartas volteadas
             if (gameState.flippedCards.length !== 2) {
                 console.log(`Error: checkMatch llamado con ${gameState.flippedCards.length} cartas volteadas`);
+                gameState.isProcessing = false; // LIBERAR BLOQUEO EN CASO DE ERROR
                 return;
             }
             
@@ -801,9 +810,12 @@
                 const levelConfig = getLevelConfig(currentWorld, currentLevel);
                 if (levelConfig && gameState.matchedPairs >= levelConfig.pairs) {
                     console.log(`¡Juego completado! ${gameState.matchedPairs}/${levelConfig.pairs} pares encontrados`);
+                    gameState.isProcessing = false; // LIBERAR BLOQUEO
                     setTimeout(() => {
                         gameWon();
                     }, 500);
+                } else {
+                    gameState.isProcessing = false; // LIBERAR BLOQUEO SI NO ES FINAL
                 }
             } else {
                 // No hay coincidencia, voltear de vuelta más rápido
@@ -826,6 +838,8 @@
                     
                     gameState.cards[index1].flipped = false;
                     gameState.cards[index2].flipped = false;
+                    
+                    gameState.isProcessing = false; // LIBERAR BLOQUEO AL FINALIZAR
                 }, 700); // Reducido de 1000ms a 700ms
             }
             
@@ -973,7 +987,8 @@
                 timer: null,
                 isPlaying: false,
                 timeLimit: null,
-                shuffleTriggered: false
+                shuffleTriggered: false,
+                isProcessing: false  // RESET FLAG DE BLOQUEO
             };
             
             
