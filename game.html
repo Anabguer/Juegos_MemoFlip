@@ -640,8 +640,17 @@
         // CREAR CARTAS
         function createCards() {
             // Usar la configuración correcta del juego
-            // Para el océano, usar currentLevel directamente (1-4)
-            const levelConfig = getLevelConfig(currentWorld, currentLevel);
+            // Convertir nivel global a nivel local del mundo
+            let localLevel;
+            if (currentWorld === 'ocean') {
+                localLevel = currentLevel; // Niveles 1-4
+            } else if (currentWorld === 'island') {
+                localLevel = currentLevel - 4; // Niveles 5-8 → 1-4
+            } else if (currentWorld === 'volcano') {
+                localLevel = currentLevel - 8; // Niveles 9-12 → 1-4
+            }
+            
+            const levelConfig = getLevelConfig(currentWorld, localLevel);
             const worldCards = WORLD_CARDS[currentWorld] || WORLD_CARDS.ocean;
             
             if (!levelConfig) {
@@ -810,8 +819,17 @@
                 gameState.matchedPairs++;
                 console.log(`¡Par encontrado! Total pares: ${gameState.matchedPairs}`);
                 
-                // Verificar si el juego está completo usando la configuración correcta
-                const levelConfig = getLevelConfig(currentWorld, currentLevel);
+            // Verificar si el juego está completo usando la configuración correcta
+            let localLevel;
+            if (currentWorld === 'ocean') {
+                localLevel = currentLevel; // Niveles 1-4
+            } else if (currentWorld === 'island') {
+                localLevel = currentLevel - 4; // Niveles 5-8 → 1-4
+            } else if (currentWorld === 'volcano') {
+                localLevel = currentLevel - 8; // Niveles 9-12 → 1-4
+            }
+            
+            const levelConfig = getLevelConfig(currentWorld, localLevel);
                 if (levelConfig && gameState.matchedPairs >= levelConfig.pairs) {
                     console.log(`¡Juego completado! ${gameState.matchedPairs}/${levelConfig.pairs} pares encontrados`);
                     gameState.isProcessing = false; // LIBERAR BLOQUEO
