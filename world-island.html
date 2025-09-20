@@ -77,7 +77,7 @@
         <div class="level-path island-path">
           
           <!-- Nivel 8 - Jefe (CIMA) -->
-          <div class="level-node boss-level" data-level="8" data-world="island">
+          <div class="level-node boss-level" data-level="4" data-world="island">
             <div class="node-content">
               <span class="level-number">👑</span>
               <div class="stars-display"></div>
@@ -87,7 +87,7 @@
           <div class="path-connector"></div>
 
           <!-- Nivel 7 -->
-          <div class="level-node" data-level="7" data-world="island">
+          <div class="level-node" data-level="3" data-world="island">
             <div class="node-content">
               <span class="level-number">7</span>
               <div class="stars-display"></div>
@@ -97,7 +97,7 @@
           <div class="path-connector"></div>
 
           <!-- Nivel 6 -->
-          <div class="level-node" data-level="6" data-world="island">
+          <div class="level-node" data-level="2" data-world="island">
             <div class="node-content">
               <span class="level-number">6</span>
               <div class="stars-display"></div>
@@ -107,7 +107,7 @@
           <div class="path-connector"></div>
 
           <!-- Nivel 5 (BASE) -->
-          <div class="level-node" data-level="5" data-world="island">
+          <div class="level-node" data-level="1" data-world="island">
             <div class="node-content">
               <span class="level-number">5</span>
               <div class="stars-display"></div>
@@ -174,7 +174,106 @@
       if (totalStarsElement) totalStarsElement.textContent = totalStats.totalStars;
       if (totalTrophiesElement) totalTrophiesElement.textContent = totalStats.totalTrophies;
     }
-    document.addEventListener('DOMContentLoaded', function() { updateHeaderStats(); });
+
+    // Actualizar nodos del mundo isla
+    function updateIslandNodes() {
+      // Obtener progreso de niveles - USAR LAS CLAVES CORRECTAS DEL SISTEMA UNIFICADO
+      const scores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
+      
+      const level1Score = scores['5']; // Nivel 1 de la isla = clave '5'
+      const level2Score = scores['6']; // Nivel 2 de la isla = clave '6'
+      const level3Score = scores['7']; // Nivel 3 de la isla = clave '7'
+      const level4Score = scores['8']; // Nivel 4 de la isla = clave '8'
+      
+      // Primero, quitar todas las clases de estado de todos los nodos
+      document.querySelectorAll('.level-node').forEach(node => {
+        node.classList.remove('completed', 'unlocked', 'locked', 'available');
+      });
+      
+      // Actualizar nodo 1
+      const node1 = document.querySelector('.level-node[data-level="1"]');
+      if (node1) {
+        if (level1Score && level1Score.bestStars > 0) {
+          node1.classList.add('completed');
+          const stars1 = node1.querySelector('.stars-display');
+          if (stars1) stars1.textContent = '⭐'.repeat(level1Score.bestStars);
+        } else {
+          node1.classList.add('available'); // Nivel 1 siempre disponible
+        }
+      }
+      
+      // Actualizar nodo 2
+      const node2 = document.querySelector('.level-node[data-level="2"]');
+      if (node2) {
+        if (level2Score && level2Score.bestStars > 0) {
+          node2.classList.add('completed');
+          const stars2 = node2.querySelector('.stars-display');
+          if (stars2) stars2.textContent = '⭐'.repeat(level2Score.bestStars);
+        } else if (level1Score && level1Score.bestStars > 0) {
+          node2.classList.add('available'); // Disponible si completaste nivel 1
+        } else {
+          node2.classList.add('locked');
+        }
+      }
+      
+      // Actualizar nodo 3
+      const node3 = document.querySelector('.level-node[data-level="3"]');
+      if (node3) {
+        if (level3Score && level3Score.bestStars > 0) {
+          node3.classList.add('completed');
+          const stars3 = node3.querySelector('.stars-display');
+          if (stars3) stars3.textContent = '⭐'.repeat(level3Score.bestStars);
+        } else if (level2Score && level2Score.bestStars > 0) {
+          node3.classList.add('available'); // Disponible si completaste nivel 2
+        } else {
+          node3.classList.add('locked');
+        }
+      }
+      
+      // Actualizar nodo 4 (Boss Level)
+      const node4 = document.querySelector('.level-node[data-level="4"]');
+      if (node4) {
+        if (level4Score && level4Score.bestStars > 0) {
+          node4.classList.add('completed');
+          const stars4 = node4.querySelector('.stars-display');
+          if (stars4) stars4.textContent = '⭐'.repeat(level4Score.bestStars);
+        } else if (level3Score && level3Score.bestStars > 0) {
+          node4.classList.add('available'); // Disponible si completaste nivel 3
+        } else {
+          node4.classList.add('locked');
+        }
+      }
+    }
+
+    // Agregar event listeners a los nodos
+    function attachNodeListeners() {
+      const levelNodes = document.querySelectorAll('.level-node');
+      levelNodes.forEach(node => {
+        node.addEventListener('click', function() {
+          const level = this.getAttribute('data-level');
+          if (!this.classList.contains('locked')) {
+            // Convertir nivel local (1-4) a nivel global (5-8)
+            const globalLevel = parseInt(level) + 4;
+            // Ir al juego con parámetros en la URL
+            window.location.href = `game.html?world=island&level=${globalLevel}`;
+          }
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() { 
+      updateHeaderStats();
+      updateIslandNodes();
+      attachNodeListeners();
+    });
+
+    // DETECTAR CUANDO SE REGRESA DEL JUEGO Y ACTUALIZAR NODOS
+    window.addEventListener('focus', function() {
+      setTimeout(() => {
+        updateIslandNodes();
+        updateHeaderStats();
+      }, 100);
+    });
   </script>
     <!-- CABECERA UNIFICADA -->
     <script src="js/unified-header.js"></script>
