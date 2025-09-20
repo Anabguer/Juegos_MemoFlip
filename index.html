@@ -35,6 +35,23 @@
             background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
         }
         
+        /* RESPETAR PREFERENCIAS DE MOVIMIENTO REDUCIDO */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .world-card:hover {
+                transform: none !important;
+            }
+            
+            .hud-btn:hover {
+                transform: none !important;
+            }
+        }
+        
         .app-container {
             display: flex;
             flex-direction: column;
@@ -567,51 +584,42 @@
         for (let i = 5; i <= 8; i++) {
             if (scores[i] && scores[i].bestStars > 0) {
                 islandStars += scores[i].bestStars;
-                console.log(`🏝️ Nivel ${i} del mundo isla: ${scores[i].bestStars} estrellas`);
             }
         }
-        console.log(`🏝️ Total estrellas de la isla: ${islandStars}`);
             
             // Usar los mismos trofeos para todos los mundos
             
             // Actualizar elemento del mundo isla
             const islandStarsElement = document.getElementById('island-stars');
-            console.log('🏝️ Elemento island-stars encontrado:', islandStarsElement);
             if (islandStarsElement) {
                 islandStarsElement.textContent = islandStars;
-                console.log('🌍 Estrellas de la isla actualizadas:', islandStars);
                 // FORZAR RE-RENDERIZADO VISUAL
                 islandStarsElement.style.transform = 'scale(1.05)';
                 setTimeout(() => {
                     islandStarsElement.style.transform = 'scale(1)';
                 }, 100);
-            } else {
-                console.error('🏝️ ERROR: No se encontró el elemento island-stars');
             }
             
             // Trofeos de la isla eliminados
             
-            // Calcular estrellas del mundo volcán (niveles 9-12)
-            let volcanoStars = 0;
-            for (let i = 9; i <= 12; i++) {
-                if (scores[i] && scores[i].bestStars > 0) {
-                    volcanoStars += scores[i].bestStars;
-                }
+        // Calcular estrellas del mundo volcán (niveles 9-12)
+        let volcanoStars = 0;
+        for (let i = 9; i <= 12; i++) {
+            if (scores[i] && scores[i].bestStars > 0) {
+                volcanoStars += scores[i].bestStars;
             }
-            
-            // Usar los mismos trofeos para todos los mundos
-            
-            // Actualizar elemento del mundo volcán
-            const volcanoStarsElement = document.getElementById('volcano-stars');
-            if (volcanoStarsElement) {
-                volcanoStarsElement.textContent = volcanoStars;
-                console.log('🌍 Estrellas del volcán actualizadas:', volcanoStars);
-                // FORZAR RE-RENDERIZADO VISUAL
-                volcanoStarsElement.style.transform = 'scale(1.05)';
-                setTimeout(() => {
-                    volcanoStarsElement.style.transform = 'scale(1)';
-                }, 100);
-            }
+        }
+        
+        // Actualizar elemento del mundo volcán
+        const volcanoStarsElement = document.getElementById('volcano-stars');
+        if (volcanoStarsElement) {
+            volcanoStarsElement.textContent = volcanoStars;
+            // FORZAR RE-RENDERIZADO VISUAL
+            volcanoStarsElement.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                volcanoStarsElement.style.transform = 'scale(1)';
+            }, 100);
+        }
             
             // Trofeos del volcán eliminados
         }
@@ -623,6 +631,22 @@
                 updateWorldStats();
             }, 100);
         });
+        
+        // ACTUALIZAR ESTADÍSTICAS CUANDO CAMBIA EL LOCALSTORAGE
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'memoflip_scores') {
+                setTimeout(() => {
+                    updateHeaderStats();
+                    updateWorldStats();
+                }, 100);
+            }
+        });
+        
+        // ACTUALIZAR ESTADÍSTICAS PERIÓDICAMENTE (cada 2 segundos)
+        setInterval(() => {
+            updateHeaderStats();
+            updateWorldStats();
+        }, 2000);
         
         // Inicializar página
         document.addEventListener('DOMContentLoaded', function() {
@@ -789,10 +813,10 @@
     </script>
     
     <!-- CABECERA UNIFICADA -->
-    <script src="js/unified-header.js"></script>
+    <script src="js/unified-header.js" defer></script>
     
     <!-- PWA Service Worker -->
-  <script>
+  <script defer>
     if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js');
     }

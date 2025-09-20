@@ -54,43 +54,53 @@ const Storage = {
   
   // FUNCIÓN PARA LIMPIAR DATOS CORRUPTOS
   cleanCorruptedData() {
-    const scores = this.getScores();
-    let cleaned = false;
-    
-    // Eliminar nivel 9 (volcán) si no se ha completado correctamente
-    if (scores['9']) {
-      delete scores['9'];
-      cleaned = true;
+    try {
+      const scores = this.getScores();
+      let cleaned = false;
+      
+      // Eliminar nivel 9 (volcán) si no se ha completado correctamente
+      if (scores['9']) {
+        delete scores['9'];
+        cleaned = true;
+      }
+      
+      if (cleaned) {
+        localStorage.setItem('memoflip_scores', JSON.stringify(scores));
+      }
+      
+      return cleaned;
+    } catch (error) {
+      console.error('Error limpiando datos corruptos:', error);
+      return false;
     }
-    
-    if (cleaned) {
-      localStorage.setItem('memoflip_scores', JSON.stringify(scores));
-    }
-    
-    return cleaned;
   },
 
   getTotalStats() {
-    // Limpiar datos corruptos antes de calcular
-    this.cleanCorruptedData();
-    
-    const scores = this.getScores();
-    let totalGames = 0, totalStars = 0;
-    
-    Object.entries(scores).forEach(([level, score]) => {
-      totalGames += score.timesPlayed;
-      totalStars += score.bestStars;
-    });
-    
-    // Obtener total de trofeos
-    let totalTrophies = 0;
     try {
-      const trophies = JSON.parse(localStorage.getItem('memoflip_trophies') || '{}');
-      totalTrophies = Object.keys(trophies).length;
-    } catch (e) {
-      console.error('Error loading trophies:', e);
+      // Limpiar datos corruptos antes de calcular
+      this.cleanCorruptedData();
+      
+      const scores = this.getScores();
+      let totalGames = 0, totalStars = 0;
+      
+      Object.entries(scores).forEach(([level, score]) => {
+        totalGames += score.timesPlayed;
+        totalStars += score.bestStars;
+      });
+      
+      // Obtener total de trofeos
+      let totalTrophies = 0;
+      try {
+        const trophies = JSON.parse(localStorage.getItem('memoflip_trophies') || '{}');
+        totalTrophies = Object.keys(trophies).length;
+      } catch (e) {
+        console.error('Error loading trophies:', e);
+      }
+      
+      return { totalGames, totalStars, totalTrophies, levelsCompleted: Object.keys(scores).length };
+    } catch (error) {
+      console.error('Error calculando estadísticas totales:', error);
+      return { totalGames: 0, totalStars: 0, totalTrophies: 0, levelsCompleted: 0 };
     }
-    
-    return { totalGames, totalStars, totalTrophies, levelsCompleted: Object.keys(scores).length };
   }
 };
