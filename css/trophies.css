@@ -107,7 +107,7 @@
 .trophies-container {
     padding: 0 clamp(10px, 2vw, 15px) clamp(15px, 3vh, 20px);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: clamp(8px, 2vw, 12px);
     position: relative;
     z-index: 2;
@@ -118,7 +118,7 @@
     background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
     border: 2px solid rgba(255,215,0,0.3);
     border-radius: 15px;
-    padding: clamp(6px, 1.5vw, 10px);
+    padding: clamp(4px, 1vw, 8px);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
@@ -162,8 +162,8 @@
 }
 
 .trophy-icon {
-    width: clamp(40px, 8vw, 60px);
-    height: clamp(40px, 8vw, 60px);
+    width: clamp(30px, 6vw, 45px);
+    height: clamp(30px, 6vw, 45px);
     border-radius: 15px;
     object-fit: contain;
     filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
@@ -175,7 +175,7 @@
 }
 
 .trophy-emoji {
-    font-size: clamp(30px, 6vw, 45px);
+    font-size: clamp(25px, 5vw, 35px);
     display: block;
     text-align: center;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
@@ -191,7 +191,7 @@
 
 .trophy-name {
     color: #FFD700;
-    font-size: clamp(10px, 2vw, 14px);
+    font-size: clamp(9px, 1.8vw, 12px);
     font-weight: bold;
     margin: 0 0 clamp(3px, 1vh, 5px) 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
@@ -203,7 +203,7 @@
 
 .trophy-description {
     color: rgba(255,255,255,0.9);
-    font-size: clamp(8px, 1.8vw, 12px);
+    font-size: clamp(7px, 1.5vw, 10px);
     line-height: 1.3;
     margin: 0 0 clamp(5px, 1vh, 8px) 0;
     text-shadow: 0 1px 2px rgba(0,0,0,0.8);
