@@ -208,28 +208,28 @@
         
         /* ESTADOS CORRECTOS DESDE EL INICIO - SIN FLICKER */
         .level-node[data-level="1"] {
-            background-image: url('images/ui/nodos/level-island-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-unlocked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
         }
         
         .level-node[data-level="2"] {
-            background-image: url('images/ui/nodos/level-island-locked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-locked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
         }
         
         .level-node[data-level="3"] {
-            background-image: url('images/ui/nodos/level-island-locked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-locked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
         }
         
         .level-node[data-level="4"] {
-            background-image: url('images/ui/nodos/level-island-locked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-locked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
@@ -237,19 +237,19 @@
         
         /* Estados específicos que JS aplicará - MAYOR ESPECIFICIDAD */
         .level-node[data-level="2"].available {
-            background-image: url('images/ui/nodos/level-island-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-unlocked.png') !important;
         }
         
         .level-node[data-level="3"].available {
-            background-image: url('images/ui/nodos/level-island-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-unlocked.png') !important;
         }
         
         .level-node[data-level="4"].available {
-            background-image: url('images/ui/nodos/level-island-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-unlocked.png') !important;
         }
         
         .level-node.unlocked {
-            background-image: url('images/ui/nodos/level-island-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-unlocked.png') !important;
         }
         
         .level-node[data-level="1"].completed {
@@ -278,7 +278,7 @@
         
         /* Estados de nodos */
         .level-node.locked {
-            background-image: url('images/ui/nodos/level-island-locked.png') !important;
+            background-image: url('images/ui/nodos/level-isla-locked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
@@ -293,8 +293,8 @@
         
         /* EFECTOS TEMÁTICOS DEL OCÉANO */
         
-        /* Burbujitas flotantes */
-        .island-bubbles {
+        /* Hojas flotantes */
+        .island-leaves {
             position: absolute;
             top: 0;
             left: 0;
@@ -304,19 +304,20 @@
             z-index: 1;
         }
         
-        .bubble {
+        .leaf {
             position: absolute;
-            background: radial-gradient(circle, rgba(173, 216, 230, 0.6), rgba(135, 206, 235, 0.3));
+            background: radial-gradient(circle, rgba(255, 165, 0, 0.6), rgba(255, 140, 0, 0.3));
             border-radius: 50%;
-            animation: float-up 6s infinite linear;
-            box-shadow: 0 0 10px rgba(173, 216, 230, 0.5);
+            animation: float-down 8s infinite linear;
+            box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+            transform: rotate(45deg);
         }
         
-        .bubble:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; animation-duration: 15s; }
-        .bubble:nth-child(2) { width: 15px; height: 15px; left: 20%; animation-delay: 3s; animation-duration: 12s; }
-        .bubble:nth-child(3) { width: 25px; height: 25px; left: 70%; animation-delay: 6s; animation-duration: 18s; }
-        .bubble:nth-child(4) { width: 12px; height: 12px; left: 80%; animation-delay: 9s; animation-duration: 10s; }
-        .bubble:nth-child(5) { width: 18px; height: 18px; left: 30%; animation-delay: 12s; animation-duration: 20s; }
+        .leaf:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; animation-duration: 15s; }
+        .leaf:nth-child(2) { width: 15px; height: 15px; left: 20%; animation-delay: 3s; animation-duration: 12s; }
+        .leaf:nth-child(3) { width: 25px; height: 25px; left: 70%; animation-delay: 6s; animation-duration: 18s; }
+        .leaf:nth-child(4) { width: 12px; height: 12px; left: 80%; animation-delay: 9s; animation-duration: 10s; }
+        .leaf:nth-child(5) { width: 18px; height: 18px; left: 30%; animation-delay: 12s; animation-duration: 20s; }
         .bubble:nth-child(6) { width: 22px; height: 22px; left: 60%; animation-delay: 4s; animation-duration: 14s; }
         
         @keyframes float-up {
@@ -568,8 +569,8 @@
                     </div>
                 </div>
             </div>
-        </header>
-        
+    </header>
+
         <!-- BOTÓN HOME FLOTANTE -->
         <button class="home-floating-btn" onclick="window.location.href='index.html'" title="Volver al inicio">
             <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
@@ -581,13 +582,13 @@
             <div class="world-map-background island-map"></div>
             
             <!-- EFECTOS TEMÁTICOS DE LA ISLA -->
-            <div class="island-bubbles">
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
+            <div class="island-leaves">
+                <div class="leaf"></div>
+                <div class="leaf"></div>
+                <div class="leaf"></div>
+                <div class="leaf"></div>
+                <div class="leaf"></div>
+                <div class="leaf"></div>
             </div>
             
             <div class="light-particles">
@@ -607,44 +608,44 @@
                         <!-- Nivel 4 - Boss -->
                         <div class="level-node boss-level" data-level="4">
                             <div class="level-number">4</div>
-                            <div class="stars-display"></div>
-                        </div>
-                        
+              <div class="stars-display"></div>
+          </div>
+
                         <!-- Conector -->
-                        <div class="path-connector"></div>
-                        
+          <div class="path-connector"></div>
+
                         <!-- Nivel 3 -->
                         <div class="level-node" data-level="3">
                             <div class="level-number">3</div>
-                            <div class="stars-display"></div>
-                        </div>
-                        
+              <div class="stars-display"></div>
+          </div>
+
                         <!-- Conector -->
-                        <div class="path-connector"></div>
-                        
+          <div class="path-connector"></div>
+
                         <!-- Nivel 2 -->
                         <div class="level-node" data-level="2">
                             <div class="level-number">2</div>
-                            <div class="stars-display"></div>
-                        </div>
-                        
+              <div class="stars-display"></div>
+          </div>
+
                         <!-- Conector -->
-                        <div class="path-connector"></div>
-                        
+          <div class="path-connector"></div>
+
                         <!-- Nivel 1 -->
                         <div class="level-node" data-level="1">
                             <div class="level-number">1</div>
-                            <div class="stars-display"></div>
-                        </div>
-                    </div>
-                </div>
+              <div class="stars-display"></div>
             </div>
-        </main>
+          </div>
+        </div>
+      </div>
+    </main>
     </div>
 
     <!-- Scripts -->
-    <script src="js/settings.js"></script>
-    <script src="js/utils.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/utils.js"></script>
     <!-- <script src="js/world-map.js"></script> --> <!-- DESHABILITADO para evitar errores -->
     
     <script>
@@ -751,25 +752,25 @@
             if (level1Score && level1Score.bestStars > 0) {
                 css += '.level-node[data-level="1"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
             } else {
-                css += '.level-node[data-level="1"] { background-image: url("images/ui/nodos/level-island-unlocked.png") !important; }';
+                css += '.level-node[data-level="1"] { background-image: url("images/ui/nodos/level-isla-unlocked.png") !important; }';
             }
             
             // Nodo 2
             if (level2Score && level2Score.bestStars > 0) {
                 css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
             } else if (level1Score && level1Score.bestStars > 0) {
-                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-island-unlocked.png") !important; }';
+                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-isla-unlocked.png") !important; }';
             } else {
-                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-island-locked.png") !important; }';
+                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-isla-locked.png") !important; }';
             }
             
             // Nodo 3
             if (level3Score && level3Score.bestStars > 0) {
                 css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
             } else if (level2Score && level2Score.bestStars > 0) {
-                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-island-unlocked.png") !important; }';
+                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-isla-unlocked.png") !important; }';
             } else {
-                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-island-locked.png") !important; }';
+                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-isla-locked.png") !important; }';
             }
             
             // Nodo 4 (boss)
@@ -778,7 +779,7 @@
             } else if (level3Score && level3Score.bestStars > 0) {
                 css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-boss.png") !important; }';
             } else {
-                css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-island-locked.png") !important; }';
+                css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-isla-locked.png") !important; }';
             }
             
             style.textContent = css;

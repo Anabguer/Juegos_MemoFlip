@@ -93,7 +93,7 @@
         .home-floating-btn { position: fixed; top: 120px; left: 15px; z-index: 200; background: rgba(0, 0, 0, 0.8); border: 2px solid #ffd700; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s ease; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
         .home-floating-btn:hover { background: rgba(255, 215, 0, 0.2); transform: scale(1.1); }
         .home-floating-icon { width: 24px; height: 24px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); }
-        .main-content { flex: 1; position: relative; height: calc(100vh - 90px); background: linear-gradient(135deg, rgba(26,26,46,0.4), rgba(22,33,62,0.4), rgba(15,52,96,0.4)), url('images/worlds/ocean-world-clean.png') center/cover no-repeat, linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+        .main-content { flex: 1; position: relative; height: calc(100vh - 90px); background: linear-gradient(135deg, rgba(96,26,26,0.4), rgba(128,34,22,0.4), rgba(160,52,15,0.4)), url('images/worlds/volcano-world-clean.png') center/cover no-repeat, linear-gradient(135deg, #601a1a, #802216, #a0340f); }
         .content-container { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
         
         /* MAPA DE MUNDO Y NODOS */
@@ -208,28 +208,28 @@
         
         /* ESTADOS CORRECTOS DESDE EL INICIO - SIN FLICKER */
         .level-node[data-level="1"] {
-            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-unlocked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
         }
         
         .level-node[data-level="2"] {
-            background-image: url('images/ui/nodos/level-ocean-locked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-locked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
         }
         
         .level-node[data-level="3"] {
-            background-image: url('images/ui/nodos/level-ocean-locked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-locked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
         }
         
         .level-node[data-level="4"] {
-            background-image: url('images/ui/nodos/level-ocean-locked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-locked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
@@ -237,19 +237,19 @@
         
         /* Estados específicos que JS aplicará - MAYOR ESPECIFICIDAD */
         .level-node[data-level="2"].available {
-            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-unlocked.png') !important;
         }
         
         .level-node[data-level="3"].available {
-            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-unlocked.png') !important;
         }
         
         .level-node[data-level="4"].available {
-            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-unlocked.png') !important;
         }
         
         .level-node.unlocked {
-            background-image: url('images/ui/nodos/level-ocean-unlocked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-unlocked.png') !important;
         }
         
         .level-node[data-level="1"].completed {
@@ -278,7 +278,7 @@
         
         /* Estados de nodos */
         .level-node.locked {
-            background-image: url('images/ui/nodos/level-ocean-locked.png') !important;
+            background-image: url('images/ui/nodos/level-volcan-locked.png') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
@@ -294,7 +294,7 @@
         /* EFECTOS TEMÁTICOS DEL OCÉANO */
         
         /* Burbujitas flotantes */
-        .ocean-bubbles {
+        .volcano-embers {
             position: absolute;
             top: 0;
             left: 0;
@@ -304,20 +304,20 @@
             z-index: 1;
         }
         
-        .bubble {
+        .ember {
             position: absolute;
-            background: radial-gradient(circle, rgba(173, 216, 230, 0.6), rgba(135, 206, 235, 0.3));
+            background: radial-gradient(circle, rgba(255, 69, 0, 0.8), rgba(255, 99, 71, 0.4));
             border-radius: 50%;
-            animation: float-up 6s infinite linear;
-            box-shadow: 0 0 10px rgba(173, 216, 230, 0.5);
+            animation: float-up 4s infinite linear;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
         }
         
-        .bubble:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; animation-duration: 15s; }
-        .bubble:nth-child(2) { width: 15px; height: 15px; left: 20%; animation-delay: 3s; animation-duration: 12s; }
-        .bubble:nth-child(3) { width: 25px; height: 25px; left: 70%; animation-delay: 6s; animation-duration: 18s; }
-        .bubble:nth-child(4) { width: 12px; height: 12px; left: 80%; animation-delay: 9s; animation-duration: 10s; }
-        .bubble:nth-child(5) { width: 18px; height: 18px; left: 30%; animation-delay: 12s; animation-duration: 20s; }
-        .bubble:nth-child(6) { width: 22px; height: 22px; left: 60%; animation-delay: 4s; animation-duration: 14s; }
+        .ember:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; animation-duration: 8s; }
+        .ember:nth-child(2) { width: 15px; height: 15px; left: 20%; animation-delay: 1s; animation-duration: 6s; }
+        .ember:nth-child(3) { width: 25px; height: 25px; left: 70%; animation-delay: 2s; animation-duration: 10s; }
+        .ember:nth-child(4) { width: 12px; height: 12px; left: 80%; animation-delay: 3s; animation-duration: 5s; }
+        .ember:nth-child(5) { width: 18px; height: 18px; left: 30%; animation-delay: 4s; animation-duration: 7s; }
+        .ember:nth-child(6) { width: 22px; height: 22px; left: 60%; animation-delay: 5s; animation-duration: 9s; }
         
         @keyframes float-up {
             0% { 
@@ -368,8 +368,8 @@
         /* Sombras temáticas en nodos - TODOS QUIETOS POR DEFECTO */
         .level-node {
             box-shadow: 
-                0 10px 25px rgba(0, 191, 255, 0.3),
-                0 0 20px rgba(173, 216, 230, 0.2),
+                0 10px 25px rgba(255, 69, 0, 0.3),
+                0 0 20px rgba(255, 99, 71, 0.2),
                 inset 0 0 20px rgba(255, 255, 255, 0.1) !important;
             /* SIN animación - nodos estáticos */
         }
@@ -377,7 +377,7 @@
         /* SOLO el nodo activo se mueve (el disponible para jugar) */
         .level-node.available {
             animation: 
-                ocean-pulse 3s ease-in-out infinite alternate,
+                volcano-pulse 3s ease-in-out infinite alternate,
                 gentle-sway 4s ease-in-out infinite,
                 breathing 2s ease-in-out infinite alternate !important;
             box-shadow: 
@@ -451,11 +451,11 @@
             50% { transform: scale(1.05); }
         }
         
-        @keyframes ocean-pulse {
+        @keyframes volcano-pulse {
             from { 
                 box-shadow: 
-                    0 10px 25px rgba(0, 191, 255, 0.3),
-                    0 0 20px rgba(173, 216, 230, 0.2),
+                    0 10px 25px rgba(255, 69, 0, 0.3),
+                    0 0 20px rgba(255, 99, 71, 0.2),
                     inset 0 0 20px rgba(255, 255, 255, 0.1);
             }
             to { 
@@ -568,8 +568,8 @@
                     </div>
                 </div>
             </div>
-        </header>
-        
+    </header>
+
         <!-- BOTÓN HOME FLOTANTE -->
         <button class="home-floating-btn" onclick="window.location.href='index.html'" title="Volver al inicio">
             <img src="images/ui/home.png" alt="Home" class="home-floating-icon">
@@ -578,16 +578,16 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Fondo del mundo -->
-            <div class="world-map-background ocean-map"></div>
+            <div class="world-map-background volcano-map"></div>
             
-            <!-- EFECTOS TEMÁTICOS DEL OCÉANO -->
-            <div class="ocean-bubbles">
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
+            <!-- EFECTOS TEMÁTICOS DEL VOLCÁN -->
+            <div class="volcano-embers">
+                <div class="ember"></div>
+                <div class="ember"></div>
+                <div class="ember"></div>
+                <div class="ember"></div>
+                <div class="ember"></div>
+                <div class="ember"></div>
             </div>
             
             <div class="light-particles">
@@ -607,8 +607,8 @@
                         <!-- Nivel 4 - Boss -->
                         <div class="level-node boss-level" data-level="4">
                             <div class="level-number">4</div>
-                            <div class="stars-display"></div>
-                        </div>
+              <div class="stars-display"></div>
+            </div>
                         
                         <!-- Conector -->
                         <div class="path-connector"></div>
@@ -617,34 +617,34 @@
                         <div class="level-node" data-level="3">
                             <div class="level-number">3</div>
                             <div class="stars-display"></div>
-                        </div>
-                        
+          </div>
+
                         <!-- Conector -->
-                        <div class="path-connector"></div>
-                        
+          <div class="path-connector"></div>
+
                         <!-- Nivel 2 -->
                         <div class="level-node" data-level="2">
                             <div class="level-number">2</div>
-                            <div class="stars-display"></div>
-                        </div>
-                        
+              <div class="stars-display"></div>
+          </div>
+
                         <!-- Conector -->
-                        <div class="path-connector"></div>
-                        
+          <div class="path-connector"></div>
+
                         <!-- Nivel 1 -->
                         <div class="level-node" data-level="1">
                             <div class="level-number">1</div>
-                            <div class="stars-display"></div>
-                        </div>
-                    </div>
-                </div>
+              <div class="stars-display"></div>
             </div>
-        </main>
+          </div>
+        </div>
+      </div>
+    </main>
     </div>
 
     <!-- Scripts -->
-    <script src="js/settings.js"></script>
-    <script src="js/utils.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/utils.js"></script>
     <!-- <script src="js/world-map.js"></script> --> <!-- DESHABILITADO para evitar errores -->
     
     <script>
@@ -664,14 +664,14 @@
         }
         
         // Actualizar estados de nodos del océano
-        function updateOceanNodes() {
+        function updateVolcanoNodes() {
             // Obtener progreso de niveles - USAR LAS CLAVES CORRECTAS DEL SISTEMA UNIFICADO
             const scores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
             
-            const level1Score = scores['1']; // Nivel 1 del océano = clave '1'
-            const level2Score = scores['2']; // Nivel 2 del océano = clave '2'
-            const level3Score = scores['3']; // Nivel 3 del océano = clave '3'
-            const level4Score = scores['4']; // Nivel 4 del océano = clave '4'
+            const level1Score = scores['9']; // Nivel 1 del volcán = clave '9'
+            const level2Score = scores['10']; // Nivel 2 del volcán = clave '10'
+            const level3Score = scores['11']; // Nivel 3 del volcán = clave '11'
+            const level4Score = scores['12']; // Nivel 4 del volcán = clave '12'
             
             // Primero, quitar todas las clases de estado de todos los nodos
             document.querySelectorAll('.level-node').forEach(node => {
@@ -751,25 +751,25 @@
             if (level1Score && level1Score.bestStars > 0) {
                 css += '.level-node[data-level="1"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
             } else {
-                css += '.level-node[data-level="1"] { background-image: url("images/ui/nodos/level-ocean-unlocked.png") !important; }';
+                css += '.level-node[data-level="1"] { background-image: url("images/ui/nodos/level-volcan-unlocked.png") !important; }';
             }
             
             // Nodo 2
             if (level2Score && level2Score.bestStars > 0) {
                 css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
             } else if (level1Score && level1Score.bestStars > 0) {
-                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-ocean-unlocked.png") !important; }';
+                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-volcan-unlocked.png") !important; }';
             } else {
-                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-ocean-locked.png") !important; }';
+                css += '.level-node[data-level="2"] { background-image: url("images/ui/nodos/level-volcan-locked.png") !important; }';
             }
             
             // Nodo 3
             if (level3Score && level3Score.bestStars > 0) {
                 css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-completed.png") !important; }';
             } else if (level2Score && level2Score.bestStars > 0) {
-                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-ocean-unlocked.png") !important; }';
+                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-volcan-unlocked.png") !important; }';
             } else {
-                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-ocean-locked.png") !important; }';
+                css += '.level-node[data-level="3"] { background-image: url("images/ui/nodos/level-volcan-locked.png") !important; }';
             }
             
             // Nodo 4 (boss)
@@ -778,7 +778,7 @@
             } else if (level3Score && level3Score.bestStars > 0) {
                 css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-boss.png") !important; }';
             } else {
-                css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-ocean-locked.png") !important; }';
+                css += '.level-node[data-level="4"] { background-image: url("images/ui/nodos/level-volcan-locked.png") !important; }';
             }
             
             style.textContent = css;
@@ -791,7 +791,7 @@
         // DETECTAR CUANDO SE REGRESA DEL JUEGO Y ACTUALIZAR NODOS
         window.addEventListener('focus', function() {
             setTimeout(() => {
-                updateOceanNodes();
+                updateVolcanoNodes();
                 updateHeaderStats();
             }, 100);
         });
@@ -800,7 +800,7 @@
         function showContentWhenReady() {
             
             // Aplicar estados de nodos
-            updateOceanNodes();
+            updateVolcanoNodes();
             
             // Actualizar header
             updateHeaderStats();
@@ -817,7 +817,7 @@
                     const level = this.getAttribute('data-level');
                     if (!this.classList.contains('locked')) {
                         // Ir al juego con parámetros en la URL
-                        window.location.href = `game.html?world=ocean&level=${level}`;
+                        window.location.href = `game.html?world=volcano&level=${parseInt(level) + 8}`;
                     }
                 });
             });
