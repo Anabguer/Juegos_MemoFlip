@@ -657,14 +657,8 @@
                 localLevel = currentLevelNumber - 8; // Niveles 9-12 → 1-4
             }
             
-            console.log(`🔥 DEBUG CREATE CARDS: currentWorld=${currentWorld}, currentLevel=${currentLevel}, currentLevelNumber=${currentLevelNumber}, localLevel=${localLevel}`);
-            
             const levelConfig = getLevelConfig(currentWorld, localLevel);
             const worldCards = WORLD_CARDS[currentWorld] || WORLD_CARDS.ocean;
-            
-            console.log(`🔥 DEBUG: levelConfig=`, levelConfig);
-            console.log(`🔥 DEBUG: worldCards=`, worldCards);
-            console.log(`🔥 DEBUG: WORLD_CARDS disponible=`, typeof WORLD_CARDS);
             
             if (!levelConfig) {
                 console.error('No se encontró configuración para el nivel', currentLevel, 'del mundo', currentWorld);
@@ -676,8 +670,7 @@
                 return;
             }
             
-            console.log(`🔥 DEBUG: currentLevel=${currentLevel}, currentLevelNumber=${currentLevelNumber}`);
-            console.log(`Creando ${levelConfig.cards} cartas (${levelConfig.pairs} pares)...`);
+            // Crear cartas para el nivel
             
             // Limpiar tablero
             const gameBoard = document.getElementById('gameBoard');
@@ -711,8 +704,7 @@
                 rows = Math.ceil(levelConfig.cards / 3);
             }
             
-            gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-            console.log(`Grid configurado: ${cols} columnas x ${rows} filas para ${levelConfig.cards} cartas`);
+        gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             
             // Seleccionar cartas para este nivel
             const selectedCards = worldCards.slice(0, levelConfig.pairs);
@@ -735,12 +727,11 @@
                 cardElement.dataset.cardId = card.id;
                 cardElement.onclick = () => flipCard(index);
                 
-                // Imagen de portada
-                const cardImage = document.createElement('img');
-                cardImage.src = `images/cards/${currentWorld}/portada.png`;
-                cardImage.className = 'card-image';
-                console.log(`🔥 DEBUG: Carta ${index} - portada: ${cardImage.src}`);
-                cardElement.appendChild(cardImage);
+            // Imagen de portada
+            const cardImage = document.createElement('img');
+            cardImage.src = `images/cards/${currentWorld}/portada.png`;
+            cardImage.className = 'card-image';
+            cardElement.appendChild(cardImage);
                 
                 gameBoard.appendChild(cardElement);
             });
@@ -752,7 +743,7 @@
             gameState.time = 0;
             gameState.timeLimit = levelConfig.timer;
             
-            console.log(`Cartas creadas: ${shuffledCards.length} (${levelConfig.pairs} pares)`);
+            // Cartas creadas correctamente
         }
         
         
@@ -1080,21 +1071,8 @@
         
         // FUNCIÓN PARA GUARDAR PROGRESO
         function saveProgress(stars) {
-            console.log(`🔥 GUARDANDO PROGRESO: ${stars} estrellas para nivel ${currentLevelNumber} del mundo ${currentWorld}`);
-            console.log(`🔥 DEBUG - currentWorld: ${currentWorld}, currentLevelNumber: ${currentLevelNumber}, currentLevel: ${currentLevel}`);
-            
-            // Usar directamente el nivel global (1-12)
-            const result = Storage.saveScore(currentLevelNumber, gameState.moves, gameState.time, stars);
-            console.log(`🔥 Resultado del guardado:`, result);
-            console.log(`🔥 Progreso guardado: Nivel ${currentLevelNumber} con ${stars} estrellas`);
-            
-            // Verificar que se guardó correctamente
-            const savedData = Storage.getBestScore(currentLevelNumber);
-            console.log(`🔥 Datos guardados verificados:`, savedData);
-            
-            // Verificar localStorage completo
-            const allScores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
-            console.log(`🔥 localStorage completo después del guardado:`, allScores);
+        // Usar directamente el nivel global (1-12)
+        const result = Storage.saveScore(currentLevelNumber, gameState.moves, gameState.time, stars);
             
             // Actualizar estadísticas del header
             updateHeaderStats();

@@ -198,6 +198,11 @@
             font-size: clamp(8px, 1.5vw, 10px) !important;
         }
         
+        /* Ocultar estrellas vacías cuando hay contenido */
+        .stars-display:not(:empty)::before {
+            content: "" !important;
+        }
+        
         .path-connector {
             width: 4px !important;
             height: clamp(15px, 3vh, 25px) !important;

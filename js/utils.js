@@ -59,14 +59,12 @@ const Storage = {
     
     // Eliminar nivel 9 (volcán) si no se ha completado correctamente
     if (scores['9']) {
-      console.log('🧹 Limpiando datos corruptos del nivel 9 (volcán)');
       delete scores['9'];
       cleaned = true;
     }
     
     if (cleaned) {
       localStorage.setItem('memoflip_scores', JSON.stringify(scores));
-      console.log('🧹 Datos limpiados correctamente');
     }
     
     return cleaned;
@@ -79,15 +77,10 @@ const Storage = {
     const scores = this.getScores();
     let totalGames = 0, totalStars = 0;
     
-    console.log('🌟 DEBUG TOTAL STATS - Scores disponibles:', scores);
-    
     Object.entries(scores).forEach(([level, score]) => {
-      console.log(`🌟 Nivel ${level}: ${score.bestStars} estrellas`);
       totalGames += score.timesPlayed;
       totalStars += score.bestStars;
     });
-    
-    console.log(`🌟 Total estrellas calculadas: ${totalStars}`);
     
     // Obtener total de trofeos
     let totalTrophies = 0;
