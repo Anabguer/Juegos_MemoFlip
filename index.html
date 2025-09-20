@@ -562,18 +562,21 @@
             
             // Trofeos del océano eliminados
             
-            // Calcular estrellas del mundo isla (niveles 5-8)
-            let islandStars = 0;
-            for (let i = 5; i <= 8; i++) {
-                if (scores[i] && scores[i].bestStars > 0) {
-                    islandStars += scores[i].bestStars;
-                }
+        // Calcular estrellas del mundo isla (niveles 5-8)
+        let islandStars = 0;
+        for (let i = 5; i <= 8; i++) {
+            if (scores[i] && scores[i].bestStars > 0) {
+                islandStars += scores[i].bestStars;
+                console.log(`🏝️ Nivel ${i} del mundo isla: ${scores[i].bestStars} estrellas`);
             }
+        }
+        console.log(`🏝️ Total estrellas de la isla: ${islandStars}`);
             
             // Usar los mismos trofeos para todos los mundos
             
             // Actualizar elemento del mundo isla
             const islandStarsElement = document.getElementById('island-stars');
+            console.log('🏝️ Elemento island-stars encontrado:', islandStarsElement);
             if (islandStarsElement) {
                 islandStarsElement.textContent = islandStars;
                 console.log('🌍 Estrellas de la isla actualizadas:', islandStars);
@@ -582,6 +585,8 @@
                 setTimeout(() => {
                     islandStarsElement.style.transform = 'scale(1)';
                 }, 100);
+            } else {
+                console.error('🏝️ ERROR: No se encontró el elemento island-stars');
             }
             
             // Trofeos de la isla eliminados
