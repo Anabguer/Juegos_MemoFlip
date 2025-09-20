@@ -657,15 +657,22 @@
                 localLevel = currentLevel - 8; // Niveles 9-12 → 1-4
             }
             
+            console.log(`🔥 DEBUG CREATE CARDS: currentWorld=${currentWorld}, currentLevel=${currentLevel}, currentLevelNumber=${currentLevelNumber}, localLevel=${localLevel}`);
+            
             const levelConfig = getLevelConfig(currentWorld, localLevel);
             const worldCards = WORLD_CARDS[currentWorld] || WORLD_CARDS.ocean;
             
-            console.log(`🔥 DEBUG: currentWorld=${currentWorld}, localLevel=${localLevel}`);
             console.log(`🔥 DEBUG: levelConfig=`, levelConfig);
             console.log(`🔥 DEBUG: worldCards=`, worldCards);
+            console.log(`🔥 DEBUG: WORLD_CARDS disponible=`, typeof WORLD_CARDS);
             
             if (!levelConfig) {
                 console.error('No se encontró configuración para el nivel', currentLevel, 'del mundo', currentWorld);
+                return;
+            }
+            
+            if (!worldCards || worldCards.length === 0) {
+                console.error('No se encontraron cartas para el mundo', currentWorld);
                 return;
             }
             
