@@ -1,460 +1,112 @@
-# Auditoría rápida de MemoFlip
 
-## Resumen de contenidos
+# Auditoría Técnica de MemoFlip (Para Equipo de Desarrollo)
 
-- Archivos totales: 1894
-- HTML: 35 | CSS: 14 | JS: 49 | JSON: 151
+Este documento detalla hallazgos y recomendaciones para mejorar el juego en producción.
 
-### Posibles archivos de entrada
+---
 
-- MemoFlip - copia/game.html
-- MemoFlip - copia/index.html
-- MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/index.html
-- MemoFlip - copia/android/app/src/main/assets/public/index.html
-- MemoFlip - copia/www/index.html
-
-## Hallazgos
+## 1. Problemas Detectados
 
 ### HTML
+- Falta de `<meta name="viewport">` en varias pantallas → Escalado incorrecto en móvil.
+- Páginas sin `<title>` → Mal para accesibilidad y SEO.
+- Imágenes sin `alt` → Problema de accesibilidad.
+- Estilos inline excesivos → Mejor mover a CSS.
+- Scripts sin `defer/async` → Bloquean render y causan pantallas en blanco en conexiones lentas.
 
-- `MemoFlip - copia/force-refresh.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/game-old.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/game.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/generate-icons.html` → Falta meta viewport para móvil.
-- `MemoFlip - copia/index.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/ranking.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/trophies.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/world-island.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/world-ocean-FIXED.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/world-ocean.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/world-volcano.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/generate-icons.html` → Falta meta viewport para móvil.
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/world-island.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/world-ocean.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/world-selector.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/world-volcano.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/android/app/src/main/assets/public/generate-icons.html` → Falta meta viewport para móvil.
-- `MemoFlip - copia/android/app/src/main/assets/public/world-island.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/android/app/src/main/assets/public/world-ocean.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/android/app/src/main/assets/public/world-selector.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/android/app/src/main/assets/public/world-volcano.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/components/unified-header.html` → Falta meta viewport para móvil.
-- `MemoFlip - copia/components/unified-header.html` → Falta <title> describiendo la pantalla.
-- `MemoFlip - copia/node_modules/tslib/tslib.es6.html` → Falta meta viewport para móvil.
-- `MemoFlip - copia/node_modules/tslib/tslib.es6.html` → Falta <title> describiendo la pantalla.
-- `MemoFlip - copia/node_modules/tslib/tslib.es6.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/node_modules/tslib/tslib.html` → Falta meta viewport para móvil.
-- `MemoFlip - copia/node_modules/tslib/tslib.html` → Falta <title> describiendo la pantalla.
-- `MemoFlip - copia/node_modules/tslib/tslib.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/templates/base-layout.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/www/generate-icons.html` → Falta meta viewport para móvil.
-- `MemoFlip - copia/www/world-island.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/www/world-ocean.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/www/world-selector.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-- `MemoFlip - copia/www/world-volcano.html` → Considera usar 'defer' en los scripts externos para mejorar el rendimiento.
-### JavaScript (patrones)
-
-- console_log: 51
-- todo: 16
-- setInterval: 21
-- setTimeout: 74
-- raf: 0
-- no_clear_interval: 21
-- audio_autoplay: 0
-- touch_events: 0
-- global_vars: 171
-- magic_numbers: 861
-- unhandled_promises: 12
-
-#### Intervalos sin clearInterval
-
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/js/world-map.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/js/world-selector.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-- `MemoFlip - copia/android/app/src/main/assets/public/js/world-map.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-- `MemoFlip - copia/android/app/src/main/assets/public/js/world-selector.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-- `MemoFlip - copia/js/ranking-page.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-- `MemoFlip - copia/js/world-map.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-- `MemoFlip - copia/js/world-selector.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-- `MemoFlip - copia/www/js/world-map.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-- `MemoFlip - copia/www/js/world-selector.js` → setInterval sin clearInterval en el mismo archivo (revisa fugas).
-
-### Activos grandes (>300KB)
-
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/ocean-world-map.png` → 2987.1 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/ocean-world-map.png` → 2987.1 KB
-- `MemoFlip - copia/www/images/worlds/ocean-world-map.png` → 2987.1 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/world-selector-background.png` → 2673.8 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/world-selector-background.png` → 2673.8 KB
-- `MemoFlip - copia/www/images/worlds/world-selector-background.png` → 2673.8 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/island-world-map.png` → 2539.7 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/island-world-map.png` → 2539.7 KB
-- `MemoFlip - copia/www/images/worlds/island-world-map.png` → 2539.7 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/volcano-world-map.png` → 2499.6 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/volcano-world-map.png` → 2499.6 KB
-- `MemoFlip - copia/www/images/worlds/volcano-world-map.png` → 2499.6 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/ocean-world-clean.png` → 2466.9 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/ocean-world-clean.png` → 2466.9 KB
-- `MemoFlip - copia/www/images/worlds/ocean-world-clean.png` → 2466.9 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/island-world-clean.png` → 2409.7 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/island-world-clean.png` → 2409.7 KB
-- `MemoFlip - copia/www/images/worlds/island-world-clean.png` → 2409.7 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/volcano/volcan.png` → 2165.7 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/volcano/volcan.png` → 2165.7 KB
-- `MemoFlip - copia/www/images/cards/volcano/volcan.png` → 2165.7 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/island/coco.png` → 2100.9 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/island/coco.png` → 2100.9 KB
-- `MemoFlip - copia/www/images/cards/island/coco.png` → 2100.9 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/island/portada2.png` → 2074.0 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/island/portada2.png` → 2074.0 KB
-- `MemoFlip - copia/www/images/cards/island/portada2.png` → 2074.0 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/island/portada.png` → 1605.1 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/world-island-icon.png` → 1605.1 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/island/portada.png` → 1605.1 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/world-island-icon.png` → 1605.1 KB
-- `MemoFlip - copia/www/images/cards/island/portada.png` → 1605.1 KB
-- `MemoFlip - copia/www/images/worlds/world-island-icon.png` → 1605.1 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/island/isla-pequena.png` → 1584.5 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/island/isla-pequena.png` → 1584.5 KB
-- `MemoFlip - copia/www/images/cards/island/isla-pequena.png` → 1584.5 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/level-unlocked.png` → 1572.3 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/level-unlocked.png` → 1572.3 KB
-- `MemoFlip - copia/www/images/level-unlocked.png` → 1572.3 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/ocean/portada.png` → 1565.8 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/world-ocean-icon.png` → 1565.8 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/ocean/portada.png` → 1565.8 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/world-ocean-icon.png` → 1565.8 KB
-- `MemoFlip - copia/www/images/cards/ocean/portada.png` → 1565.8 KB
-- `MemoFlip - copia/www/images/worlds/world-ocean-icon.png` → 1565.8 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/island/mono.png` → 1561.4 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/island/mono.png` → 1561.4 KB
-- `MemoFlip - copia/www/images/cards/island/mono.png` → 1561.4 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/volcano/lagarto.png` → 1526.6 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/volcano/lagarto.png` → 1526.6 KB
-- `MemoFlip - copia/www/images/cards/volcano/lagarto.png` → 1526.6 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/level-locked.png` → 1518.8 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/level-locked.png` → 1518.8 KB
-- `MemoFlip - copia/www/images/level-locked.png` → 1518.8 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/ocean/pez-globo.png` → 1514.8 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/ocean/pez-globo.png` → 1514.8 KB
-- `MemoFlip - copia/www/images/cards/ocean/pez-globo.png` → 1514.8 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/volcano/portada.png` → 1514.7 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/worlds/world-volcano-icon.png` → 1514.7 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/volcano/portada.png` → 1514.7 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/worlds/world-volcano-icon.png` → 1514.7 KB
-- `MemoFlip - copia/www/images/cards/volcano/portada.png` → 1514.7 KB
-- `MemoFlip - copia/www/images/worlds/world-volcano-icon.png` → 1514.7 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/volcano/llama-fuego.png` → 1505.4 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/volcano/llama-fuego.png` → 1505.4 KB
-- `MemoFlip - copia/www/images/cards/volcano/llama-fuego.png` → 1505.4 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/ocean/cangrejo.png` → 1484.9 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/ocean/cangrejo.png` → 1484.9 KB
-- `MemoFlip - copia/www/images/cards/ocean/cangrejo.png` → 1484.9 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/ocean/ballena.png` → 1458.8 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/ocean/ballena.png` → 1458.8 KB
-- `MemoFlip - copia/www/images/cards/ocean/ballena.png` → 1458.8 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/level-boss.png` → 1452.7 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/level-boss.png` → 1452.7 KB
-- `MemoFlip - copia/www/images/level-boss.png` → 1452.7 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/level-completed.png` → 1451.5 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/level-completed.png` → 1451.5 KB
-- `MemoFlip - copia/www/images/level-completed.png` → 1451.5 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/ocean/delfin.png` → 1451.4 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/ocean/delfin.png` → 1451.4 KB
-- `MemoFlip - copia/www/images/cards/ocean/delfin.png` → 1451.4 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/island/loro.png` → 1448.2 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/island/loro.png` → 1448.2 KB
-- `MemoFlip - copia/www/images/cards/island/loro.png` → 1448.2 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/ocean/pez-tropical.png` → 1437.0 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/ocean/pez-tropical.png` → 1437.0 KB
-- `MemoFlip - copia/www/images/cards/ocean/pez-tropical.png` → 1437.0 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/island/barco-pirata.png` → 1436.9 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/island/barco-pirata.png` → 1436.9 KB
-- `MemoFlip - copia/www/images/cards/island/barco-pirata.png` → 1436.9 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/ocean/pez-dorado.png` → 1435.6 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/ocean/pez-dorado.png` → 1435.6 KB
-- `MemoFlip - copia/www/images/cards/ocean/pez-dorado.png` → 1435.6 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/ocean/portada2.png` → 1431.5 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/ocean/portada2.png` → 1431.5 KB
-- `MemoFlip - copia/www/images/cards/ocean/portada2.png` → 1431.5 KB
-- `MemoFlip - copia/icons/icon-144x144.png` → 1430.5 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/volcano/cristal.png` → 1404.0 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/volcano/cristal.png` → 1404.0 KB
-- `MemoFlip - copia/www/images/cards/volcano/cristal.png` → 1404.0 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/volcano/rayo.png` → 1399.3 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/volcano/rayo.png` → 1399.3 KB
-- `MemoFlip - copia/www/images/cards/volcano/rayo.png` → 1399.3 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/volcano/roca-volcanica.png` → 1376.9 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/volcano/roca-volcanica.png` → 1376.9 KB
-- `MemoFlip - copia/www/images/cards/volcano/roca-volcanica.png` → 1376.9 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/island/palmera.png` → 1262.0 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/island/palmera.png` → 1262.0 KB
-- `MemoFlip - copia/www/images/cards/island/palmera.png` → 1262.0 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/cards/volcano/portada2.png` → 1247.2 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/cards/volcano/portada2.png` → 1247.2 KB
-- `MemoFlip - copia/www/images/cards/volcano/portada2.png` → 1247.2 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/ui/trofeo.png` → 587.2 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/ui/trofeo.png` → 587.2 KB
-- `MemoFlip - copia/www/images/ui/trofeo.png` → 587.2 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/ui/star.png` → 565.1 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/ui/star.png` → 565.1 KB
-- `MemoFlip - copia/www/images/ui/star.png` → 565.1 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/ui/home.png` → 521.9 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/ui/home.png` → 521.9 KB
-- `MemoFlip - copia/www/images/ui/home.png` → 521.9 KB
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/images/ui/ranking.png` → 482.0 KB
-- `MemoFlip - copia/android/app/src/main/assets/public/images/ui/ranking.png` → 482.0 KB
-- `MemoFlip - copia/www/images/ui/ranking.png` → 482.0 KB
-- `MemoFlip - copia/android/app/build/intermediates/merged_res_blame_folder/debug/mergeDebugResources/out/multi-v2/mergeDebugResources.json` → 309.6 KB
+### JavaScript
+- Uso de `setInterval` sin `clearInterval` → Posible fuga de memoria.
+- Falta de pausa en segundo plano (`document.hidden`) → Juego sigue corriendo y consume batería.
+- `console.log` en producción → Ruido en consola, menor rendimiento.
+- Números mágicos en lógica → Dificulta mantenimiento.
+- Falta de `try/catch` en promesas → Riesgo de fallos silenciosos.
 
 ### CSS
+- Sin soporte para `prefers-reduced-motion` → Usuarios sensibles pueden marearse.
+- Uso de `!important` excesivo → Señal de problemas de especificidad.
 
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/css/world-map.css` → Considera respetar 'prefers-reduced-motion'.
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/css/world-map.css` → Muchos '!important' — puede indicar problemas de especificidad.
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/public/css/world-selector.css` → Considera respetar 'prefers-reduced-motion'.
-- `MemoFlip - copia/android/app/src/main/assets/public/css/world-map.css` → Considera respetar 'prefers-reduced-motion'.
-- `MemoFlip - copia/android/app/src/main/assets/public/css/world-map.css` → Muchos '!important' — puede indicar problemas de especificidad.
-- `MemoFlip - copia/android/app/src/main/assets/public/css/world-selector.css` → Considera respetar 'prefers-reduced-motion'.
-- `MemoFlip - copia/css/ranking.css` → Considera respetar 'prefers-reduced-motion'.
-- `MemoFlip - copia/css/style.css` → Considera respetar 'prefers-reduced-motion'.
-- `MemoFlip - copia/css/trophies.css` → Considera respetar 'prefers-reduced-motion'.
-- `MemoFlip - copia/css/world-selector.css` → Muchos '!important' — puede indicar problemas de especificidad.
-- `MemoFlip - copia/www/css/world-map.css` → Considera respetar 'prefers-reduced-motion'.
-- `MemoFlip - copia/www/css/world-map.css` → Muchos '!important' — puede indicar problemas de especificidad.
-- `MemoFlip - copia/www/css/world-selector.css` → Considera respetar 'prefers-reduced-motion'.
+### PWA / Instalación
+- No hay `manifest.webmanifest`.
+- No existe `service-worker.js` → Sin instalación offline.
+- Faltan iconos (192px, 512px) para home screen.
 
-### PWA / Service Worker
+### Assets
+- Archivos >300KB → Optimizar con WebP/AVIF.
 
-- Se detectó referencia a service worker en:
-  - `MemoFlip - copia/game-old.html`
-  - `MemoFlip - copia/index.html`
-  - `MemoFlip - copia/ranking.html`
-  - `MemoFlip - copia/trophies.html`
-  - `MemoFlip - copia/world-ocean.html`
-  - `MemoFlip - copia/templates/base-layout.html`
-### JS más largos (Top 10 por líneas)
+---
 
-- `MemoFlip - copia/node_modules/@capacitor/core/cordova.js` → 1559 líneas
-- `MemoFlip - copia/android/app/build/intermediates/assets/debug/mergeDebugAssets/native-bridge.js` → 1029 líneas
-- `MemoFlip - copia/node_modules/@capacitor/android/capacitor/build/intermediates/library_assets/debug/packageDebugAssets/out/native-bridge.js` → 1029 líneas
-- `MemoFlip - copia/node_modules/@capacitor/android/capacitor/src/main/assets/native-bridge.js` → 1029 líneas
-- `MemoFlip - copia/node_modules/@capacitor/core/dist/index.cjs.js` → 594 líneas
-- `MemoFlip - copia/node_modules/@capacitor/core/dist/index.js` → 583 líneas
-- `MemoFlip - copia/js/main.js` → 560 líneas
-- `MemoFlip - copia/js/tutorial-system.js` → 499 líneas
-- `MemoFlip - copia/node_modules/tslib/tslib.js` → 484 líneas
-- `MemoFlip - copia/js/world-map.js` → 451 líneas
+## 2. Recomendaciones
 
-## Árbol de archivos (primeros 200)
+### Móvil
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+```
 
-- MemoFlip - copia/.gitignore (0.7 KB)
-- MemoFlip - copia/ASSETS-STATUS.md (4.2 KB)
-- MemoFlip - copia/capacitor.config.json (0.2 KB)
-- MemoFlip - copia/favicon.ico (0.0 KB)
-- MemoFlip - copia/force-refresh.html (4.8 KB)
-- MemoFlip - copia/game-old.html (10.1 KB)
-- MemoFlip - copia/game-simple.html (12.4 KB)
-- MemoFlip - copia/game.html (39.0 KB)
-- MemoFlip - copia/generate-icons.html (4.3 KB)
-- MemoFlip - copia/index.html (25.5 KB)
-- MemoFlip - copia/local.properties (0.1 KB)
-- MemoFlip - copia/manifest.json (1.4 KB)
-- MemoFlip - copia/package-lock.json (1.3 KB)
-- MemoFlip - copia/package.json (0.3 KB)
-- MemoFlip - copia/ranking.html (9.8 KB)
-- MemoFlip - copia/README-NUEVO-SISTEMA-CSS.md (4.5 KB)
-- MemoFlip - copia/README.md (2.4 KB)
-- MemoFlip - copia/sw.js (4.0 KB)
-- MemoFlip - copia/trophies.html (8.1 KB)
-- MemoFlip - copia/world-island.html (8.8 KB)
-- MemoFlip - copia/world-ocean-FIXED.html (10.5 KB)
-- MemoFlip - copia/world-ocean.html (36.3 KB)
-- MemoFlip - copia/world-volcano.html (8.3 KB)
-- MemoFlip - copia/🧩 MemoFlip.docx (22.8 KB)
-- MemoFlip - copia/.git/COMMIT_EDITMSG (0.3 KB)
-- MemoFlip - copia/.git/config (0.3 KB)
-- MemoFlip - copia/.git/description (0.1 KB)
-- MemoFlip - copia/.git/FETCH_HEAD (0.1 KB)
-- MemoFlip - copia/.git/HEAD (0.0 KB)
-- MemoFlip - copia/.git/index (68.5 KB)
-- MemoFlip - copia/.git/hooks/applypatch-msg.sample (0.5 KB)
-- MemoFlip - copia/.git/hooks/commit-msg.sample (0.9 KB)
-- MemoFlip - copia/.git/hooks/fsmonitor-watchman.sample (4.6 KB)
-- MemoFlip - copia/.git/hooks/post-update.sample (0.2 KB)
-- MemoFlip - copia/.git/hooks/pre-applypatch.sample (0.4 KB)
-- MemoFlip - copia/.git/hooks/pre-commit.sample (1.6 KB)
-- MemoFlip - copia/.git/hooks/pre-merge-commit.sample (0.4 KB)
-- MemoFlip - copia/.git/hooks/pre-push.sample (1.3 KB)
-- MemoFlip - copia/.git/hooks/pre-rebase.sample (4.8 KB)
-- MemoFlip - copia/.git/hooks/pre-receive.sample (0.5 KB)
-- MemoFlip - copia/.git/hooks/prepare-commit-msg.sample (1.5 KB)
-- MemoFlip - copia/.git/hooks/push-to-checkout.sample (2.7 KB)
-- MemoFlip - copia/.git/hooks/sendemail-validate.sample (2.3 KB)
-- MemoFlip - copia/.git/hooks/update.sample (3.6 KB)
-- MemoFlip - copia/.git/info/exclude (0.2 KB)
-- MemoFlip - copia/.git/logs/HEAD (3.2 KB)
-- MemoFlip - copia/.git/logs/refs/heads/master (3.2 KB)
-- MemoFlip - copia/.git/logs/refs/remotes/origin/HEAD (0.1 KB)
-- MemoFlip - copia/.git/logs/refs/remotes/origin/master (2.1 KB)
-- MemoFlip - copia/.git/objects/00/8c79d4a349d1634199767c48ade5131a8ddafd (0.1 KB)
-- MemoFlip - copia/.git/objects/00/b303e00a0bf2c92cb07c18d3239280ef181ae5 (0.1 KB)
-- MemoFlip - copia/.git/objects/00/e8cbfbffba7a2d2f33767214e8c30aa2ff6c8f (0.1 KB)
-- MemoFlip - copia/.git/objects/01/5e4bcbe7ab2873e068edc8ca9fb3e9b472d28b (0.8 KB)
-- MemoFlip - copia/.git/objects/01/71b3d4d07816321e1dd912e5316ef8735b2764 (0.8 KB)
-- MemoFlip - copia/.git/objects/02/00d3b101006ff5f839f30ea88f2d863069668e (5.9 KB)
-- MemoFlip - copia/.git/objects/02/31ad52c4a5d16acdec6e0ee00912ada8e56593 (1548.3 KB)
-- MemoFlip - copia/.git/objects/02/61ffe786d577cbf825858c1d809303565756c1 (0.1 KB)
-- MemoFlip - copia/.git/objects/02/97327842dfa194b316aec9730bb3c7349b7282 (0.3 KB)
-- MemoFlip - copia/.git/objects/02/d3527c68b5f37491923a7440bbc2a7ccd573c7 (0.1 KB)
-- MemoFlip - copia/.git/objects/02/f0406e1d65a355afb4d7c36bb6bde6565c728f (2142.1 KB)
-- MemoFlip - copia/.git/objects/03/49b0b4a901848f9a8c3ee1d358ce04c2f27b0f (0.3 KB)
-- MemoFlip - copia/.git/objects/03/6d09bc5fd523323794379703c4a111d1e28a04 (0.2 KB)
-- MemoFlip - copia/.git/objects/04/3df802a29f1f386a23cba600c84be8eee2a0c6 (0.0 KB)
-- MemoFlip - copia/.git/objects/04/56630a7abfe445694a0342c265dd3cd38d413c (0.1 KB)
-- MemoFlip - copia/.git/objects/04/6c9a3196e30bbdc55dffefbcc3035fe5bd47c4 (1590.6 KB)
-- MemoFlip - copia/.git/objects/04/8163af6972d487903ae0db36f521544638e815 (3.6 KB)
-- MemoFlip - copia/.git/objects/04/868dea91e7e2aa90394e08cbe6ac507379d498 (2.3 KB)
-- MemoFlip - copia/.git/objects/04/8baab47980de3a0a4d645ae796a1e219d0ebf5 (0.3 KB)
-- MemoFlip - copia/.git/objects/04/d1e7099980fe0efd79accf76f19501f1337e54 (3.0 KB)
-- MemoFlip - copia/.git/objects/05/ca95f71a416d64b529afbf260190eefc3fb2e1 (0.7 KB)
-- MemoFlip - copia/.git/objects/06/0d120121a01b1a4836267618e0f42d8a4748be (0.9 KB)
-- MemoFlip - copia/.git/objects/06/37a088a01e8ddab3bf3fa98dbe804cbde1a0dc (0.0 KB)
-- MemoFlip - copia/.git/objects/06/b7f4ddd05923564685421d0e6b993c87df1df9 (0.5 KB)
-- MemoFlip - copia/.git/objects/07/07e29ef0e77bb85a2eca14a89d5f4fd13d9851 (97.3 KB)
-- MemoFlip - copia/.git/objects/07/c9ec971ebb637946c9ab185d4df31052aef4c6 (1.2 KB)
-- MemoFlip - copia/.git/objects/07/df7e58dfbd3ad74ada109c4b2cd1ab87dceb47 (0.5 KB)
-- MemoFlip - copia/.git/objects/08/f4ebeab550e5b7670413a1d354bc2bba12a1d1 (0.0 KB)
-- MemoFlip - copia/.git/objects/09/6d62a5d0d23fe94b83fa65b89c87e0d5cfafd5 (0.5 KB)
-- MemoFlip - copia/.git/objects/09/a5e590e02b0112cf63a5d2568c4c9670123200 (0.1 KB)
-- MemoFlip - copia/.git/objects/0b/3b48347416f532de2e33e39722a853584098f3 (0.3 KB)
-- MemoFlip - copia/.git/objects/0b/b40b27ebf6a55b539c4aa7f3ae60f16aa3d565 (11.4 KB)
-- MemoFlip - copia/.git/objects/0c/8961ee49595637e9de84ca88db64cf144fa561 (0.4 KB)
-- MemoFlip - copia/.git/objects/0c/e2b57924e9621a360209556e56f4ca9c0d41ca (0.2 KB)
-- MemoFlip - copia/.git/objects/0d/259ddcb5285213d1cea7f8b100ffc94c66a69d (0.0 KB)
-- MemoFlip - copia/.git/objects/0d/35e0c7a120c982bb2b19c31fd8f7724a7058cc (2.4 KB)
-- MemoFlip - copia/.git/objects/0d/ec583390292fe4dae0e790907e15c1db89e799 (0.1 KB)
-- MemoFlip - copia/.git/objects/0e/017496e812ffff24e7eb496724534e54e12004 (1307.7 KB)
-- MemoFlip - copia/.git/objects/0e/98707627fef51e561910950a911b7a42860490 (1.0 KB)
-- MemoFlip - copia/.git/objects/0e/c7d67be0cd2fcc0bc6a0e450ccd269997d7f4b (1.2 KB)
-- MemoFlip - copia/.git/objects/0f/00fc530fb1a04aa930d3ae83888f2a281b7b51 (0.8 KB)
-- MemoFlip - copia/.git/objects/0f/a0c4156385cc9d90ab3b96ecb0cb26b1a4381b (1.2 KB)
-- MemoFlip - copia/.git/objects/10/3bde0c01c992444912b2a1a168cc504b96c5e6 (0.9 KB)
-- MemoFlip - copia/.git/objects/10/c1acd2d2ec3d32e9b5e5c4f60ea2a6586a96a7 (4.5 KB)
-- MemoFlip - copia/.git/objects/11/15429d7bbc478f98faf1447d7d288f080580f8 (2.0 KB)
-- MemoFlip - copia/.git/objects/12/11b1ef0cfce28b279372c248df8e9a37685146 (0.1 KB)
-- MemoFlip - copia/.git/objects/12/a082ce4b18b635bc83566f206dae75f7265012 (0.4 KB)
-- MemoFlip - copia/.git/objects/12/f0b8fc8802a40b3646b0b7caa69d751d8fc3b2 (0.3 KB)
-- MemoFlip - copia/.git/objects/13/73c898fc9d58728d765674cbcb5374b027df14 (0.1 KB)
-- MemoFlip - copia/.git/objects/14/73a4f6ab9d4a85b5a1dbe4097c59f21d4a82d9 (0.2 KB)
-- MemoFlip - copia/.git/objects/14/9a4ab26c44b939f8be0201274068326d7a08cd (1.2 KB)
-- MemoFlip - copia/.git/objects/14/a586b00a83210ca132727a379490e5f7bab037 (1.2 KB)
-- MemoFlip - copia/.git/objects/14/b6043a5206a389c77d7f9aadbeede6c7579d77 (0.1 KB)
-- MemoFlip - copia/.git/objects/14/b9a83dcce1d653dfa798ae622dfc7c0c6ebd41 (1.5 KB)
-- MemoFlip - copia/.git/objects/14/c6c8fe39fcd51a0414866ad28cbe8ff3acb060 (7.7 KB)
-- MemoFlip - copia/.git/objects/14/f9b2609a3844dc9755ed88f588b8e9d7c2db1f (1406.8 KB)
-- MemoFlip - copia/.git/objects/15/24cac96c94e5f597d53e67774d5d4a51bc1acd (0.5 KB)
-- MemoFlip - copia/.git/objects/15/cb0ecb3e219d1701294bfdf0fe3f5cb5d208e7 (0.0 KB)
-- MemoFlip - copia/.git/objects/16/63a4baafe27f58a8cc9c7218d8d35a53ce1f20 (0.1 KB)
-- MemoFlip - copia/.git/objects/16/8d411deb077f63f4fe719066e68dadf0cea5f6 (0.0 KB)
-- MemoFlip - copia/.git/objects/16/d5934803e35668664364f2caf57b1571884e24 (0.0 KB)
-- MemoFlip - copia/.git/objects/17/57e326406d99eb5b64a40bc53a4ffb573d3f02 (0.1 KB)
-- MemoFlip - copia/.git/objects/17/653d5a93e28376e29b3896425bf1ec6983e4b5 (0.1 KB)
-- MemoFlip - copia/.git/objects/17/92e207e815b81d03ce0cf8f4340aabe20490ea (1.3 KB)
-- MemoFlip - copia/.git/objects/19/1af9b2d090f9841feae35b37e8e8a770d862f4 (1222.3 KB)
-- MemoFlip - copia/.git/objects/19/37be0a8f064de7dff1a2c99924d93b678a8fe0 (1.4 KB)
-- MemoFlip - copia/.git/objects/19/c8b8b3a61dbd214c1f24f2f3650157d014a211 (9.8 KB)
-- MemoFlip - copia/.git/objects/19/d1684030ec3f5c40fd394e91ff7178b230830e (0.2 KB)
-- MemoFlip - copia/.git/objects/19/e74b1bf85fa09201af4dbacef0754aa4201ac6 (0.1 KB)
-- MemoFlip - copia/.git/objects/1b/690cbf9a48743f85dd8b5e50f24d1fc57f51a8 (0.4 KB)
-- MemoFlip - copia/.git/objects/1b/81ee01dadceb34d20ea9cc8b12cae00443e9ec (0.2 KB)
-- MemoFlip - copia/.git/objects/1c/983fc9343932a9c78c9a72427de638643c16d4 (0.3 KB)
-- MemoFlip - copia/.git/objects/1c/dfe519383366fc5b73ad18e4a79ab64bde06b1 (1492.0 KB)
-- MemoFlip - copia/.git/objects/1c/e0c284912b6ec6ea77a76cb84c10a293ead317 (0.0 KB)
-- MemoFlip - copia/.git/objects/1c/e140549ca61691f5093067aa4460fbf5e218df (5.6 KB)
-- MemoFlip - copia/.git/objects/1d/16c4ae9319037f1902b4bed3c8ce1c6a837f79 (1.5 KB)
-- MemoFlip - copia/.git/objects/1d/2fc20785429283fdbe11c7fda6dd9d93817f12 (1.0 KB)
-- MemoFlip - copia/.git/objects/1d/5899f5594935d7d61b3def363f0dbe669a3b02 (0.1 KB)
-- MemoFlip - copia/.git/objects/1d/67e33a461454b71063895f89e5c982754c534f (70.5 KB)
-- MemoFlip - copia/.git/objects/1e/e6aa17584b90a63622273ded68a0cb230e64dd (1.2 KB)
-- MemoFlip - copia/.git/objects/1f/677b8cf7162f7f32709971b3a5aa1a78592866 (0.4 KB)
-- MemoFlip - copia/.git/objects/1f/ca2b119f899176ae9c11b7d3ebcf2098a7d7b8 (0.1 KB)
-- MemoFlip - copia/.git/objects/20/41f1c554d0462e7d11b23f61bf547e7b513af0 (0.0 KB)
-- MemoFlip - copia/.git/objects/20/9cb691d3c2ee83d4ed4929fcc93623ec86f012 (1.2 KB)
-- MemoFlip - copia/.git/objects/21/0c64d6c25fe059930a070125459d5499ed81bf (0.2 KB)
-- MemoFlip - copia/.git/objects/21/27973b2d318df7085734d236d0ec649a2b0292 (3.3 KB)
-- MemoFlip - copia/.git/objects/21/af7ad6c189971cd5305ed6d9423042149dca8a (3.3 KB)
-- MemoFlip - copia/.git/objects/23/076c224b6f0f2bedb8836acf5ad514a9cbcea8 (0.3 KB)
-- MemoFlip - copia/.git/objects/23/b529290c78a7100f0425173199034c4f0b765b (1480.0 KB)
-- MemoFlip - copia/.git/objects/23/caadf1d35f6bc482b1b98afd85b01e6119ad80 (0.1 KB)
-- MemoFlip - copia/.git/objects/23/df266d6cf1a3f345feabeeb5eeb5847ceddd18 (1.1 KB)
-- MemoFlip - copia/.git/objects/24/4ca2506dbe0fd8f6a05520ac7d1a629ea81438 (7.9 KB)
-- MemoFlip - copia/.git/objects/24/640ecfb026be3c9f6e492af3e1ccf553694af9 (0.0 KB)
-- MemoFlip - copia/.git/objects/24/8dfa1e90fb46342900f31c0058deb994aa8a6e (6.4 KB)
-- MemoFlip - copia/.git/objects/24/c2b0d69c9797d1bed785266e414f43f875eefe (1.4 KB)
-- MemoFlip - copia/.git/objects/24/d813bea85f82d73c56377b0bda2c617eddf96a (1.4 KB)
-- MemoFlip - copia/.git/objects/24/e727922294e3417b933fe9c67427ffa5ba4ce1 (1.2 KB)
-- MemoFlip - copia/.git/objects/24/f42923b67340a9bffc0d64350b0c30afa07013 (0.2 KB)
-- MemoFlip - copia/.git/objects/25/eefd29a3f2317d2d6dda96de6649bc1ecae5da (0.2 KB)
-- MemoFlip - copia/.git/objects/26/a55c76a7d2a71d6fa2e03aba7c29ebda5951a5 (0.3 KB)
-- MemoFlip - copia/.git/objects/27/71927c9b9fdfac2a5783be0487fa57b2944fd2 (0.5 KB)
-- MemoFlip - copia/.git/objects/28/6de4221984f000966143b2905e12f93c6c96cc (0.2 KB)
-- MemoFlip - copia/.git/objects/28/801c26f3614cd0bef54a5bd4baf19e0958ef83 (1453.7 KB)
-- MemoFlip - copia/.git/objects/28/a7e3241ff5b72979dda2d65e8a79bb65b7059b (2.9 KB)
-- MemoFlip - copia/.git/objects/28/bf842fe33565ff41dcb67aa18406b899d259c5 (0.2 KB)
-- MemoFlip - copia/.git/objects/28/c519496d2012d22e32936cb17016cf8a57dc57 (0.0 KB)
-- MemoFlip - copia/.git/objects/29/60cbb6104b915c84760f889deed9bff2b3e17a (9.0 KB)
-- MemoFlip - copia/.git/objects/29/c649e1ae5661c864f728b8415a21cd3386390d (0.4 KB)
-- MemoFlip - copia/.git/objects/2a/d0f46ace6b2c3e719b7aa99936da284c2d50a1 (8.1 KB)
-- MemoFlip - copia/.git/objects/2c/1a6cb906f2e97acbb0172a541f662c25cf7590 (0.3 KB)
-- MemoFlip - copia/.git/objects/2c/5715ea639bee3becf630496e83f8290a4bbe33 (0.1 KB)
-- MemoFlip - copia/.git/objects/2c/8e4083f67110c1eebf64291d6774481e1e5806 (0.2 KB)
-- MemoFlip - copia/.git/objects/2d/b1111db82d52a5cd7432c410707d262389731c (0.1 KB)
-- MemoFlip - copia/.git/objects/2d/c23a9772b882e3bc7deb632e78f501f40eaf6e (0.0 KB)
-- MemoFlip - copia/.git/objects/2d/f0cde7caf521f73b5dbb1b6da7047a6178d9db (0.9 KB)
-- MemoFlip - copia/.git/objects/2e/23342690c78b53909074c5e5bfab516cec1003 (2.6 KB)
-- MemoFlip - copia/.git/objects/2e/85ae61841716c890d1c29744fcde9059398c51 (1.1 KB)
-- MemoFlip - copia/.git/objects/2e/87c52f83c298527b1d1c747d496227dc0c6e71 (0.5 KB)
-- MemoFlip - copia/.git/objects/2e/d9bc4eb04d495ec8559b64772656860b10f3b3 (0.2 KB)
-- MemoFlip - copia/.git/objects/2f/153ec05ec955e959e4c5b426b49da4d3a3d5de (1426.3 KB)
-- MemoFlip - copia/.git/objects/2f/4c8186392ad716e4c1d83b1b548276ceb2f680 (1.2 KB)
-- MemoFlip - copia/.git/objects/2f/61ffc2ae3d4e17c467682d0d43fa54b14f1f4f (0.4 KB)
-- MemoFlip - copia/.git/objects/2f/991ebd3b352009d8f89ddf1c64badb0382d561 (0.0 KB)
-- MemoFlip - copia/.git/objects/2f/d81e1bd697b67f4064365861cae8339c8dd739 (1.2 KB)
-- MemoFlip - copia/.git/objects/30/ba461866407d56444687bc4f64bf2ffbf9d90a (0.1 KB)
-- MemoFlip - copia/.git/objects/31/4591fb00faa991ccad3d45aaf8b8908dc88f48 (0.7 KB)
-- MemoFlip - copia/.git/objects/31/8a9dd446d32bd4a386b87a7a811f7f2fde5729 (1507.8 KB)
-- MemoFlip - copia/.git/objects/32/44fabeec060d55c47f0a981adb9d629fd0678f (0.4 KB)
-- MemoFlip - copia/.git/objects/33/16f924d7885682969fa3f4f15aaf6cf1ad8ea9 (480.9 KB)
-- MemoFlip - copia/.git/objects/33/2cad0e49d560c14a4bdae63301e8c34267d382 (0.0 KB)
-- MemoFlip - copia/.git/objects/33/679d1b93a30f56e2101896530a1d4614397a86 (1.3 KB)
-- MemoFlip - copia/.git/objects/33/f69c09b6aebdb8fe17d7f16a91d9b0c93bfcd6 (0.2 KB)
-- MemoFlip - copia/.git/objects/34/0e7df83159f7aff8cd2541a2f0657cb8b6e733 (0.6 KB)
-- MemoFlip - copia/.git/objects/34/3753ca41f3e7ac707e463acbfbd664114fd43b (2.8 KB)
-- MemoFlip - copia/.git/objects/34/7d60885c8217dd3ab7c7bce5261f9766081b67 (0.2 KB)
-- MemoFlip - copia/.git/objects/35/11437082e55ab01de99f6ad42411f4937545fa (0.3 KB)
-- MemoFlip - copia/.git/objects/35/81afc6c10490ffa2fca6777bc03bcc42410f8c (0.8 KB)
-- MemoFlip - copia/.git/objects/35/b5a67c695b48c184b260c56224422ebb5e4f1a (11.8 KB)
-- MemoFlip - copia/.git/objects/36/1b7b8a957ecccc19c16906635428e1ff106b34 (0.0 KB)
-- MemoFlip - copia/.git/objects/37/8afe4f87114644363d55b0282b2a36a31755c0 (0.9 KB)
-- MemoFlip - copia/.git/objects/37/ecc8fc5983792cc6f0feb164dc04dd482916ca (0.1 KB)
-- MemoFlip - copia/.git/objects/38/2cff712e7384187fa2227ab3367c30f650d3c1 (0.3 KB)
-- MemoFlip - copia/.git/objects/38/73d0f9a6acc8e3fb3e295f97405b64cde965e6 (0.1 KB)
-- MemoFlip - copia/.git/objects/38/e90be6310942af8bcedbb1535eb6500be6c424 (0.0 KB)
-- MemoFlip - copia/.git/objects/39/1aa30e657a1abb0d3d66838b4e3fc89e8a5db8 (3.1 KB)
-- MemoFlip - copia/.git/objects/39/96bbfd283dfd189d027ca8f9a127218926fd74 (0.1 KB)
-- MemoFlip - copia/.git/objects/39/c862da8b4569054b0d4941fd011686784605bc (0.1 KB)
-- MemoFlip - copia/.git/objects/3a/356e26c68bc2d44ee2eae72e0ff7fa00d070e9 (2.8 KB)
-- MemoFlip - copia/.git/objects/3a/6000972a9189bb2468938ee68f49f51a700e7d (0.4 KB)
-- MemoFlip - copia/.git/objects/3a/7043bb5b517e373ddb28a425dde08bf289d339 (2.9 KB)
-- MemoFlip - copia/.git/objects/3a/77a05fd44be67b451d451bf4820e94fe9379ec (2.1 KB)
+### Rendimiento
+- Añadir `defer` en `<script>`:
+```html
+<script src="game.js" defer></script>
+```
+- Minificar JS y CSS para producción.
+- Lazy-load de imágenes pesadas.
 
-## Recomendaciones rápidas para móvil
-1. **Viewport & escalado táctil**: Asegúrate de `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">` en todas las pantallas.
-2. **Carga eficiente**: Usa `defer` en `<script>` y agrupa/minifica JS. Considera lazy-load de imágenes y `preload` para fuentes/sonidos críticos.
-3. **Bucle de juego**: Si usas `setInterval`, cambia a `requestAnimationFrame` y pausa en `visibilitychange` para ahorrar batería.
-4. **Eventos táctiles**: Implementa `passive: true` en scroll, y gestiona `pointer` en vez de `touch*` para unificar.
-5. **Accesibilidad básica**: `alt` en imágenes, contraste suficiente, tamaños táctiles (mín. 44x44dp).
-6. **PWA**: Añade `manifest.json`, íconos y service worker para instalar en móvil y caché offline.
-7. **Reducción de movimiento**: Respeta `@media (prefers-reduced-motion)` en animaciones intensas.
-8. **Persistencia**: Guarda progreso/ajustes en `localStorage` (volumen, vibración, tema).
-9. **Audio móvil**: Desbloquea audio en primer gesto táctil y permite mute global.
-10. **Testing**: Activa modo “low-end” (cap FPS, menos partículas) y registra rendimiento básico (FPS, ms por frame).
+### Bucle de Juego
+```js
+// Migrar setInterval a requestAnimationFrame
+let lastTime = performance.now();
+function gameLoop(ts) {
+  const delta = ts - lastTime;
+  lastTime = ts;
+  if (!document.hidden) updateGame(delta);
+  requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop);
+```
+
+### Pausa en Background
+```js
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) pauseGame();
+  else resumeGame();
+});
+```
+
+### Accesibilidad
+```css
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+```
+
+### PWA
+- Crear `manifest.webmanifest` con `name`, `short_name`, `start_url`, `theme_color`, `background_color`, iconos 192/512.
+- Registrar service worker con cache-first para assets.
+
+### Mantenimiento
+- Reemplazar números mágicos por constantes.
+- Eliminar `console.log` en build final.
+- Documentar funciones principales.
+
+---
+
+## 3. Checklist para el Equipo
+- [ ] Añadir meta viewport en todas las pantallas.
+- [ ] Revisar títulos en cada página.
+- [ ] Pasar estilos inline a CSS.
+- [ ] Añadir defer a scripts.
+- [ ] Migrar bucles de animación a rAF.
+- [ ] Implementar pausa al ocultar pestaña.
+- [ ] Optimizar assets >300KB.
+- [ ] Añadir manifest + service worker.
+- [ ] Añadir prefers-reduced-motion.
+- [ ] Probar en móvil real (FPS, instalación, reanudación).
+
+---
+
+## 4. Beneficios
+- Carga más rápida en móvil.
+- Menor consumo de batería.
+- Posibilidad de instalación como app.
+- Juego más accesible y mantenible.
+- Menos errores silenciosos en producción.
+

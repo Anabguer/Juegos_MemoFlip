@@ -449,10 +449,6 @@
                                             <img src="images/ui/star.png" alt="Stars" class="stat-icon">
                                             <span id="volcano-stars">0</span>/16
                                         </div>
-                                        <div class="stat">
-                                            <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="volcano-trophies">0</span>/6
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="world-lock" id="volcano-lock">
@@ -475,10 +471,6 @@
                                             <img src="images/ui/star.png" alt="Stars" class="stat-icon">
                                             <span id="island-stars">0</span>/16
                                         </div>
-                                        <div class="stat">
-                                            <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="island-trophies">0</span>/6
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="world-lock" id="island-lock">
@@ -500,10 +492,6 @@
                                         <div class="stat">
                                             <img src="images/ui/star.png" alt="Stars" class="stat-icon">
                                             <span id="ocean-stars">0</span>/12
-                                        </div>
-                                        <div class="stat">
-                                            <img src="images/ui/trofeo.png" alt="Trophy" class="stat-icon">
-                                            <span id="ocean-trophies">0</span>/6
                                         </div>
                                     </div>
                                 </div>
@@ -569,11 +557,7 @@
                 }, 100);
             }
             
-            // Actualizar trofeos del mundo océano (todos los trofeos)
-            const oceanTrophiesElement = document.getElementById('ocean-trophies');
-            if (oceanTrophiesElement) {
-                oceanTrophiesElement.textContent = totalTrophiesEarned;
-            }
+            // Trofeos del océano eliminados
             
             // Calcular estrellas del mundo isla (niveles 5-8)
             let islandStars = 0;
@@ -596,11 +580,7 @@
                 }, 100);
             }
             
-            // Actualizar trofeos del mundo isla (todos los trofeos)
-            const islandTrophiesElement = document.getElementById('island-trophies');
-            if (islandTrophiesElement) {
-                islandTrophiesElement.textContent = totalTrophiesEarned;
-            }
+            // Trofeos de la isla eliminados
             
             // Calcular estrellas del mundo volcán (niveles 9-12)
             let volcanoStars = 0;
@@ -623,11 +603,7 @@
                 }, 100);
             }
             
-            // Actualizar trofeos del mundo volcán (todos los trofeos)
-            const volcanoTrophiesElement = document.getElementById('volcano-trophies');
-            if (volcanoTrophiesElement) {
-                volcanoTrophiesElement.textContent = totalTrophiesEarned;
-            }
+            // Trofeos del volcán eliminados
         }
         
         // DETECTAR CUANDO SE REGRESA DEL JUEGO Y ACTUALIZAR ESTADÍSTICAS
