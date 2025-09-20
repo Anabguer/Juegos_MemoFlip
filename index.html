@@ -531,6 +531,8 @@
         function updateWorldStats() {
             // Obtener scores del localStorage
             const scores = JSON.parse(localStorage.getItem('memoflip_scores') || '{}');
+            console.log('🌍 ACTUALIZANDO ESTADÍSTICAS DE MUNDOS...');
+            console.log('🌍 Scores obtenidos:', scores);
             
             // Calcular estrellas del mundo océano (niveles 1-4)
             let oceanStars = 0;
@@ -549,6 +551,7 @@
             const oceanStarsElement = document.getElementById('ocean-stars');
             if (oceanStarsElement) {
                 oceanStarsElement.textContent = oceanStars;
+                console.log('🌍 Estrellas del océano actualizadas:', oceanStars);
                 
                 // FORZAR RE-RENDERIZADO VISUAL
                 oceanStarsElement.style.transform = 'scale(1.05)';
@@ -573,6 +576,7 @@
             const islandStarsElement = document.getElementById('island-stars');
             if (islandStarsElement) {
                 islandStarsElement.textContent = islandStars;
+                console.log('🌍 Estrellas de la isla actualizadas:', islandStars);
                 // FORZAR RE-RENDERIZADO VISUAL
                 islandStarsElement.style.transform = 'scale(1.05)';
                 setTimeout(() => {
@@ -596,6 +600,7 @@
             const volcanoStarsElement = document.getElementById('volcano-stars');
             if (volcanoStarsElement) {
                 volcanoStarsElement.textContent = volcanoStars;
+                console.log('🌍 Estrellas del volcán actualizadas:', volcanoStars);
                 // FORZAR RE-RENDERIZADO VISUAL
                 volcanoStarsElement.style.transform = 'scale(1.05)';
                 setTimeout(() => {

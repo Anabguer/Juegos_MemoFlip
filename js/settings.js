@@ -77,3 +77,11 @@ const SCORING = {
     return '⭐'.repeat(stars) + '✩'.repeat(3 - stars);
   }
 };
+
+// Exportar para uso global
+if (typeof window !== 'undefined') {
+  window.WORLD_CARDS = WORLD_CARDS;
+  window.LEVELS = LEVELS;
+  window.SCORING = SCORING;
+  window.getCardsForLevel = getCardsForLevel;
+}
