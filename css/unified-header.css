@@ -13,6 +13,13 @@
     max-height: 90px;
     z-index: 100;
     width: 100%;
+    opacity: 0; /* OCULTAR HASTA QUE ESTÉ LISTO */
+    transition: opacity 0.3s ease;
+}
+
+/* MOSTRAR CUANDO ESTÉ LISTO */
+.game-hud.ready {
+    opacity: 1;
 }
 
 .hud-content {

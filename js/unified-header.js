@@ -17,6 +17,12 @@ function updateHeaderStats() {
         trophiesElement.textContent = totalStats.totalTrophies;
     }
     
+    // MOSTRAR LA CABECERA DESPUÉS DE ACTUALIZAR LOS VALORES
+    const header = document.querySelector('.game-hud');
+    if (header) {
+        header.classList.add('ready');
+    }
+    
     console.log(`Estadísticas actualizadas - Estrellas: ${totalStats.totalStars}, Trofeos: ${totalStats.totalTrophies}`);
 }
 
@@ -60,7 +66,6 @@ window.addEventListener('focus', function() {
 
 // INICIALIZAR CUANDO SE CARGA LA PÁGINA
 document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        updateHeaderStats();
-    }, 500);
+    // ACTUALIZAR INMEDIATAMENTE SIN DELAY
+    updateHeaderStats();
 });
