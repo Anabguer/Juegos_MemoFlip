@@ -653,6 +653,10 @@
             const levelConfig = getLevelConfig(currentWorld, localLevel);
             const worldCards = WORLD_CARDS[currentWorld] || WORLD_CARDS.ocean;
             
+            console.log(`🔥 DEBUG: currentWorld=${currentWorld}, localLevel=${localLevel}`);
+            console.log(`🔥 DEBUG: levelConfig=`, levelConfig);
+            console.log(`🔥 DEBUG: worldCards=`, worldCards);
+            
             if (!levelConfig) {
                 console.error('No se encontró configuración para el nivel', currentLevel, 'del mundo', currentWorld);
                 return;
@@ -721,6 +725,7 @@
                 const cardImage = document.createElement('img');
                 cardImage.src = `images/cards/${currentWorld}/portada.png`;
                 cardImage.className = 'card-image';
+                console.log(`🔥 DEBUG: Carta ${index} - portada: ${cardImage.src}`);
                 cardElement.appendChild(cardImage);
                 
                 gameBoard.appendChild(cardElement);
