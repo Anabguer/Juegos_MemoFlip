@@ -155,6 +155,7 @@
     height: 180px;
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     flex-shrink: 0;
 }
 
@@ -188,6 +189,7 @@
     gap: clamp(15px, 3vw, 20px);
     height: 100%;
     justify-content: space-between;
+    flex: 1;
 }
 
 .trophy-icon-container {
@@ -221,6 +223,10 @@
 
 .trophy-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .trophy-name {
@@ -249,9 +255,13 @@
 
 .trophy-earned-date {
     color: rgba(255,215,0,0.8);
-    font-size: clamp(11px, 2.2vw, 13px);
+    font-size: clamp(8px, 1.5vw, 10px);
     font-style: italic;
     text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    height: 20px;
+    display: flex;
+    align-items: center;
+    margin-top: auto;
 }
 
 /* ESTADO BLOQUEADO */
