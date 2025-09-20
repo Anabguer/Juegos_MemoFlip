@@ -99,7 +99,10 @@ const TrophySystem = {
   getEarnedTrophies() {
     try {
       const data = localStorage.getItem(this.STORAGE_KEY);
-      return data ? JSON.parse(data) : {};
+      console.log('🏆 Datos de trofeos en localStorage:', data);
+      const result = data ? JSON.parse(data) : {};
+      console.log('🏆 Trofeos parseados:', result);
+      return result;
     } catch (e) {
       console.error('Error loading trophies:', e);
       return {};

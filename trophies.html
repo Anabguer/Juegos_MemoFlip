@@ -130,17 +130,14 @@
     <script>
         // Inicializar página
         document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar header con botón home
-            initHeader({
-                showHome: true,
-                showRanking: false,
-                homeUrl: 'world-selector.html',
-                title: 'Trofeos'
-            });
+            console.log('🏆 DOM cargado, inicializando trofeos...');
             
             // Inicializar página de trofeos
             if (typeof initTrophiesPage === 'function') {
+                console.log('🏆 Función initTrophiesPage encontrada, ejecutando...');
                 initTrophiesPage();
+            } else {
+                console.error('🏆 ERROR: Función initTrophiesPage NO encontrada');
             }
         });
     </script>
